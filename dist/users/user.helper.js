@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userHelper = void 0;
-const common_type_1 = require("../types/common.type");
+const common_type_1 = require("../types/common-type");
 exports.userHelper = {
     userViewMapper(userDb) {
         const res = {
