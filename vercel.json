@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "hw2",
+    "name": "nest",
     "builds": [
        { "src": "src/main.ts",
         "use": "@vercel/node"
