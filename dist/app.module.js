@@ -15,6 +15,8 @@ const user_repository_1 = require("./users/user.repository");
 const user_service_1 = require("./users/user.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("./users/user.schema");
+const testing_controller_1 = require("./testing/testing.controller");
+const testing_service_1 = require("./testing/testing.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,8 +26,8 @@ exports.AppModule = AppModule = __decorate([
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
         ],
-        controllers: [app_controller_1.AppController, user_controller_1.UserController],
-        providers: [app_service_1.AppService, user_repository_1.UserRepository, user_service_1.UserService],
+        controllers: [app_controller_1.AppController, user_controller_1.UserController, testing_controller_1.TestingController],
+        providers: [app_service_1.AppService, user_repository_1.UserRepository, user_service_1.UserService, testing_service_1.TestingService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

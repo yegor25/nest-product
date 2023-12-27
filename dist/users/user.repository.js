@@ -60,6 +60,9 @@ let UserRepository = class UserRepository {
             return false;
         return true;
     }
+    async deleteAll() {
+        return this.userModel.deleteMany({});
+    }
 };
 exports.UserRepository = UserRepository;
 exports.UserRepository = UserRepository = __decorate([

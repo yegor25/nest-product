@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.schema';
+import { CreateUserDtoType, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
 import { Model } from 'mongoose';
-import {
-  CreateUserDtoType,
-  ResponseAllUserDto,
-  paramsUserPaginatorType,
-} from 'src/types/user.type';
+
 import { userHelper } from './user.helper';
 
 @Injectable()
@@ -54,5 +50,8 @@ export class UserRepository {
     const deleteUser = await this.userModel.findByIdAndDelete(id);
     if (!deleteUser) return false;
     return true;
+  }
+  async deleteAll (){
+    return this.userModel.deleteMany({})
   }
 }
