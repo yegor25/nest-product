@@ -8,6 +8,6 @@ export declare class UserController {
     getUserById(userId: string): {
         id: number;
         name: string;
-    };
+    } | undefined;
     deleteUser(userId: string): Promise<void>;
 }
