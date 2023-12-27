@@ -1,6 +1,16 @@
 import { User } from 'src/users/user.schema';
-import { PaginatorType, SortDirection } from './root-type';
 
+export type PaginatorType = {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+};
+
+export enum SortDirection {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 export type CreateUserDtoType = {
   login: string;

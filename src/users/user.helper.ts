@@ -1,10 +1,10 @@
 import {
   ResponseUserDtoType,
+  SortDirection,
   dbUsersPaginatorType,
   paramsUserPaginatorType,
 } from 'src/types/user.type';
 import { User } from './user.schema';
-import { SortDirection } from 'src/types/root-type';
 
 export const userHelper = {
   userViewMapper(userDb: User): ResponseUserDtoType {
