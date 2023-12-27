@@ -24,28 +24,28 @@ export class BlogRepository {
         const parametres = blogHelper.blogParamsMapper(params);
     const skipCount =
       (+parametres.pageNumber - 1) * Number(parametres.pageSize);
-    const users = await this.blogModel
+    const blogs = await this.blogModel
       .find({
-        $or: [
-          { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
-        ],
+        
+           name: { $regex: parametres.searchNameTerm, $options: 'i' } ,
+        
       })
-      .sort({ [parametres.sortBy]: parametres.sortDirection })
+      .sort({ [parametres.sortBy]: parametres.sortDirection, _id: parametres.sortDirection })
       .skip(skipCount)
       .limit(+parametres.pageSize)
       .lean();
 
     const totalCount = await this.blogModel.countDocuments({
-      $or: [
-        { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
-      ],
+      
+        name: { $regex: parametres.searchNameTerm, $options: 'i' } ,
+      
     });
     return {
       pagesCount: Math.ceil(totalCount / +parametres.pageSize),
       page: +parametres.pageNumber,
       pageSize: +parametres.pageSize,
       totalCount,
-      items: users.map((u) => blogHelper.getViewBlog(u)),
+      items: blogs.map((b) => blogHelper.getViewBlog(b)),
     };
     }
 

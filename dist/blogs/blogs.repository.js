@@ -34,27 +34,23 @@ let BlogRepository = class BlogRepository {
     async findBlogs(params) {
         const parametres = blog_helper_1.blogHelper.blogParamsMapper(params);
         const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
-        const users = await this.blogModel
+        const blogs = await this.blogModel
             .find({
-            $or: [
-                { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
-            ],
+            name: { $regex: parametres.searchNameTerm, $options: 'i' },
         })
-            .sort({ [parametres.sortBy]: parametres.sortDirection })
+            .sort({ [parametres.sortBy]: parametres.sortDirection, _id: parametres.sortDirection })
             .skip(skipCount)
             .limit(+parametres.pageSize)
             .lean();
         const totalCount = await this.blogModel.countDocuments({
-            $or: [
-                { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
-            ],
+            name: { $regex: parametres.searchNameTerm, $options: 'i' },
         });
         return {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
             totalCount,
-            items: users.map((u) => blog_helper_1.blogHelper.getViewBlog(u)),
+            items: blogs.map((b) => blog_helper_1.blogHelper.getViewBlog(b)),
         };
     }
     async changeBlog(id, dto) {
