@@ -5,4 +5,5 @@ export declare class BlogController {
     constructor(blogService: BlogService);
     createBlog(body: createdDtoBlogType): Promise<import("./blog.schema").blogItemsResponseType>;
     findBlogById(blogId: string): Promise<import("./blog.schema").blogItemsResponseType>;
+    changeBlog(blogId: string, body: createdDtoBlogType): Promise<void>;
 }

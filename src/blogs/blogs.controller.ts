@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post, Put } from "@nestjs/common";
 import { createdDtoBlogType } from "./blog.schema";
 import { BlogService } from "./blog.service";
 
@@ -16,5 +16,12 @@ export class BlogController {
         const blog = await this.blogService.findById(blogId)
         if(!blog) throw new NotFoundException();
         return blog
+    }
+    @Put(':id')
+    @HttpCode(204)
+    async changeBlog(@Param('id') blogId: string, @Body() body: createdDtoBlogType){
+        const blog = await this.blogService.changeBlog(blogId,body)
+        if(!blog) throw new NotFoundException();
+        return;
     }
 }

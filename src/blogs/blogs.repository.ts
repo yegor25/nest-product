@@ -20,6 +20,14 @@ export class BlogRepository {
         return blog
     }
 
+    async changeBlog(id: string, dto: createdDtoBlogType):Promise<Blog | null>{
+        const blog = await this.blogModel.findByIdAndUpdate(
+            id,
+            {$set: {name: dto.name, websiteUrl: dto.websiteUrl,description: dto.description}}
+        )
+        return blog
+    }
+
     async deleteAll () {
         return this.blogModel.deleteMany({})
     }

@@ -28,6 +28,12 @@ let BlogController = class BlogController {
             throw new common_1.NotFoundException();
         return blog;
     }
+    async changeBlog(blogId, body) {
+        const blog = await this.blogService.changeBlog(blogId, body);
+        if (!blog)
+            throw new common_1.NotFoundException();
+        return;
+    }
 };
 exports.BlogController = BlogController;
 __decorate([
@@ -44,6 +50,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "findBlogById", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.HttpCode)(204),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "changeBlog", null);
 exports.BlogController = BlogController = __decorate([
     (0, common_1.Controller)('blogs'),
     __metadata("design:paramtypes", [blog_service_1.BlogService])

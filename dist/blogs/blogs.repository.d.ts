@@ -29,5 +29,6 @@ export declare class BlogRepository {
     constructor(blogModel: Model<Blog>);
     create(dto: createdDtoBlogType): Promise<Blog>;
     findById(id: string): Promise<Blog | null>;
+    changeBlog(id: string, dto: createdDtoBlogType): Promise<Blog | null>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

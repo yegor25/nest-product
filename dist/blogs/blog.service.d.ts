@@ -5,5 +5,6 @@ export declare class BlogService {
     constructor(blogRepository: BlogRepository);
     create(dto: createdDtoBlogType): Promise<blogItemsResponseType>;
     findById(id: string): Promise<blogItemsResponseType | null>;
+    changeBlog(id: string, dto: createdDtoBlogType): Promise<boolean>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

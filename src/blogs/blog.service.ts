@@ -18,6 +18,11 @@ export class BlogService {
         if(!blog) return null
         return blogHelper.getViewBlog(blog)
     }
+    async changeBlog(id: string, dto: createdDtoBlogType):Promise<boolean>{
+        const blog = await this.blogRepository.changeBlog(id, dto)
+        if(!blog) return false
+        return true
+    }
     async deleteAll () {
         return this.blogRepository.deleteAll()
     }
