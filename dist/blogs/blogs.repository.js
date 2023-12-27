@@ -23,6 +23,7 @@ let BlogRepository = class BlogRepository {
     }
     async create(dto) {
         const newBlog = new this.blogModel(dto);
+        await newBlog.save();
         return newBlog;
     }
     async findById(id) {
