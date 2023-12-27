@@ -21,32 +21,25 @@ export class BlogRepository {
         return blog
     }
     async findBlogs(params: paramsBlogPaginatorType):Promise<responseDtoBlogType>{
-        const parametres = blogHelper.blogParamsMapper(params);
-    const skipCount =
-      (+parametres.pageNumber - 1) * Number(parametres.pageSize);
-    const blogs = await this.blogModel
-      .find({
+        const parametres = blogHelper.blogParamsMapper(params)
+        const skipCount = (parametres.pageNumber -1 ) * parametres.pageSize
+        const blogs = await this.blogModel.find({
+            name: {$regex: parametres.searchNameTerm, $options: "i"}
+        })
+        .sort({[parametres.sortBy] : parametres.sortDirection})
+        .skip(skipCount)
+        .limit(parametres.pageSize)
+        .lean()
         
-           name: { $regex: parametres.searchNameTerm, $options: 'i' } ,
-        
-      })
-      .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
-      .skip(skipCount)
-      .limit(+parametres.pageSize)
-      .lean();
 
-    const totalCount = await this.blogModel.countDocuments({
-      
-        name: { $regex: parametres.searchNameTerm, $options: 'i' } ,
-      
-    });
-    return {
-      pagesCount: Math.ceil(totalCount / +parametres.pageSize),
-      page: +parametres.pageNumber,
-      pageSize: +parametres.pageSize,
-      totalCount,
-      items: blogs.map((b) => blogHelper.getViewBlog(b)),
-    };
+       const totalCount = await this.blogModel.countDocuments({name: {$regex: parametres.searchNameTerm, $options: "i"}})
+        return {
+            pagesCount: Math.ceil(totalCount/+parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: +parametres.pageSize,
+            totalCount,
+            items: blogs.map(b => blogHelper.getViewBlog(b))
+        }
     }
 
     async changeBlog(id: string, dto: createdDtoBlogType):Promise<Blog | null>{
