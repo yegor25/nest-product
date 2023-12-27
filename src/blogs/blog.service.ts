@@ -13,6 +13,11 @@ export class BlogService {
         const blog = await this.blogRepository.create(dto)
         return blogHelper.getViewBlog(blog)
     }
+    async findById(id: string):Promise<blogItemsResponseType | null> {
+        const blog = await this.blogRepository.findById(id)
+        if(!blog) return null
+        return blogHelper.getViewBlog(blog)
+    }
     async deleteAll () {
         return this.blogRepository.deleteAll()
     }

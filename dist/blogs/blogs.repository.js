@@ -25,6 +25,10 @@ let BlogRepository = class BlogRepository {
         const newBlog = new this.blogModel(dto);
         return newBlog;
     }
+    async findById(id) {
+        const blog = await this.blogModel.findById(id);
+        return blog;
+    }
     async deleteAll() {
         return this.blogModel.deleteMany({});
     }

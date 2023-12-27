@@ -14,6 +14,11 @@ export class BlogRepository {
         return newBlog
     }
 
+    async findById(id: string):Promise<Blog | null>{
+        const blog = await this.blogModel.findById(id)
+        return blog
+    }
+
     async deleteAll () {
         return this.blogModel.deleteMany({})
     }

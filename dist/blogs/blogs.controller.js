@@ -22,6 +22,12 @@ let BlogController = class BlogController {
     async createBlog(body) {
         return this.blogService.create(body);
     }
+    async findBlogById(blogId) {
+        const blog = await this.blogService.findById(blogId);
+        if (!blog)
+            throw new common_1.NotFoundException();
+        return blog;
+    }
 };
 exports.BlogController = BlogController;
 __decorate([
@@ -31,6 +37,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createBlog", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)(':id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "findBlogById", null);
 exports.BlogController = BlogController = __decorate([
     (0, common_1.Controller)('blogs'),
     __metadata("design:paramtypes", [blog_service_1.BlogService])

@@ -21,6 +21,12 @@ let BlogService = class BlogService {
         const blog = await this.blogRepository.create(dto);
         return blog_helper_1.blogHelper.getViewBlog(blog);
     }
+    async findById(id) {
+        const blog = await this.blogRepository.findById(id);
+        if (!blog)
+            return null;
+        return blog_helper_1.blogHelper.getViewBlog(blog);
+    }
     async deleteAll() {
         return this.blogRepository.deleteAll();
     }

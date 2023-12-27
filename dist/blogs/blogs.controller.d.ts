@@ -4,4 +4,5 @@ export declare class BlogController {
     protected blogService: BlogService;
     constructor(blogService: BlogService);
     createBlog(body: createdDtoBlogType): Promise<import("./blog.schema").blogItemsResponseType>;
+    findBlogById(blogId: string): Promise<import("./blog.schema").blogItemsResponseType>;
 }
