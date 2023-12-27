@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import {
-  CreateUserDtoType,
-  ResponseAllUserDto,
-  ResponseUserDtoType,
-  paramsUserPaginatorType,
-} from 'src/types/user.type';
+
 import { userHelper } from './user.helper';
+import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, ResponseAllUserDto } from './user.schema';
 
 @Injectable()
 export class UserService {

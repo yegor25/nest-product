@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSchema = exports.User = void 0;
+exports.UserSchema = exports.SortDirection = exports.User = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 let User = class User {
 };
@@ -39,5 +39,10 @@ __decorate([
 exports.User = User = __decorate([
     (0, mongoose_1.Schema)()
 ], User);
+var SortDirection;
+(function (SortDirection) {
+    SortDirection["asc"] = "asc";
+    SortDirection["desc"] = "desc";
+})(SortDirection || (exports.SortDirection = SortDirection = {}));
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 //# sourceMappingURL=user.schema.js.map

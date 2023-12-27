@@ -32,6 +32,46 @@ export declare class User {
     hashPassword: string;
     passwordSalt: string;
 }
+export type PaginatorType = {
+    pagesCount: number;
+    page: number;
+    pageSize: number;
+    totalCount: number;
+};
+export declare enum SortDirection {
+    asc = "asc",
+    desc = "desc"
+}
+export type CreateUserDtoType = {
+    login: string;
+    password: string;
+    email: string;
+};
+export type ResponseUserDtoType = {
+    id: string;
+    login: string;
+    email: string;
+    createdAt: string;
+};
+export type ResponseAllUserDto = PaginatorType & {
+    items: ResponseUserDtoType[];
+};
+export type paramsUserPaginatorType = {
+    pageNumber: string;
+    pageSize: string;
+    searchLoginTerm: string;
+    searchEmailTerm: string;
+    sortBy: keyof User;
+    sortDirection: SortDirection;
+};
+export type dbUsersPaginatorType = {
+    searchLoginTerm: string;
+    searchEmailTerm: string;
+    sortBy: keyof User;
+    sortDirection: 1 | -1;
+    pageNumber: number;
+    pageSize: number;
+};
 export declare const UserSchema: mongoose.Schema<User, mongoose.Model<User, any, any, any, mongoose.Document<unknown, any, User> & User & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, User, mongoose.Document<unknown, {}, mongoose.FlatRecord<User>> & mongoose.FlatRecord<User> & Required<{

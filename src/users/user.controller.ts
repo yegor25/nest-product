@@ -10,10 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import {
-  CreateUserDtoType,
-  paramsUserPaginatorType,
-} from 'src/types/user.type';
+import { paramsUserPaginatorType, CreateUserDtoType } from './user.schema';
+
 
 @Controller('users')
 export class UserController {

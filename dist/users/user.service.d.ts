@@ -1,5 +1,5 @@
 import { UserRepository } from './user.repository';
-import { CreateUserDtoType, ResponseAllUserDto, ResponseUserDtoType, paramsUserPaginatorType } from 'src/types/user.type';
+import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, ResponseAllUserDto } from './user.schema';
 export declare class UserService {
     protected userRepository: UserRepository;
     constructor(userRepository: UserRepository);

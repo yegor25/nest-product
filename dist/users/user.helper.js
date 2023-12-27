@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userHelper = void 0;
-const user_type_1 = require("../types/user.type");
+const user_schema_1 = require("./user.schema");
 exports.userHelper = {
     userViewMapper(userDb) {
         const res = {
@@ -16,7 +16,7 @@ exports.userHelper = {
         const res = {
             searchEmailTerm: params.searchEmailTerm ? params.searchEmailTerm : '',
             searchLoginTerm: params.searchLoginTerm ? params.searchLoginTerm : '',
-            sortDirection: params.sortDirection === user_type_1.SortDirection.asc ? 1 : -1,
+            sortDirection: params.sortDirection === user_schema_1.SortDirection.asc ? 1 : -1,
             pageNumber: params.pageNumber ? +params.pageNumber : 1,
             pageSize: params.pageSize ? +params.pageSize : 10,
             sortBy: params.sortBy ? params.sortBy : 'createdAt',
