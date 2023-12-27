@@ -37,7 +37,7 @@ let BlogRepository = class BlogRepository {
         const blogs = await this.blogModel.find({
             name: { $regex: parametres.searchNameTerm, $options: "i" }
         })
-            .sort({ [parametres.sortBy]: parametres.sortDirection })
+            .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
             .skip(skipCount)
             .limit(parametres.pageSize)
             .lean();
