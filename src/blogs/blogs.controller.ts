@@ -12,7 +12,7 @@ export class BlogController {
         return this.blogService.create(body)
     }
     @Get(':id')
-    async findBlogById(@Param(':id') blogId: string){
+    async findBlogById(@Param('id') blogId: string){
         const blog = await this.blogService.findById(blogId)
         if(!blog) throw new NotFoundException();
         return blog
