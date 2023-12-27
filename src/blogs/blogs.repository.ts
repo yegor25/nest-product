@@ -49,6 +49,12 @@ export class BlogRepository {
         )
         return blog
     }
+    async deleteById(id: string):Promise<boolean>{
+        const deletedBlog = await this.blogModel.findByIdAndDelete(id)
+        if(!deletedBlog) return false
+        return true
+        
+    }
 
     async deleteAll () {
         return this.blogModel.deleteMany({})

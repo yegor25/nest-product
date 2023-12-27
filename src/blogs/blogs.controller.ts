@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import { createdDtoBlogType, paramsBlogPaginatorType } from "./blog.schema";
 import { BlogService } from "./blog.service";
 
@@ -26,6 +26,13 @@ export class BlogController {
     async changeBlog(@Param('id') blogId: string, @Body() body: createdDtoBlogType){
         const blog = await this.blogService.changeBlog(blogId,body)
         if(!blog) throw new NotFoundException();
+        return;
+    }
+    @Delete(':id')
+    @HttpCode(204)
+    async deleteBlog(@Param('id') blogId: string){
+        const deletedBlog = await this.blogService.deleteBlogById(blogId)
+        if(!deletedBlog) throw new NotFoundException();
         return;
     }
 }

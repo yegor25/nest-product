@@ -37,6 +37,12 @@ let BlogController = class BlogController {
             throw new common_1.NotFoundException();
         return;
     }
+    async deleteBlog(blogId) {
+        const deletedBlog = await this.blogService.deleteBlogById(blogId);
+        if (!deletedBlog)
+            throw new common_1.NotFoundException();
+        return;
+    }
 };
 exports.BlogController = BlogController;
 __decorate([
@@ -69,6 +75,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "changeBlog", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.HttpCode)(204),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "deleteBlog", null);
 exports.BlogController = BlogController = __decorate([
     (0, common_1.Controller)('blogs'),
     __metadata("design:paramtypes", [blog_service_1.BlogService])

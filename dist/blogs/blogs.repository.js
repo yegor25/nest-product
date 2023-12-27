@@ -54,6 +54,12 @@ let BlogRepository = class BlogRepository {
         const blog = await this.blogModel.findByIdAndUpdate(id, { $set: { name: dto.name, websiteUrl: dto.websiteUrl, description: dto.description } });
         return blog;
     }
+    async deleteById(id) {
+        const deletedBlog = await this.blogModel.findByIdAndDelete(id);
+        if (!deletedBlog)
+            return false;
+        return true;
+    }
     async deleteAll() {
         return this.blogModel.deleteMany({});
     }

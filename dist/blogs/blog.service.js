@@ -37,6 +37,9 @@ let BlogService = class BlogService {
             return false;
         return true;
     }
+    async deleteBlogById(id) {
+        return this.blogRepository.deleteById(id);
+    }
     async deleteAll() {
         return this.blogRepository.deleteAll();
     }

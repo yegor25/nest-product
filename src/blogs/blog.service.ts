@@ -27,6 +27,9 @@ export class BlogService {
         if(!blog) return false
         return true
     }
+    async deleteBlogById(id: string):Promise<boolean>{
+        return this.blogRepository.deleteById(id)
+    }
     async deleteAll () {
         return this.blogRepository.deleteAll()
     }

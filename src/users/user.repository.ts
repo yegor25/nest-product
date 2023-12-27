@@ -27,7 +27,7 @@ export class UserRepository {
           { login: { $regex: parametres.searchLoginTerm, $options: 'i' } },
         ],
       })
-      .sort({ [parametres.sortBy]: parametres.sortDirection })
+      .sort({ [parametres.sortBy]: parametres.sortDirection, "_id":parametres.sortDirection })
       .skip(skipCount)
       .limit(+parametres.pageSize)
       .lean();

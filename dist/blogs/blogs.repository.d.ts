@@ -31,5 +31,6 @@ export declare class BlogRepository {
     findById(id: string): Promise<Blog | null>;
     findBlogs(params: paramsBlogPaginatorType): Promise<responseDtoBlogType>;
     changeBlog(id: string, dto: createdDtoBlogType): Promise<Blog | null>;
+    deleteById(id: string): Promise<boolean>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

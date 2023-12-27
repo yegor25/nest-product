@@ -7,4 +7,5 @@ export declare class BlogController {
     findBlogs(params: paramsBlogPaginatorType): Promise<import("./blog.schema").responseDtoBlogType>;
     findBlogById(blogId: string): Promise<import("./blog.schema").blogItemsResponseType>;
     changeBlog(blogId: string, body: createdDtoBlogType): Promise<void>;
+    deleteBlog(blogId: string): Promise<void>;
 }
