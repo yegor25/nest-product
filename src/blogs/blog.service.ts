@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { BlogRepository } from "./blogs.repository";
-import { blogItemsResponseType, createdDtoBlogType } from "./blog.schema";
+import { blogItemsResponseType, createdDtoBlogType, paramsBlogPaginatorType, responseDtoBlogType } from "./blog.schema";
 import { blogHelper } from "./blog.helper";
 
 
@@ -12,6 +12,10 @@ export class BlogService {
     async create(dto: createdDtoBlogType):Promise<blogItemsResponseType>{
         const blog = await this.blogRepository.create(dto)
         return blogHelper.getViewBlog(blog)
+    }
+    async findBlogs(params: paramsBlogPaginatorType):Promise<responseDtoBlogType>{
+        const blogs = await this.blogRepository.findBlogs(params)
+        return blogs
     }
     async findById(id: string):Promise<blogItemsResponseType | null> {
         const blog = await this.blogRepository.findById(id)

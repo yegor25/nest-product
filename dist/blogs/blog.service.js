@@ -21,6 +21,10 @@ let BlogService = class BlogService {
         const blog = await this.blogRepository.create(dto);
         return blog_helper_1.blogHelper.getViewBlog(blog);
     }
+    async findBlogs(params) {
+        const blogs = await this.blogRepository.findBlogs(params);
+        return blogs;
+    }
     async findById(id) {
         const blog = await this.blogRepository.findById(id);
         if (!blog)

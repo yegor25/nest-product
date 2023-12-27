@@ -23,12 +23,13 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Model } from "mongoose";
-import { Blog, createdDtoBlogType } from "./blog.schema";
+import { Blog, createdDtoBlogType, paramsBlogPaginatorType, responseDtoBlogType } from "./blog.schema";
 export declare class BlogRepository {
     private blogModel;
     constructor(blogModel: Model<Blog>);
     create(dto: createdDtoBlogType): Promise<Blog>;
     findById(id: string): Promise<Blog | null>;
+    findBlogs(params: paramsBlogPaginatorType): Promise<responseDtoBlogType>;
     changeBlog(id: string, dto: createdDtoBlogType): Promise<Blog | null>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

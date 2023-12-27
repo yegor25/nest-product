@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const blog_schema_1 = require("./blog.schema");
+const blog_helper_1 = require("./blog.helper");
 let BlogRepository = class BlogRepository {
     constructor(blogModel) {
         this.blogModel = blogModel;
@@ -29,6 +30,32 @@ let BlogRepository = class BlogRepository {
     async findById(id) {
         const blog = await this.blogModel.findById(id);
         return blog;
+    }
+    async findBlogs(params) {
+        const parametres = blog_helper_1.blogHelper.blogParamsMapper(params);
+        const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
+        const users = await this.blogModel
+            .find({
+            $or: [
+                { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
+            ],
+        })
+            .sort({ [parametres.sortBy]: parametres.sortDirection })
+            .skip(skipCount)
+            .limit(+parametres.pageSize)
+            .lean();
+        const totalCount = await this.blogModel.countDocuments({
+            $or: [
+                { name: { $regex: parametres.searchNameTerm, $options: 'i' } },
+            ],
+        });
+        return {
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: +parametres.pageSize,
+            totalCount,
+            items: users.map((u) => blog_helper_1.blogHelper.getViewBlog(u)),
+        };
     }
     async changeBlog(id, dto) {
         const blog = await this.blogModel.findByIdAndUpdate(id, { $set: { name: dto.name, websiteUrl: dto.websiteUrl, description: dto.description } });

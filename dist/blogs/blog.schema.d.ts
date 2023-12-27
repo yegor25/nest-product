@@ -45,6 +45,33 @@ export type createdDtoBlogType = {
     description: string;
     websiteUrl: string;
 };
+export type PaginatorType = {
+    pagesCount: number;
+    page: number;
+    pageSize: number;
+    totalCount: number;
+};
+export declare enum SortDirection {
+    asc = "asc",
+    desc = "desc"
+}
+export type responseDtoBlogType = PaginatorType & {
+    items: blogItemsResponseType[];
+};
+export type paramsBlogPaginatorType = {
+    pageNumber: string;
+    pageSize: string;
+    searchNameTerm: string;
+    sortBy: keyof Blog;
+    sortDirection: SortDirection;
+};
+export type dbBlogPaginatorType = {
+    searchNameTerm: string;
+    sortBy: keyof Blog;
+    sortDirection: 1 | -1;
+    pageNumber: number;
+    pageSize: number;
+};
 export declare const BlogSchema: mongoose.Schema<Blog, mongoose.Model<Blog, any, any, any, mongoose.Document<unknown, any, Blog> & Blog & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Blog, mongoose.Document<unknown, {}, mongoose.FlatRecord<Blog>> & mongoose.FlatRecord<Blog> & Required<{

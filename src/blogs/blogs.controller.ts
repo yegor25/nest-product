@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post, Put } from "@nestjs/common";
-import { createdDtoBlogType } from "./blog.schema";
+import { createdDtoBlogType, paramsBlogPaginatorType } from "./blog.schema";
 import { BlogService } from "./blog.service";
 
 
@@ -10,6 +10,10 @@ export class BlogController {
     @Post()
     async createBlog(@Body() body: createdDtoBlogType){
         return this.blogService.create(body)
+    }
+    @Get()
+    async findBlogs(@Param()params:paramsBlogPaginatorType){
+        return this.blogService.findBlogs(params)
     }
     @Get(':id')
     async findBlogById(@Param('id') blogId: string){

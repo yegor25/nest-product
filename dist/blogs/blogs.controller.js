@@ -22,6 +22,9 @@ let BlogController = class BlogController {
     async createBlog(body) {
         return this.blogService.create(body);
     }
+    async findBlogs(params) {
+        return this.blogService.findBlogs(params);
+    }
     async findBlogById(blogId) {
         const blog = await this.blogService.findById(blogId);
         if (!blog)
@@ -43,6 +46,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createBlog", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "findBlogs", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
