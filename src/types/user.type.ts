@@ -1,5 +1,5 @@
 import { User } from 'src/users/user.schema';
-import { PaginatorType, SortDirection } from './common-type';
+import { PaginatorType, SortDirection } from './root-type';
 
 
 export type CreateUserDtoType = {
