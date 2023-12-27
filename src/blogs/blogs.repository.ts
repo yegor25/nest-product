@@ -1,0 +1,20 @@
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Blog, createdDtoBlogType } from "./blog.schema";
+
+
+
+@Injectable()
+export class BlogRepository {
+    constructor(@InjectModel(Blog.name) private blogModel: Model<Blog>){}
+
+    async create (dto: createdDtoBlogType):Promise<Blog>{
+        const newBlog = new this.blogModel(dto)
+        return newBlog
+    }
+
+    async deleteAll () {
+        return this.blogModel.deleteMany({})
+    }
+}

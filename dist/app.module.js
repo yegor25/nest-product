@@ -17,6 +17,10 @@ const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("./users/user.schema");
 const testing_controller_1 = require("./testing/testing.controller");
 const testing_service_1 = require("./testing/testing.service");
+const blog_schema_1 = require("./blogs/blog.schema");
+const blogs_controller_1 = require("./blogs/blogs.controller");
+const blog_service_1 = require("./blogs/blog.service");
+const blogs_repository_1 = require("./blogs/blogs.repository");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,10 +28,13 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
-            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
+            mongoose_1.MongooseModule.forFeature([
+                { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
+                { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema }
+            ]),
         ],
-        controllers: [app_controller_1.AppController, user_controller_1.UserController, testing_controller_1.TestingController],
-        providers: [app_service_1.AppService, user_repository_1.UserRepository, user_service_1.UserService, testing_service_1.TestingService],
+        controllers: [app_controller_1.AppController, user_controller_1.UserController, testing_controller_1.TestingController, blogs_controller_1.BlogController],
+        providers: [app_service_1.AppService, user_repository_1.UserRepository, user_service_1.UserService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

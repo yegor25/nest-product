@@ -8,26 +8,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestingService = void 0;
+exports.BlogRepository = void 0;
 const common_1 = require("@nestjs/common");
-const blogs_repository_1 = require("../blogs/blogs.repository");
-const user_repository_1 = require("../users/user.repository");
-let TestingService = class TestingService {
-    constructor(userRepository, blogRepository) {
-        this.userRepository = userRepository;
-        this.blogRepository = blogRepository;
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+const blog_schema_1 = require("./blog.schema");
+let BlogRepository = class BlogRepository {
+    constructor(blogModel) {
+        this.blogModel = blogModel;
     }
-    async deleteAllData() {
-        await this.userRepository.deleteAll();
-        await this.blogRepository.deleteAll();
-        return;
+    async create(dto) {
+        const newBlog = new this.blogModel(dto);
+        return newBlog;
+    }
+    async deleteAll() {
+        return this.blogModel.deleteMany({});
     }
 };
-exports.TestingService = TestingService;
-exports.TestingService = TestingService = __decorate([
+exports.BlogRepository = BlogRepository;
+exports.BlogRepository = BlogRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        blogs_repository_1.BlogRepository])
-], TestingService);
-//# sourceMappingURL=testing.service.js.map
+    __param(0, (0, mongoose_1.InjectModel)(blog_schema_1.Blog.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model])
+], BlogRepository);
+//# sourceMappingURL=blogs.repository.js.map

@@ -8,6 +8,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users/user.schema';
 import { TestingController } from './testing/testing.controller';
 import { TestingService } from './testing/testing.service';
+import { Blog, BlogSchema } from './blogs/blog.schema';
+import { BlogController } from './blogs/blogs.controller';
+import { BlogService } from './blogs/blog.service';
+import { BlogRepository } from './blogs/blogs.repository';
 
 @Module({
   imports: [
@@ -15,9 +19,12 @@ import { TestingService } from './testing/testing.service';
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      {name: Blog.name, schema: BlogSchema}
+    ]),
   ],
-  controllers: [AppController, UserController,TestingController],
-  providers: [AppService, UserRepository, UserService, TestingService],
+  controllers: [AppController, UserController,TestingController, BlogController],
+  providers: [AppService, UserRepository, UserService, TestingService, BlogService, BlogRepository],
 })
 export class AppModule {}

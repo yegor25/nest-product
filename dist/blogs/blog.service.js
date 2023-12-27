@@ -9,25 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestingService = void 0;
+exports.BlogService = void 0;
 const common_1 = require("@nestjs/common");
-const blogs_repository_1 = require("../blogs/blogs.repository");
-const user_repository_1 = require("../users/user.repository");
-let TestingService = class TestingService {
-    constructor(userRepository, blogRepository) {
-        this.userRepository = userRepository;
+const blogs_repository_1 = require("./blogs.repository");
+const blog_helper_1 = require("./blog.helper");
+let BlogService = class BlogService {
+    constructor(blogRepository) {
         this.blogRepository = blogRepository;
     }
-    async deleteAllData() {
-        await this.userRepository.deleteAll();
-        await this.blogRepository.deleteAll();
-        return;
+    async create(dto) {
+        const blog = await this.blogRepository.create(dto);
+        return blog_helper_1.blogHelper.getViewBlog(blog);
+    }
+    async deleteAll() {
+        return this.blogRepository.deleteAll();
     }
 };
-exports.TestingService = TestingService;
-exports.TestingService = TestingService = __decorate([
+exports.BlogService = BlogService;
+exports.BlogService = BlogService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        blogs_repository_1.BlogRepository])
-], TestingService);
-//# sourceMappingURL=testing.service.js.map
+    __metadata("design:paramtypes", [blogs_repository_1.BlogRepository])
+], BlogService);
+//# sourceMappingURL=blog.service.js.map
