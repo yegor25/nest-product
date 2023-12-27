@@ -48,7 +48,7 @@ __decorate([
 ], BlogController.prototype, "createBlog", null);
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
