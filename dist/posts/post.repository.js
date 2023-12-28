@@ -44,7 +44,7 @@ let PostRepository = class PostRepository {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
         const user = userId ? userId : null;
-        const res = await this.postModel.find({}).lean()
+        const res = await this.postModel.find({})
             .sort({ [parametres.sortBy]: parametres.sortDirection })
             .skip(skipcount)
             .limit(parametres.pageSize);
