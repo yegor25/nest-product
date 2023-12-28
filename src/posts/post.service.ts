@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PostRepository } from "./post.repository";
-import { createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, viewAllPostsType } from "./post.schema";
+import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, viewAllPostsType } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { BlogService } from "../blogs/blog.service";
 
@@ -15,6 +15,14 @@ export class PostService {
     async create(dto: createdPostDtoType):Promise<postDtoResponseType>{
         const blog = await this.blogService.findById(dto.blogId)
         const newPost = await this.postRepository.create(dto, blog?.name as string)
+        const likes = newPost.getDefaultLikes()
+        const resultDto = postHelper.postViewMapper(newPost,likes)
+        return resultDto
+    }
+    async createForBlog(dto: createdPosForBlogtDtoType, blogId: string):Promise<postDtoResponseType | null>{
+        const blog = await this.blogService.findById(blogId)
+        if(!blog) return null
+        const newPost = await this.postRepository.createForBlog(dto, blogId, blog.name)
         const likes = newPost.getDefaultLikes()
         const resultDto = postHelper.postViewMapper(newPost,likes)
         return resultDto
@@ -39,6 +47,12 @@ export class PostService {
     async findPosts(params: paramsPostPaginatorType):Promise<viewAllPostsType>{
         const post = await this.postRepository.findPosts(params)
         return post
+    }
+    async findPostsForBlog(params: paramsPostPaginatorType, blogId: string):Promise<viewAllPostsType | null>{
+        const blog = await this.blogService.findById(blogId)
+        if(!blog) return null
+        const posts = await this.postRepository.findPostsForBlog(params,blogId)
+        return posts
     }
 
     async deleteAll (){

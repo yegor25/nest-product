@@ -28,6 +28,12 @@ let PostRepository = class PostRepository {
         await newPost.save();
         return newPost;
     }
+    async createForBlog(dto, blogId, blogName) {
+        const data = { ...dto, blogName, blogId };
+        const newPost = new this.postModel(data);
+        await newPost.save();
+        return newPost;
+    }
     async changePost(dto, id, blogName) {
         const post = await this.postModel.findByIdAndUpdate(id, { $set: { title: dto.title, shortDescription: dto.shortDescription, content: dto.content, blogId: dto.blogId, blogName: blogName } });
         if (!post)
@@ -55,6 +61,25 @@ let PostRepository = class PostRepository {
             .skip(skipcount)
             .limit(parametres.pageSize);
         const totalCount = await this.postModel.countDocuments({});
+        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
+        const query = {
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: +parametres.pageSize,
+            totalCount,
+            items: totalResult
+        };
+        return query;
+    }
+    async findPostsForBlog(params, blogId, userId) {
+        const parametres = postHelper_1.postHelper.postParamsMapper(params);
+        const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const user = userId ? userId : null;
+        const res = await this.postModel.find({ blogId })
+            .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
+            .skip(skipcount)
+            .limit(parametres.pageSize);
+        const totalCount = await this.postModel.countDocuments({ blogId });
         const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
         const query = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),

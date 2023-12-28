@@ -61,6 +61,11 @@ export type createdPostDtoType = {
     content: string,
     blogId: string
 }
+export type createdPosForBlogtDtoType = {
+    title: string,
+    shortDescription: string,
+    content: string,
+}
 export type postDtoTypeForBlog = {
     title: string,
     shortDescription: string,

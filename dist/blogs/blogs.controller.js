@@ -15,12 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogController = void 0;
 const common_1 = require("@nestjs/common");
 const blog_service_1 = require("./blog.service");
+const post_service_1 = require("../posts/post.service");
 let BlogController = class BlogController {
-    constructor(blogService) {
+    constructor(blogService, postService) {
         this.blogService = blogService;
+        this.postService = postService;
     }
     async createBlog(body) {
         return this.blogService.create(body);
+    }
+    async createPost(blogId, body) {
+        const post = await this.postService.createForBlog(body, blogId);
+        if (!post)
+            throw new common_1.NotFoundException();
+        return;
     }
     async findBlogs(params) {
         return this.blogService.findBlogs(params);
@@ -30,6 +38,12 @@ let BlogController = class BlogController {
         if (!blog)
             throw new common_1.NotFoundException();
         return blog;
+    }
+    async findPostsForBlog(blogId, params) {
+        const posts = await this.postService.findPostsForBlog(params, blogId);
+        if (!posts)
+            throw new common_1.NotFoundException();
+        return posts;
     }
     async changeBlog(blogId, body) {
         const blog = await this.blogService.changeBlog(blogId, body);
@@ -53,6 +67,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createBlog", null);
 __decorate([
+    (0, common_1.Post)(':blogId/posts'),
+    __param(0, (0, common_1.Param)('blogId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "createPost", null);
+__decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -66,6 +88,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "findBlogById", null);
+__decorate([
+    (0, common_1.Get)(':blogId/posts'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "findPostsForBlog", null);
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(204),
@@ -85,6 +115,7 @@ __decorate([
 ], BlogController.prototype, "deleteBlog", null);
 exports.BlogController = BlogController = __decorate([
     (0, common_1.Controller)('blogs'),
-    __metadata("design:paramtypes", [blog_service_1.BlogService])
+    __metadata("design:paramtypes", [blog_service_1.BlogService,
+        post_service_1.PostService])
 ], BlogController);
 //# sourceMappingURL=blogs.controller.js.map

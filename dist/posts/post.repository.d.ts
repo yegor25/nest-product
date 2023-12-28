@@ -22,15 +22,17 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Post, createdPostDtoType, paramsPostPaginatorType, viewAllPostsType } from "./post.schema";
+import { Post, createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, viewAllPostsType } from "./post.schema";
 import { Model } from "mongoose";
 export declare class PostRepository {
     private postModel;
     constructor(postModel: Model<Post>);
     create(dto: createdPostDtoType, blogName: string): Promise<Post>;
+    createForBlog(dto: createdPosForBlogtDtoType, blogId: string, blogName: string): Promise<Post>;
     changePost(dto: createdPostDtoType, id: string, blogName: string): Promise<boolean>;
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
+    findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }
