@@ -45,7 +45,7 @@ let PostRepository = class PostRepository {
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
         const user = userId ? userId : null;
         const res = await this.postModel.find({})
-            .sort({ [parametres.sortBy]: parametres.sortDirection })
+            .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
             .skip(skipcount)
             .limit(parametres.pageSize);
         const totalCount = await this.postModel.countDocuments({});
