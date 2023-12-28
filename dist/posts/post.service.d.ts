@@ -9,4 +9,5 @@ export declare class PostService {
     delete(id: string): Promise<boolean>;
     findPostById(id: string): Promise<postDtoResponseType | null>;
     findPosts(params: paramsPostPaginatorType): Promise<viewAllPostsType>;
+    deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

@@ -31,4 +31,5 @@ export declare class PostRepository {
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
+    deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

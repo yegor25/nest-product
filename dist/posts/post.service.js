@@ -40,6 +40,9 @@ let PostService = class PostService {
         const post = await this.postRepository.findPosts(params);
         return post;
     }
+    async deleteAll() {
+        return this.postRepository.deleteAll();
+    }
 };
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([

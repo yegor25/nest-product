@@ -37,7 +37,7 @@ export class PostRepository {
             .skip(skipcount)
             .limit(parametres.pageSize)
 
-        const totalCount = await this.postModel.countDocuments()
+        const totalCount = await this.postModel.countDocuments({})
         const totalResult = res.map((el) => postHelper.postViewMapper(el, el.getDefaultLikes()))
         const query:viewAllPostsType = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
@@ -47,5 +47,9 @@ export class PostRepository {
             items: totalResult
         }
         return query
+    }
+
+    async deleteAll () {
+        return this.postModel.deleteMany()
     }
 }
