@@ -40,10 +40,10 @@ export class PostRepository {
         const totalCount = await this.postModel.countDocuments()
         const totalResult = res.map((el) => postHelper.postViewMapper(el, el.getDefaultLikes()))
         const query:viewAllPostsType = {
-            pagesCount: 0,
-            page: 0,
-            pageSize: 8,
-            totalCount,
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                page: +parametres.pageNumber,
+                pageSize: +parametres.pageSize,
+                totalCount,
             items: totalResult
         }
         return query
