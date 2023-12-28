@@ -20,13 +20,14 @@ export class BlogController {
     async createPost(@Param('blogId') blogId: string, @Body() body: createdPosForBlogtDtoType){
         const post = await this.postService.createForBlog(body,blogId)
         if(!post) throw new NotFoundException();
-        return;
+        return post
     }
 
     @Get()
     async findBlogs(@Query()params:paramsBlogPaginatorType){
         return this.blogService.findBlogs(params)
     }
+    
     @Get(':id')
     async findBlogById(@Param('id') blogId: string){
         const blog = await this.blogService.findById(blogId)

@@ -7,7 +7,7 @@ export declare class BlogController {
     protected postService: PostService;
     constructor(blogService: BlogService, postService: PostService);
     createBlog(body: createdDtoBlogType): Promise<import("./blog.schema").blogItemsResponseType>;
-    createPost(blogId: string, body: createdPosForBlogtDtoType): Promise<void>;
+    createPost(blogId: string, body: createdPosForBlogtDtoType): Promise<import("../posts/post.schema").postDtoResponseType>;
     findBlogs(params: paramsBlogPaginatorType): Promise<import("./blog.schema").responseDtoBlogType>;
     findBlogById(blogId: string): Promise<import("./blog.schema").blogItemsResponseType>;
     findPostsForBlog(blogId: string, params: paramsPostPaginatorType): Promise<import("../posts/post.schema").viewAllPostsType>;

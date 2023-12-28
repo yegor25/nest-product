@@ -28,7 +28,7 @@ let BlogController = class BlogController {
         const post = await this.postService.createForBlog(body, blogId);
         if (!post)
             throw new common_1.NotFoundException();
-        return;
+        return post;
     }
     async findBlogs(params) {
         return this.blogService.findBlogs(params);
