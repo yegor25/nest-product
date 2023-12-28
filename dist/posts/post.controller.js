@@ -23,7 +23,7 @@ let PostController = class PostController {
         return this.postService.create(body);
     }
     async findPosts(params) {
-        return this.findPosts(params);
+        return this.postService.findPosts(params);
     }
     async findPostById(postId) {
         const post = await this.postService.findPostById(postId);

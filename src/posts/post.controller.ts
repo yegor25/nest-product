@@ -15,7 +15,7 @@ export class PostController {
 
    @Get()
    async findPosts(@Query() params: paramsPostPaginatorType){
-    return this.findPosts(params)
+    return this.postService.findPosts(params)
    }
 
    @Get(':id')
