@@ -26,6 +26,12 @@ let PostService = class PostService {
         const resultDto = postHelper_1.postHelper.postViewMapper(newPost, likes);
         return resultDto;
     }
+    async changePost(dto, postId) {
+        const blog = await this.blogService.findById(dto.blogId);
+        if (!blog)
+            return false;
+        return this.postRepository.changePost(dto, postId, blog.name);
+    }
     async delete(id) {
         return this.postRepository.deletePost(id);
     }

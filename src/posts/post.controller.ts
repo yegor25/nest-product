@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
 
@@ -24,6 +24,17 @@ export class PostController {
     if(!post) throw new NotFoundException();
     return post
    }
+
+
+   @Put(':id')
+   @HttpCode(204)
+   async changePost(@Param('id') postId: string, @Body() body: createdPostDtoType){
+    const post = await this.postService.changePost(body, postId)
+    if(!post) throw new NotFoundException();
+
+    return;
+   }
+
 
    @Delete(':id')
    @HttpCode(204)

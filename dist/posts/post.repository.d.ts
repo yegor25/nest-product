@@ -28,6 +28,7 @@ export declare class PostRepository {
     private postModel;
     constructor(postModel: Model<Post>);
     create(dto: createdPostDtoType, blogName: string): Promise<Post>;
+    changePost(dto: createdPostDtoType, id: string, blogName: string): Promise<boolean>;
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;

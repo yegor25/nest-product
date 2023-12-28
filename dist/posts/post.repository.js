@@ -28,6 +28,12 @@ let PostRepository = class PostRepository {
         await newPost.save();
         return newPost;
     }
+    async changePost(dto, id, blogName) {
+        const post = await this.postModel.findByIdAndUpdate(id, { $set: { title: dto.title, shortDescription: dto.shortDescription, content: dto.content, blogId: dto.blogId, blogName: blogName } });
+        if (!post)
+            return false;
+        return true;
+    }
     async deletePost(id) {
         const deletedPost = await this.postModel.findByIdAndDelete(id);
         if (!deletedPost)

@@ -19,6 +19,11 @@ export class PostService {
         const resultDto = postHelper.postViewMapper(newPost,likes)
         return resultDto
     }
+    async changePost(dto: createdPostDtoType, postId: string):Promise<boolean>{
+        const blog = await this.blogService.findById(dto.blogId)
+        if(!blog) return false
+        return this.postRepository.changePost(dto,postId,blog.name)
+    }
 
     async delete(id: string):Promise<boolean>{
         return this.postRepository.deletePost(id)

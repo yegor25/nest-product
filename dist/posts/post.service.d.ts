@@ -6,6 +6,7 @@ export declare class PostService {
     protected blogService: BlogService;
     constructor(postRepository: PostRepository, blogService: BlogService);
     create(dto: createdPostDtoType): Promise<postDtoResponseType>;
+    changePost(dto: createdPostDtoType, postId: string): Promise<boolean>;
     delete(id: string): Promise<boolean>;
     findPostById(id: string): Promise<postDtoResponseType | null>;
     findPosts(params: paramsPostPaginatorType): Promise<viewAllPostsType>;

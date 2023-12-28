@@ -31,6 +31,12 @@ let PostController = class PostController {
             throw new common_1.NotFoundException();
         return post;
     }
+    async changePost(postId, body) {
+        const post = await this.postService.changePost(body, postId);
+        if (!post)
+            throw new common_1.NotFoundException();
+        return;
+    }
     async deletePost(postId) {
         const deletedPost = await this.postService.delete(postId);
         if (!deletedPost)
@@ -60,6 +66,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findPostById", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.HttpCode)(204),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "changePost", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),

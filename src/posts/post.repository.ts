@@ -17,6 +17,16 @@ export class PostRepository {
         return newPost
     }
 
+    async changePost(dto: createdPostDtoType, id: string,blogName: string):Promise<boolean>{
+        const post = await this.postModel.findByIdAndUpdate(
+            id,
+            {$set: {title: dto.title,shortDescription: dto.shortDescription,content: dto.content, blogId: dto.blogId, blogName: blogName}}
+
+        )
+        if(!post) return false
+        return true
+    }
+
     async deletePost(id: string):Promise<boolean>{
         const deletedPost = await this.postModel.findByIdAndDelete(id)
         if(!deletedPost) return false
