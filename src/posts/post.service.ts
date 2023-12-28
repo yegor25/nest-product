@@ -2,14 +2,19 @@ import { Injectable } from "@nestjs/common";
 import { PostRepository } from "./post.repository";
 import { createdPostDtoType, postDtoResponseType } from "./post.schema";
 import { postHelper } from "./postHelper";
+import { BlogService } from "../blogs/blog.service";
 
 
 @Injectable()
 export class PostService {
-    constructor(protected postRepository: PostRepository){}
+    constructor(
+        protected postRepository: PostRepository,
+        protected blogService: BlogService
+        ){}
 
     async create(dto: createdPostDtoType):Promise<postDtoResponseType>{
-        const newPost = await this.postRepository.create(dto)
+        const blog = await this.blogService.findById(dto.blogId)
+        const newPost = await this.postRepository.create(dto, blog?.name as string)
         const likes = newPost.getDefaultLikes()
         const resultDto = postHelper.postViewMapper(newPost,likes)
         return resultDto
@@ -23,6 +28,6 @@ export class PostService {
         if(!post) return null
         const likes = post.getDefaultLikes()
         return postHelper.postViewMapper(post,likes)
-        
+
     }
 }

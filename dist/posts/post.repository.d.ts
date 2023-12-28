@@ -27,7 +27,7 @@ import { Model } from "mongoose";
 export declare class PostRepository {
     private postModel;
     constructor(postModel: Model<Post>);
-    create(dto: createdPostDtoType): Promise<Post>;
+    create(dto: createdPostDtoType, blogName: string): Promise<Post>;
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
 }

@@ -21,8 +21,9 @@ let PostRepository = class PostRepository {
     constructor(postModel) {
         this.postModel = postModel;
     }
-    async create(dto) {
-        const newPost = new this.postModel(dto);
+    async create(dto, blogName) {
+        const data = { ...dto, blogName };
+        const newPost = new this.postModel(data);
         await newPost.save();
         return newPost;
     }

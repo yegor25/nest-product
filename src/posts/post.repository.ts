@@ -9,8 +9,9 @@ import { Model } from "mongoose";
 export class PostRepository {
     constructor(@InjectModel(Post.name) private postModel:Model<Post>){}
 
-    async create(dto: createdPostDtoType):Promise<Post>{
-        const newPost = new this.postModel(dto)
+    async create(dto: createdPostDtoType, blogName: string):Promise<Post>{
+        const data = {...dto, blogName}
+        const newPost = new this.postModel(data)
         await newPost.save()
         return newPost
     }

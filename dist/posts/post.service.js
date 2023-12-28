@@ -13,12 +13,15 @@ exports.PostService = void 0;
 const common_1 = require("@nestjs/common");
 const post_repository_1 = require("./post.repository");
 const postHelper_1 = require("./postHelper");
+const blog_service_1 = require("../blogs/blog.service");
 let PostService = class PostService {
-    constructor(postRepository) {
+    constructor(postRepository, blogService) {
         this.postRepository = postRepository;
+        this.blogService = blogService;
     }
     async create(dto) {
-        const newPost = await this.postRepository.create(dto);
+        const blog = await this.blogService.findById(dto.blogId);
+        const newPost = await this.postRepository.create(dto, blog?.name);
         const likes = newPost.getDefaultLikes();
         const resultDto = postHelper_1.postHelper.postViewMapper(newPost, likes);
         return resultDto;
@@ -37,6 +40,7 @@ let PostService = class PostService {
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [post_repository_1.PostRepository])
+    __metadata("design:paramtypes", [post_repository_1.PostRepository,
+        blog_service_1.BlogService])
 ], PostService);
 //# sourceMappingURL=post.service.js.map
