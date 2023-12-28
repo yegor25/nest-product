@@ -12,6 +12,11 @@ import { Blog, BlogSchema } from './blogs/blog.schema';
 import { BlogController } from './blogs/blogs.controller';
 import { BlogService } from './blogs/blog.service';
 import { BlogRepository } from './blogs/blogs.repository';
+import { LikePostSchema, LikesPost } from './postLikes/like.schema';
+import { PostController } from './posts/post.controller';
+import { PostRepository } from './posts/post.repository';
+import { PostService } from './posts/post.service';
+import { Post, PostSchema } from './posts/post.schema';
 
 @Module({
   imports: [
@@ -21,10 +26,12 @@ import { BlogRepository } from './blogs/blogs.repository';
     ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      {name: Blog.name, schema: BlogSchema}
+      {name: Blog.name, schema: BlogSchema},
+      {name: Post.name, schema: PostSchema},
+      {name: LikesPost.name, schema: LikePostSchema}
     ]),
   ],
-  controllers: [AppController, UserController,TestingController, BlogController],
-  providers: [AppService, UserRepository, UserService, TestingService, BlogService, BlogRepository],
+  controllers: [AppController, UserController,TestingController, BlogController, PostController],
+  providers: [AppService, UserRepository, UserService, TestingService, BlogService, BlogRepository, PostRepository, PostService],
 })
 export class AppModule {}
