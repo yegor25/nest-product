@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const post_schema_1 = require("./post.schema");
 const mongoose_2 = require("mongoose");
+const postHelper_1 = require("./postHelper");
 let PostRepository = class PostRepository {
     constructor(postModel) {
         this.postModel = postModel;
@@ -38,6 +39,25 @@ let PostRepository = class PostRepository {
         if (!post)
             return null;
         return post;
+    }
+    async findPosts(params, userId) {
+        const parametres = postHelper_1.postHelper.postParamsMapper(params);
+        const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const user = userId ? userId : null;
+        const res = await this.postModel.find({}).lean()
+            .sort({ [parametres.sortBy]: parametres.sortDirection })
+            .skip(skipcount)
+            .limit(parametres.pageSize);
+        const totalCount = await this.postModel.countDocuments();
+        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
+        const query = {
+            pagesCount: 0,
+            page: 0,
+            pageSize: 8,
+            totalCount,
+            items: totalResult
+        };
+        return query;
     }
 };
 exports.PostRepository = PostRepository;

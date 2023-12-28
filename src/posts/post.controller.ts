@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Query } from "@nestjs/common";
 import { PostService } from "./post.service";
-import { createdPostDtoType } from "./post.schema";
+import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
 
 
 
@@ -11,6 +11,11 @@ export class PostController {
  @Post()
    async createPost(@Body() body:createdPostDtoType){
     return this.postService.create(body)
+   }
+
+   @Get()
+   async findPosts(@Query() params: paramsPostPaginatorType){
+    return this.findPosts(params)
    }
 
    @Get(':id')

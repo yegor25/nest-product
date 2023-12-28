@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
-import { PaginatorType } from "../users/user.schema";
+import { PaginatorType, SortDirection } from "../users/user.schema";
 import { extendedLikesInfo, LikeStatus } from "../postLikes/like.schema";
 
 export type PostDocument = HydratedDocument<Post>
@@ -73,7 +73,18 @@ export type viewAllPostsType = PaginatorType & {
     items: postDtoResponseType[]
 }
 
-
+export type paramsPostPaginatorType = {
+    sortBy: keyof Post,
+    sortDirection: SortDirection,
+    pageNumber: number,
+    pageSize: number
+}
+export type dbPostsPaginatorType = {
+    sortBy: keyof Post,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
 
 export const PostSchema = SchemaFactory.createForClass(Post)
 

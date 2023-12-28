@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { HydratedDocument } from "mongoose";
-import { PaginatorType } from "../users/user.schema";
+import { PaginatorType, SortDirection } from "../users/user.schema";
 import { extendedLikesInfo } from "../postLikes/like.schema";
 export type PostDocument = HydratedDocument<Post>;
 export declare class Post {
@@ -59,6 +59,18 @@ export type postDtoTypeForBlog = {
 };
 export type viewAllPostsType = PaginatorType & {
     items: postDtoResponseType[];
+};
+export type paramsPostPaginatorType = {
+    sortBy: keyof Post;
+    sortDirection: SortDirection;
+    pageNumber: number;
+    pageSize: number;
+};
+export type dbPostsPaginatorType = {
+    sortBy: keyof Post;
+    sortDirection: 1 | -1;
+    pageNumber: number;
+    pageSize: number;
 };
 export declare const PostSchema: mongoose.Schema<Post, mongoose.Model<Post, any, any, any, mongoose.Document<unknown, any, Post> & Post & Required<{
     _id: mongoose.Types.ObjectId;

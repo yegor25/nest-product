@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PostRepository } from "./post.repository";
-import { createdPostDtoType, postDtoResponseType } from "./post.schema";
+import { createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, viewAllPostsType } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { BlogService } from "../blogs/blog.service";
 
@@ -29,5 +29,10 @@ export class PostService {
         const likes = post.getDefaultLikes()
         return postHelper.postViewMapper(post,likes)
 
+    }
+
+    async findPosts(params: paramsPostPaginatorType):Promise<viewAllPostsType>{
+        const post = await this.postRepository.findPosts(params)
+        return post
     }
 }

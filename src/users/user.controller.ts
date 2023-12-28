@@ -24,6 +24,12 @@ export class UserController {
   async createUser(@Body() createUserDto: CreateUserDtoType) {
     return this.userService.createUser(createUserDto);
   }
+
+  @Get()
+  async getPosts(){
+    
+  }
+
   @Get(':id')
   getUserById(@Param('id') userId: string) {
     return [

@@ -25,6 +25,8 @@ let UserController = class UserController {
     async createUser(createUserDto) {
         return this.userService.createUser(createUserDto);
     }
+    async getPosts() {
+    }
     getUserById(userId) {
         return [
             { id: 1, name: 'Sam' },
@@ -53,6 +55,12 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getPosts", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

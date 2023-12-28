@@ -36,6 +36,10 @@ let PostService = class PostService {
         const likes = post.getDefaultLikes();
         return postHelper_1.postHelper.postViewMapper(post, likes);
     }
+    async findPosts(params) {
+        const post = await this.postRepository.findPosts(params);
+        return post;
+    }
 };
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([

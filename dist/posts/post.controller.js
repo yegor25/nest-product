@@ -22,6 +22,9 @@ let PostController = class PostController {
     async createPost(body) {
         return this.postService.create(body);
     }
+    async findPosts(params) {
+        return this.findPosts(params);
+    }
     async findPostById(postId) {
         const post = await this.postService.findPostById(postId);
         if (!post)
@@ -43,6 +46,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "findPosts", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

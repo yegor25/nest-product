@@ -22,7 +22,7 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Post, createdPostDtoType } from "./post.schema";
+import { Post, createdPostDtoType, paramsPostPaginatorType, viewAllPostsType } from "./post.schema";
 import { Model } from "mongoose";
 export declare class PostRepository {
     private postModel;
@@ -30,4 +30,5 @@ export declare class PostRepository {
     create(dto: createdPostDtoType, blogName: string): Promise<Post>;
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
+    findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
 }
