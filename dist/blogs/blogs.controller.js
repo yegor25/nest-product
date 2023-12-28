@@ -90,7 +90,7 @@ __decorate([
 ], BlogController.prototype, "findBlogById", null);
 __decorate([
     (0, common_1.Get)(':blogId/posts'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('blogId')),
     __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),

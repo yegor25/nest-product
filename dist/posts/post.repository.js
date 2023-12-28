@@ -79,6 +79,7 @@ let PostRepository = class PostRepository {
             .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
             .skip(skipcount)
             .limit(parametres.pageSize);
+        console.log("res", res);
         const totalCount = await this.postModel.countDocuments({ blogId });
         const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
         const query = {
