@@ -17,7 +17,7 @@ var LikeStatus;
     LikeStatus["Like"] = "Like";
     LikeStatus["Dislike"] = "Dislike";
 })(LikeStatus || (exports.LikeStatus = LikeStatus = {}));
-let LikesPost = class LikesPost extends Document {
+let LikesPost = class LikesPost {
     getNewstLikes(userId, reactions) {
         let likeCount = 0;
         let disLikeCount = 0;

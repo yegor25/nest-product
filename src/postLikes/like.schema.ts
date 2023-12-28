@@ -26,7 +26,7 @@ export type LikePostDocument = HydratedDocument<LikesPost>
 
 
 @Schema()
-export class LikesPost extends Document {
+export class LikesPost  {
     _id: mongoose.Types.ObjectId;
 
     @Prop({

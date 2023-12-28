@@ -40,7 +40,7 @@ export type postLikeType = {
     login: string;
 };
 export type LikePostDocument = HydratedDocument<LikesPost>;
-export declare class LikesPost extends Document {
+export declare class LikesPost {
     _id: mongoose.Types.ObjectId;
     addedAt: Date;
     userId: string;

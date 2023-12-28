@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType } from "../users/user.schema";
-import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
+import { extendedLikesInfo, LikeStatus } from "src/postLikes/like.schema";
 
 export type PostDocument = HydratedDocument<Post>
 

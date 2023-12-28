@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { HydratedDocument } from "mongoose";
 import { PaginatorType } from "../users/user.schema";
-import { extendedLikesInfo } from "../postLikes/like.schema";
+import { extendedLikesInfo } from "src/postLikes/like.schema";
 export type PostDocument = HydratedDocument<Post>;
 export declare class Post {
     _id: mongoose.Types.ObjectId;

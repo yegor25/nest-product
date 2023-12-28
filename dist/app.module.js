@@ -21,7 +21,6 @@ const blog_schema_1 = require("./blogs/blog.schema");
 const blogs_controller_1 = require("./blogs/blogs.controller");
 const blog_service_1 = require("./blogs/blog.service");
 const blogs_repository_1 = require("./blogs/blogs.repository");
-const like_schema_1 = require("./postLikes/like.schema");
 const post_controller_1 = require("./posts/post.controller");
 const post_repository_1 = require("./posts/post.repository");
 const post_service_1 = require("./posts/post.service");
@@ -37,7 +36,6 @@ exports.AppModule = AppModule = __decorate([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },
                 { name: post_schema_1.Post.name, schema: post_schema_1.PostSchema },
-                { name: like_schema_1.LikesPost.name, schema: like_schema_1.LikePostSchema }
             ]),
         ],
         controllers: [app_controller_1.AppController, user_controller_1.UserController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController],

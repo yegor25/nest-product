@@ -12,7 +12,6 @@ import { Blog, BlogSchema } from './blogs/blog.schema';
 import { BlogController } from './blogs/blogs.controller';
 import { BlogService } from './blogs/blog.service';
 import { BlogRepository } from './blogs/blogs.repository';
-import { LikePostSchema, LikesPost } from './postLikes/like.schema';
 import { PostController } from './posts/post.controller';
 import { PostRepository } from './posts/post.repository';
 import { PostService } from './posts/post.service';
@@ -28,7 +27,6 @@ import { Post, PostSchema } from './posts/post.schema';
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
       {name: Post.name, schema: PostSchema},
-      {name: LikesPost.name, schema: LikePostSchema}
     ]),
   ],
   controllers: [AppController, UserController,TestingController, BlogController, PostController],

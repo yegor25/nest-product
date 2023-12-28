@@ -1,4 +1,4 @@
-import { extendedLikesInfo } from "src/postLikes/like.schema";
+import { extendedLikesInfo } from "../postLikes/like.schema";
 import { Post, postDtoResponseType } from "./post.schema";
 
 
