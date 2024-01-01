@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { paramsUserPaginatorType, CreateUserDtoType } from './user.schema';
-import { BasicAuthGuard } from 'src/auth/guards/basic-auth.guard';
+import { BasicAuthGuard } from '../auth/guards/basic-auth.guard';
 
 
 @Controller('users')
