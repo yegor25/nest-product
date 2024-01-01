@@ -15,14 +15,14 @@ class MailAdapter {
             })
     
    async  send(email: string,subject: string,message: string) {
-        let info = this.transporter.sendMail({
+        let info = await this.transporter.sendMail({
             from: "itvolear@gmail.com",
             to: email,
             subject: subject,
             html: message
         })
         console.log("info", info)
-        return info
+        return  info
     }
 }
 export const mailAdapter = new MailAdapter()

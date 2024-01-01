@@ -16,7 +16,7 @@ class MailAdapter {
         });
     }
     async send(email, subject, message) {
-        let info = this.transporter.sendMail({
+        let info = await this.transporter.sendMail({
             from: "itvolear@gmail.com",
             to: email,
             subject: subject,
