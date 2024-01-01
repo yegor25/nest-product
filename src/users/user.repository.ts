@@ -74,12 +74,10 @@ export class UserRepository {
     const user = await this.userModel.findOne({"emailConfirmation.code": code})
     if(!user) return false
     if(user.emailConfirmation.isConfirmed) return false
-    if(user.emailConfirmation.expirationDate > new Date() ) return false
-    const confirmedUser = await this.userModel.updateOne(
-        {_id: user._id},
-        {$set: {"emailConfirmation.isConfirmed": true}}
-    )
-    return confirmedUser.modifiedCount === 1
+    if(user.emailConfirmation.expirationDate < new Date() ) return false
+    user.emailConfirmation.isConfirmed = true
+    await user.save()
+    return true
 }
 async changeConfirmationData(email: string, data: EmailConfirmation):Promise<string | null>{
  const user =  await this.userModel.findOne({email})
