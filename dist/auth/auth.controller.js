@@ -49,7 +49,7 @@ let AuthController = class AuthController {
         const validData = await this.userService.validateResendingUser(body.email);
         if (!validData)
             throw new common_1.BadRequestException([{ field: "email", message: "invalid data" }]);
-        return;
+        return this.authService.resendingEmail(body.email);
     }
 };
 exports.AuthController = AuthController;
