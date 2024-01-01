@@ -95,10 +95,14 @@ let UserRepository = class UserRepository {
         return confirmedUser.modifiedCount === 1;
     }
     async changeConfirmationData(email, data) {
-        const modified = await this.userModel.updateOne({ email: email }, { $set: { emailConfirmation: data } });
-        if (modified.modifiedCount === 1)
-            return data.code;
-        return null;
+        const user = await this.userModel.findOne({ email });
+        if (!user)
+            return null;
+        user.emailConfirmation.code = data.code;
+        user.emailConfirmation.expirationDate = data.expirationDate;
+        user.emailConfirmation.isConfirmed = data.isConfirmed;
+        await user.save();
+        return data.code;
     }
     async validateResendingUser(email) {
         const user = await this.userModel.findOne({ email });
