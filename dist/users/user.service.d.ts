@@ -8,4 +8,5 @@ export declare class UserService {
     deleteUser(id: string): Promise<boolean>;
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
     checkExistUser(email: string, login: string): Promise<User | null>;
+    checkCodeConfirmation(code: string): Promise<boolean>;
 }

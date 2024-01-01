@@ -10,4 +10,5 @@ export declare class AuthService {
         accessToken: string;
     }>;
     registerUser(data: CreateUserDtoType): Promise<User | null>;
+    confirmUser(code: string): Promise<boolean>;
 }

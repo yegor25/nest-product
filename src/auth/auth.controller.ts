@@ -40,11 +40,15 @@ export class AuthController {
         } 
         return;    
     }
-    // async registerConfirmation(req: requestWithBody<{ code: string }>, res: Response) {
-    //     const code = req.body.code
-    //     await this.authService.confirmUser(code)
-    //     res.sendStatus(204)
-    // }
+
+    @HttpCode(204)
+    @Post('registration-confirmation')
+    async registerConfirmation(@Body() body: {code: string}) {
+        const code = body.code
+        const isConfirmed = await this.authService.confirmUser(code)
+        if(!isConfirmed) throw new BadRequestException([{field:"code", message: "invalid data"}])
+        return
+    }   
     // async resendingEmail(req: requestWithBody<{ email: string }>, res: Response) {
     //     await this.authService.resendingEmail(req.body.email)
     //     res.sendStatus(204)

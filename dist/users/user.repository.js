@@ -83,6 +83,17 @@ let UserRepository = class UserRepository {
         });
         return user;
     }
+    async checkCodeConfirmation(code) {
+        const user = await this.userModel.findOne({ "emailConfirmation.code": code });
+        if (!user)
+            return false;
+        if (user.emailConfirmation.isConfirmed)
+            return false;
+        if (user.emailConfirmation.expirationDate < new Date())
+            return false;
+        const confirmedUser = await this.userModel.updateOne({ _id: user._id }, { $set: { "emailConfirmation.isConfirmed": true } });
+        return confirmedUser.modifiedCount === 1;
+    }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);
         if (!deleteUser)

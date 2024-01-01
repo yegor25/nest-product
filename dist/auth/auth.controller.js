@@ -38,6 +38,13 @@ let AuthController = class AuthController {
         }
         return;
     }
+    async registerConfirmation(body) {
+        const code = body.code;
+        const isConfirmed = await this.authService.confirmUser(code);
+        if (!isConfirmed)
+            throw new common_1.BadRequestException([{ field: "code", message: "invalid data" }]);
+        return;
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -58,6 +65,14 @@ __decorate([
     __metadata("design:paramtypes", [user_schema_1.CreateUserDtoType]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.HttpCode)(204),
+    (0, common_1.Post)('registration-confirmation'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "registerConfirmation", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

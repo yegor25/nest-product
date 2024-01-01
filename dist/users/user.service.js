@@ -41,6 +41,9 @@ let UserService = class UserService {
     async checkExistUser(email, login) {
         return this.userRepository.checkExistUser(email, login);
     }
+    async checkCodeConfirmation(code) {
+        return this.userRepository.checkCodeConfirmation(code);
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

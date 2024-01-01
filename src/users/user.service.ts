@@ -37,6 +37,9 @@ export class UserService {
   async checkExistUser(email: string, login: string):Promise<User | null>{
     return this.userRepository.checkExistUser(email, login)
   }
+  async checkCodeConfirmation(code: string):Promise<boolean>{
+    return this.userRepository.checkCodeConfirmation(code)
+}
 }
 
 

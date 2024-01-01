@@ -39,6 +39,10 @@ let AuthService = class AuthService {
         await mail_manager_1.mailManager.registerConfirmation(data.email, confirmationData.code);
         return existUser;
     }
+    async confirmUser(code) {
+        const res = await this.usersService.checkCodeConfirmation(code);
+        return res;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

@@ -31,6 +31,7 @@ export declare class UserRepository {
     findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
     checkExistUser(email: string, login: string): Promise<User | null>;
+    checkCodeConfirmation(code: string): Promise<boolean>;
     delete(id: string): Promise<boolean>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

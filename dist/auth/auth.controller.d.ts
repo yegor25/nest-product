@@ -11,4 +11,7 @@ export declare class AuthController {
         accessToken: string;
     }>;
     register(createUserDto: CreateUserDtoType): Promise<void>;
+    registerConfirmation(body: {
+        code: string;
+    }): Promise<void>;
 }

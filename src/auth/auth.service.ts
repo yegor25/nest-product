@@ -29,4 +29,10 @@ export class AuthService {
      await mailManager.registerConfirmation(data.email, confirmationData.code)
     return existUser
 }
+async confirmUser(code: string):Promise<boolean>{
+    const res = await this.usersService.checkCodeConfirmation(code)
+    return res
+}
+
+
 }
