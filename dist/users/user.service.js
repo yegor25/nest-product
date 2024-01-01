@@ -13,12 +13,20 @@ exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const user_repository_1 = require("./user.repository");
 const user_helper_1 = require("./user.helper");
+const crypto_service_1 = require("../common/crypto.service");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async createUser(createUserDto) {
-        const newUser = await this.userRepository.create(createUserDto);
+        const hash = await crypto_service_1.cryptoService.genHash(createUserDto.password);
+        const dtoUser = {
+            passwordSalt: hash.salt,
+            hashPassword: hash.hash,
+            login: createUserDto.login,
+            email: createUserDto.email,
+        };
+        const newUser = await this.userRepository.create(dtoUser);
         return user_helper_1.userHelper.userViewMapper(newUser);
     }
     async findUsers(params) {
@@ -26,6 +34,9 @@ let UserService = class UserService {
     }
     async deleteUser(id) {
         return this.userRepository.delete(id);
+    }
+    async validateUser(loginOrEmail, pass) {
+        return this.userRepository.validateUser(loginOrEmail, pass);
     }
 };
 exports.UserService = UserService;

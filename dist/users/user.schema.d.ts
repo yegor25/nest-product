@@ -42,9 +42,15 @@ export declare enum SortDirection {
     asc = "asc",
     desc = "desc"
 }
-export type CreateUserDtoType = {
+export declare class CreateUserDtoType {
     login: string;
     password: string;
+    email: string;
+}
+export type CreatedUserDtoDbType = {
+    passwordSalt: string;
+    hashPassword: string;
+    login: string;
     email: string;
 };
 export type ResponseUserDtoType = {
@@ -71,6 +77,10 @@ export type dbUsersPaginatorType = {
     sortDirection: 1 | -1;
     pageNumber: number;
     pageSize: number;
+};
+export type loginDtoType = {
+    loginOrEmail: string;
+    pass: string;
 };
 export declare const UserSchema: mongoose.Schema<User, mongoose.Model<User, any, any, any, mongoose.Document<unknown, any, User> & User & Required<{
     _id: mongoose.Types.ObjectId;

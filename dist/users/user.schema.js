@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSchema = exports.SortDirection = exports.User = void 0;
+exports.UserSchema = exports.CreateUserDtoType = exports.SortDirection = exports.User = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
+const class_validator_1 = require("class-validator");
 let User = class User {
 };
 exports.User = User;
@@ -44,5 +45,18 @@ var SortDirection;
     SortDirection["asc"] = "asc";
     SortDirection["desc"] = "desc";
 })(SortDirection || (exports.SortDirection = SortDirection = {}));
+class CreateUserDtoType {
+}
+exports.CreateUserDtoType = CreateUserDtoType;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(3),
+    __metadata("design:type", String)
+], CreateUserDtoType.prototype, "login", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], CreateUserDtoType.prototype, "email", void 0);
+;
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 //# sourceMappingURL=user.schema.js.map

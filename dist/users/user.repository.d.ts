@@ -22,13 +22,14 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { CreateUserDtoType, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
+import { CreatedUserDtoDbType, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
 import { Model } from 'mongoose';
 export declare class UserRepository {
     private userModel;
     constructor(userModel: Model<User>);
-    create(createUserDto: CreateUserDtoType): Promise<User>;
+    create(createUserDto: CreatedUserDtoDbType): Promise<User>;
     findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
+    validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
     delete(id: string): Promise<boolean>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

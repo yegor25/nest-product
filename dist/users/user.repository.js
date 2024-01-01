@@ -11,12 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRepository = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("./user.schema");
 const mongoose_2 = require("mongoose");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_helper_1 = require("./user.helper");
 let UserRepository = class UserRepository {
     constructor(userModel) {
@@ -53,6 +57,16 @@ let UserRepository = class UserRepository {
             totalCount,
             items: users.map((u) => user_helper_1.userHelper.userViewMapper(u)),
         };
+    }
+    async validateUser(loginOrEmail, pass) {
+        const user = await this.userModel.findOne({ $or: [{ email: loginOrEmail }, { login: loginOrEmail }] });
+        if (!user) {
+            return null;
+        }
+        const isMatchedPasswords = await bcrypt_1.default.compare(pass, user.hashPassword);
+        if (!isMatchedPasswords)
+            return null;
+        return user;
     }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);

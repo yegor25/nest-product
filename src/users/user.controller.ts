@@ -8,9 +8,11 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { paramsUserPaginatorType, CreateUserDtoType } from './user.schema';
+import { BasicAuthGuard } from 'src/auth/guards/basic-auth.guard';
 
 
 @Controller('users')
@@ -20,15 +22,14 @@ export class UserController {
   async getUsers(@Query() query: paramsUserPaginatorType) {
     return this.userService.findUsers(query);
   }
+
+  @UseGuards(BasicAuthGuard)
   @Post()
   async createUser(@Body() createUserDto: CreateUserDtoType) {
     return this.userService.createUser(createUserDto);
   }
 
-  @Get()
-  async getPosts(){
-    
-  }
+  
 
   @Get(':id')
   getUserById(@Param('id') userId: string) {
@@ -37,6 +38,8 @@ export class UserController {
       { id: 2, name: 'John' },
     ].find((u) => u.id === +userId);
   }
+
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteUser(@Param('id') userId: string) {

@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { IsEmail, IsNotEmpty, MinLength, isEmail } from 'class-validator';
+
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -45,11 +47,23 @@ export enum SortDirection {
   desc = 'desc',
 }
 
-export type CreateUserDtoType = {
+export class CreateUserDtoType  {
+
+  @IsNotEmpty()
+  @MinLength(3)
   login: string;
   password: string;
+
+  @IsEmail()
   email: string;
 };
+
+export type CreatedUserDtoDbType = {
+  passwordSalt:  string,
+      hashPassword: string,
+      login: string,
+      email: string,
+}
 export type ResponseUserDtoType = {
   id: string;
   login: string;
@@ -78,5 +92,10 @@ export type dbUsersPaginatorType = {
   pageNumber: number;
   pageSize: number;
 };
+
+export type loginDtoType = {
+  loginOrEmail: string,
+  pass: string
+}
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -10,9 +10,6 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const user_controller_1 = require("./users/user.controller");
-const user_repository_1 = require("./users/user.repository");
-const user_service_1 = require("./users/user.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("./users/user.schema");
 const testing_controller_1 = require("./testing/testing.controller");
@@ -25,12 +22,27 @@ const post_controller_1 = require("./posts/post.controller");
 const post_repository_1 = require("./posts/post.repository");
 const post_service_1 = require("./posts/post.service");
 const post_schema_1 = require("./posts/post.schema");
+const user_controller_1 = require("./users/user.controller");
+const user_service_1 = require("./users/user.service");
+const user_repository_1 = require("./users/user.repository");
+const passport_1 = require("@nestjs/passport");
+const jwt_1 = require("@nestjs/jwt");
+const constants_1 = require("./auth/constants");
+const auth_service_1 = require("./auth/auth.service");
+const local_srategy_1 = require("./auth/straregies/local.srategy");
+const auth_controller_1 = require("./auth/auth.controller");
+const auth_basic_strategy_1 = require("./auth/straregies/auth-basic.strategy");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
+                secret: constants_1.jwtConstants.secret,
+                signOptions: { expiresIn: "15m" }
+            }),
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
@@ -38,8 +50,8 @@ exports.AppModule = AppModule = __decorate([
                 { name: post_schema_1.Post.name, schema: post_schema_1.PostSchema },
             ]),
         ],
-        controllers: [app_controller_1.AppController, user_controller_1.UserController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController],
-        providers: [app_service_1.AppService, user_repository_1.UserRepository, user_service_1.UserService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService],
+        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

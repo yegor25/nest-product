@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './users/user.controller';
-import { UserRepository } from './users/user.repository';
-import { UserService } from './users/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users/user.schema';
 import { TestingController } from './testing/testing.controller';
@@ -16,9 +13,24 @@ import { PostController } from './posts/post.controller';
 import { PostRepository } from './posts/post.repository';
 import { PostService } from './posts/post.service';
 import { Post, PostSchema } from './posts/post.schema';
+import { UserController } from './users/user.controller';
+import { UserService } from './users/user.service';
+import { UserRepository } from './users/user.repository';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
+import { AuthService } from './auth/auth.service';
+import { LocalStrategy } from './auth/straregies/local.srategy';
+import { AuthController } from './auth/auth.controller';
+import { BasicStrategy } from './auth/straregies/auth-basic.strategy';
 
 @Module({
   imports: [
+    PassportModule,
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: {expiresIn: "15m"}
+    }),
     // MongooseModule.forRoot('mongodb://localhost/nest'),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
@@ -29,7 +41,7 @@ import { Post, PostSchema } from './posts/post.schema';
       {name: Post.name, schema: PostSchema},
     ]),
   ],
-  controllers: [AppController, UserController,TestingController, BlogController, PostController],
-  providers: [AppService, UserRepository, UserService, TestingService, BlogService, BlogRepository, PostRepository, PostService],
+  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy],
 })
 export class AppModule {}
