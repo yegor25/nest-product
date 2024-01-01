@@ -14,7 +14,4 @@ export declare class AuthController {
     registerConfirmation(body: {
         code: string;
     }): Promise<void>;
-    resendingEmail(body: {
-        email: string;
-    }): Promise<string | null>;
 }
