@@ -31,7 +31,7 @@ export class AuthController {
     @Post('registration')
     async register(@Body() createUserDto: CreateUserDtoType) {
         const newUser = await this.authService.registerUser(createUserDto)
-        if(!newUser) throw new BadRequestException();
+        if(!newUser) throw new BadRequestException([{field: "user", message: "already exist"}]);
         return;    
     }
     // async registerConfirmation(req: requestWithBody<{ code: string }>, res: Response) {

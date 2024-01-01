@@ -29,7 +29,7 @@ let AuthController = class AuthController {
     async register(createUserDto) {
         const newUser = await this.authService.registerUser(createUserDto);
         if (!newUser)
-            throw new common_1.BadRequestException();
+            throw new common_1.BadRequestException([{ field: "user", message: "already exist" }]);
         return;
     }
 };

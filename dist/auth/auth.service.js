@@ -34,6 +34,7 @@ let AuthService = class AuthService {
     }
     async registerUser(data) {
         const existUser = await this.usersService.checkExistUser(data.email, data.login);
+        console.log("exist", existUser);
         if (existUser)
             return false;
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();

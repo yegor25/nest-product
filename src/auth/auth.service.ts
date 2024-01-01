@@ -24,6 +24,7 @@ export class AuthService {
   }
   async registerUser(data: CreateUserDtoType):Promise<boolean>{
     const existUser = await this.usersService.checkExistUser(data.email, data.login)
+    console.log("exist", existUser)
     if(existUser) return false
     const confirmationData = authHelper.confiramtionDataMapper()
      await this.usersService.createUser(data, confirmationData)

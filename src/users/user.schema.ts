@@ -80,6 +80,7 @@ export class CreateUserDtoType  {
   email: string;
 };
 
+
 export type CreatedUserDtoDbType = {
   passwordSalt:  string,
       hashPassword: string,
