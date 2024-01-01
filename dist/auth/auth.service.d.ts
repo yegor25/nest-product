@@ -13,5 +13,5 @@ export declare class AuthService {
     }>;
     registerUser(data: CreateUserDtoType): Promise<User | null>;
     confirmUser(code: string): Promise<boolean>;
-    resendingEmail(email: string): Promise<void>;
+    resendingEmail(email: string): Promise<import("nodemailer/lib/smtp-transport").SentMessageInfo>;
 }

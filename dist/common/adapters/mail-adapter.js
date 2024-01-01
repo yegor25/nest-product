@@ -22,6 +22,7 @@ class MailAdapter {
             subject: subject,
             html: message
         });
+        console.log("info", info);
         return info;
     }
 }
