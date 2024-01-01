@@ -94,6 +94,20 @@ let UserRepository = class UserRepository {
         const confirmedUser = await this.userModel.updateOne({ _id: user._id }, { $set: { "emailConfirmation.isConfirmed": true } });
         return confirmedUser.modifiedCount === 1;
     }
+    async changeConfirmationData(email, data) {
+        const modified = await this.userModel.updateOne({ email: email }, { $set: { emailConfirmation: data } });
+        if (modified.modifiedCount === 1)
+            return data.code;
+        return null;
+    }
+    async validateResendingUser(email) {
+        const user = await this.userModel.findOne({ email });
+        if (!user)
+            return false;
+        if (user.emailConfirmation.isConfirmed)
+            return false;
+        return true;
+    }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);
         if (!deleteUser)

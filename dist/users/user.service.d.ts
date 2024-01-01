@@ -9,4 +9,6 @@ export declare class UserService {
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
     checkExistUser(email: string, login: string): Promise<User | null>;
     checkCodeConfirmation(code: string): Promise<boolean>;
+    changeConfirmationData(email: string, data: EmailConfirmation): Promise<string | null>;
+    validateResendingUser(email: string): Promise<boolean>;
 }

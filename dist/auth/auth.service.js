@@ -43,6 +43,14 @@ let AuthService = class AuthService {
         const res = await this.usersService.checkCodeConfirmation(code);
         return res;
     }
+    async resendingEmail(email) {
+        const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
+        const code = await this.usersService.changeConfirmationData(email, confirmationData);
+        if (!code)
+            return null;
+        await mail_manager_1.mailManager.registerConfirmation(email, code);
+        return code;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
