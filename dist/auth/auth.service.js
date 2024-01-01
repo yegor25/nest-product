@@ -15,10 +15,12 @@ const user_service_1 = require("../users/user.service");
 const jwt_1 = require("@nestjs/jwt");
 const mail_manager_1 = require("../common/managers/mail-manager");
 const authHelper_1 = require("./authHelper");
+const user_repository_1 = require("../users/user.repository");
 let AuthService = class AuthService {
-    constructor(usersService, jwtService) {
+    constructor(usersService, jwtService, userRepository) {
         this.usersService = usersService;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
     async validateUser(loginOrEmail, pass) {
         const user = await this.usersService.validateUser(loginOrEmail, pass);
@@ -47,7 +49,7 @@ let AuthService = class AuthService {
     }
     async resendingEmail(email) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
-        await this.usersService.changeConfirmationData(email, confirmationData);
+        await this.userRepository.changeConfirmationData(email, confirmationData);
         await mail_manager_1.mailManager.registerConfirmation(email, confirmationData.code);
         return;
     }
@@ -56,6 +58,7 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_service_1.UserService,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        user_repository_1.UserRepository])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
