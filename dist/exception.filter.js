@@ -15,12 +15,10 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const request = ctx.getRequest();
         const status = exception.getStatus();
         if (status === 400) {
-            const errorResponse = {
-                errors: []
-            };
+            const errorsMessages = [];
             const responseBody = exception.getResponse();
-            responseBody.message.forEach(m => errorResponse.errors.push(m));
-            response.status(status).json({ errorResponse });
+            responseBody.message.forEach(m => errorsMessages.push(m));
+            response.status(status).json({ errorsMessages });
         }
         else {
             response
