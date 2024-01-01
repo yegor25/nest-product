@@ -38,8 +38,8 @@ async confirmUser(code: string):Promise<boolean>{
 }
 async resendingEmail(email: string){
     const confirmationData = authHelper.confiramtionDataMapper()
-    //  await this.userRepository.changeConfirmationData(email, confirmationData)
-    //  await mailManager.registerConfirmation(email,confirmationData.code)
+     await this.userRepository.changeConfirmationData(email, confirmationData)
+     await mailManager.registerConfirmation(email,confirmationData.code)
     return
 }
 }
