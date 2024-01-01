@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import bcrypt from "bcrypt"
 
 import { userHelper } from './user.helper';
-import { cryptoService } from 'src/common/crypto.service';
 
 @Injectable()
 export class UserRepository {

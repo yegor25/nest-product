@@ -3,7 +3,7 @@ import { UserRepository } from './user.repository';
 
 import { userHelper } from './user.helper';
 import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, ResponseAllUserDto, User, CreatedUserDtoDbType } from './user.schema';
-import { cryptoService } from 'src/common/crypto.service';
+import { cryptoService } from '../common/crypto.service';
 
 @Injectable()
 export class UserService {
