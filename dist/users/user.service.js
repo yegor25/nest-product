@@ -44,6 +44,9 @@ let UserService = class UserService {
     async checkCodeConfirmation(code) {
         return this.userRepository.checkCodeConfirmation(code);
     }
+    async changeConfirmationData(email, data) {
+        return this.userRepository.changeConfirmationData(email, data);
+    }
     async validateResendingUser(email) {
         return this.userRepository.validateResendingUser(email);
     }

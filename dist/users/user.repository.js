@@ -89,7 +89,7 @@ let UserRepository = class UserRepository {
             return false;
         if (user.emailConfirmation.isConfirmed)
             return false;
-        if (user.emailConfirmation.expirationDate < new Date())
+        if (user.emailConfirmation.expirationDate > new Date())
             return false;
         const confirmedUser = await this.userModel.updateOne({ _id: user._id }, { $set: { "emailConfirmation.isConfirmed": true } });
         return confirmedUser.modifiedCount === 1;

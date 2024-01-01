@@ -47,8 +47,8 @@ let AuthService = class AuthService {
     }
     async resendingEmail(email) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
-        await this.userRepository.changeConfirmationData(email, confirmationData);
-        return mail_manager_1.mailManager.resendingConfirmation(email, confirmationData.code);
+        await this.usersService.changeConfirmationData(email, confirmationData);
+        return await mail_manager_1.mailManager.registerConfirmation(email, confirmationData.code);
     }
 };
 exports.AuthService = AuthService;
