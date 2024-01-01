@@ -22,13 +22,11 @@ export class AuthService {
       accessToken: this.jwtService.sign(payload),
     };
   }
-  async registerUser(data: CreateUserDtoType):Promise<boolean>{
+  async registerUser(data: CreateUserDtoType):Promise<User | null>{
     const existUser = await this.usersService.checkExistUser(data.email, data.login)
-    console.log("exist", existUser)
-    if(existUser) return false
     const confirmationData = authHelper.confiramtionDataMapper()
      await this.usersService.createUser(data, confirmationData)
      await mailManager.registerConfirmation(data.email, confirmationData.code)
-    return true
+    return existUser
 }
 }

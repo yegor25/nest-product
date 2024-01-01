@@ -34,13 +34,10 @@ let AuthService = class AuthService {
     }
     async registerUser(data) {
         const existUser = await this.usersService.checkExistUser(data.email, data.login);
-        console.log("exist", existUser);
-        if (existUser)
-            return false;
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
         await this.usersService.createUser(data, confirmationData);
         await mail_manager_1.mailManager.registerConfirmation(data.email, confirmationData.code);
-        return true;
+        return existUser;
     }
 };
 exports.AuthService = AuthService;

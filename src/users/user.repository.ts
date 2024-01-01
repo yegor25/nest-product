@@ -61,15 +61,14 @@ export class UserRepository {
         if(!isMatchedPasswords) return null
         return user
   }
-  async checkExistUser(email: string, login: string):Promise<boolean>{
+  async checkExistUser(email: string, login: string):Promise<User | null>{
     const user = await this.userModel.findOne({
       $or: [
         {email:email},
         {login: login}
       ]
     })
-    if(user) return true
-    return false
+    return user
   }
   async delete(id: string): Promise<boolean> {
     const deleteUser = await this.userModel.findByIdAndDelete(id);

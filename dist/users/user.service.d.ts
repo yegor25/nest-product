@@ -7,5 +7,5 @@ export declare class UserService {
     findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
     deleteUser(id: string): Promise<boolean>;
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
-    checkExistUser(email: string, login: string): Promise<boolean>;
+    checkExistUser(email: string, login: string): Promise<User | null>;
 }

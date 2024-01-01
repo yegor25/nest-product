@@ -30,7 +30,7 @@ export declare class UserRepository {
     create(createUserDto: CreatedUserDtoDbType, emailData?: EmailConfirmation): Promise<User>;
     findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
-    checkExistUser(email: string, login: string): Promise<boolean>;
+    checkExistUser(email: string, login: string): Promise<User | null>;
     delete(id: string): Promise<boolean>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

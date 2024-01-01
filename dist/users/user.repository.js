@@ -81,9 +81,7 @@ let UserRepository = class UserRepository {
                 { login: login }
             ]
         });
-        if (user)
-            return true;
-        return false;
+        return user;
     }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);

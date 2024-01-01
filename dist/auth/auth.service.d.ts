@@ -1,6 +1,6 @@
 import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDtoType } from '../users/user.schema';
+import { CreateUserDtoType, User } from '../users/user.schema';
 export declare class AuthService {
     private usersService;
     private jwtService;
@@ -9,5 +9,5 @@ export declare class AuthService {
     login(user: any): Promise<{
         accessToken: string;
     }>;
-    registerUser(data: CreateUserDtoType): Promise<boolean>;
+    registerUser(data: CreateUserDtoType): Promise<User | null>;
 }
