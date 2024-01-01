@@ -26,9 +26,15 @@ let UserRepository = class UserRepository {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    async create(createUserDto) {
-        const createdUser = new this.userModel(createUserDto);
-        return createdUser.save();
+    async create(createUserDto, emailData) {
+        if (!emailData) {
+            const createdUser = new this.userModel(createUserDto);
+            return createdUser.save();
+        }
+        else {
+            const createdUser = new this.userModel({ ...createUserDto, emailConfirmation: emailData });
+            return createdUser.save();
+        }
     }
     async findUsers(params) {
         const parametres = user_helper_1.userHelper.usersParamsMapper(params);
@@ -67,6 +73,17 @@ let UserRepository = class UserRepository {
         if (!isMatchedPasswords)
             return null;
         return user;
+    }
+    async checkExistUser(email, login) {
+        const user = await this.userModel.findOne({
+            $or: [
+                { email: email },
+                { login: login }
+            ]
+        });
+        if (user)
+            return false;
+        return true;
     }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);

@@ -3,6 +3,19 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength, isEmail } from 'class-validator';
 
 
+@Schema()
+export class EmailConfirmation {
+  @Prop()
+  code: string
+
+  @Prop()
+  isConfirmed: boolean
+
+  @Prop()
+  expirationDate: Date
+}
+
+
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
@@ -26,13 +39,17 @@ export class User {
   @Prop()
   passwordSalt: string;
 
-  //   @Prop()
-  //   emailConfirmation: {
-  //     code: string;
-  //     isConfirmed: boolean;
-  //     expirationDate: Date;
-  //   };
+    @Prop({
+      type: EmailConfirmation,
+      default: {
+        code: "none",
+        isConfirmed: true,
+        expirationDate: new Date
+      }
+    })
+    emailConfirmation: EmailConfirmation
 }
+
 
 
 export type PaginatorType = {

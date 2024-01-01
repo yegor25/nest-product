@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDtoType, CreatedUserDtoDbType, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
+import { CreateUserDtoType, CreatedUserDtoDbType, EmailConfirmation, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
 import { Model } from 'mongoose';
 import bcrypt from "bcrypt"
 
@@ -10,9 +10,14 @@ import { userHelper } from './user.helper';
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(createUserDto: CreatedUserDtoDbType): Promise<User> {
+  async create(createUserDto: CreatedUserDtoDbType, emailData?: EmailConfirmation): Promise<User> {
+  if(!emailData) {
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
+  } else {
+    const createdUser = new this.userModel({...createUserDto, emailConfirmation: emailData});
+    return createdUser.save();
+  }
   }
 
   async findUsers(
@@ -55,6 +60,16 @@ export class UserRepository {
         const isMatchedPasswords = await bcrypt.compare(pass, user.hashPassword)
         if(!isMatchedPasswords) return null
         return user
+  }
+  async checkExistUser(email: string, login: string):Promise<boolean>{
+    const user = await this.userModel.findOne({
+      $or: [
+        {email:email},
+        {login: login}
+      ]
+    })
+    if(user) return false
+    return true
   }
   async delete(id: string): Promise<boolean> {
     const deleteUser = await this.userModel.findByIdAndDelete(id);

@@ -23,6 +23,11 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { HydratedDocument } from 'mongoose';
+export declare class EmailConfirmation {
+    code: string;
+    isConfirmed: boolean;
+    expirationDate: Date;
+}
 export type UserDocument = HydratedDocument<User>;
 export declare class User {
     _id: mongoose.Types.ObjectId;
@@ -31,6 +36,7 @@ export declare class User {
     createdAt: string;
     hashPassword: string;
     passwordSalt: string;
+    emailConfirmation: EmailConfirmation;
 }
 export type PaginatorType = {
     pagesCount: number;

@@ -13,6 +13,8 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../users/user.service");
 const jwt_1 = require("@nestjs/jwt");
+const mail_manager_1 = require("../common/managers/mail-manager");
+const authHelper_1 = require("./authHelper");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
@@ -29,6 +31,15 @@ let AuthService = class AuthService {
         return {
             accessToken: this.jwtService.sign(payload),
         };
+    }
+    async registerUser(data) {
+        const existUser = await this.usersService.checkExistUser(data.email, data.login);
+        if (existUser)
+            return false;
+        const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
+        await this.usersService.createUser(data, confirmationData);
+        await mail_manager_1.mailManager.registerConfirmation(data.email, confirmationData.code);
+        return true;
     }
 };
 exports.AuthService = AuthService;

@@ -1,6 +1,6 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
-import { User, loginDtoType } from "../users/user.schema";
+import { CreateUserDtoType, User, loginDtoType } from "../users/user.schema";
 export declare class AuthController {
     protected authService: AuthService;
     protected userService: UserService;
@@ -10,4 +10,5 @@ export declare class AuthController {
     }, body: loginDtoType): Promise<{
         accessToken: string;
     }>;
+    register(createUserDto: CreateUserDtoType): Promise<void>;
 }

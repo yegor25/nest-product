@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 
 import { userHelper } from './user.helper';
-import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, ResponseAllUserDto, User, CreatedUserDtoDbType } from './user.schema';
+import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, ResponseAllUserDto, User, CreatedUserDtoDbType, EmailConfirmation } from './user.schema';
 import { cryptoService } from '../common/crypto.service';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class UserService {
   constructor(protected userRepository: UserRepository) {}
   async createUser(
     createUserDto: CreateUserDtoType,
+    emailData?: EmailConfirmation
   ): Promise<ResponseUserDtoType> {
     const hash = await cryptoService.genHash(createUserDto.password)
     const dtoUser:CreatedUserDtoDbType ={
@@ -19,7 +20,7 @@ export class UserService {
       email: createUserDto.email,
 
     }
-    const newUser = await this.userRepository.create(dtoUser);
+    const newUser = await this.userRepository.create(dtoUser, emailData);
     return userHelper.userViewMapper(newUser);
   }
   async findUsers(
@@ -32,6 +33,9 @@ export class UserService {
   }
   async validateUser(loginOrEmail: string, pass: string):Promise<User | null> {
     return this.userRepository.validateUser(loginOrEmail, pass)
+  }
+  async checkExistUser(email: string, login: string):Promise<boolean>{
+    return this.userRepository.checkExistUser(email, login)
   }
 }
 

@@ -18,7 +18,7 @@ let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async createUser(createUserDto) {
+    async createUser(createUserDto, emailData) {
         const hash = await crypto_service_1.cryptoService.genHash(createUserDto.password);
         const dtoUser = {
             passwordSalt: hash.salt,
@@ -26,7 +26,7 @@ let UserService = class UserService {
             login: createUserDto.login,
             email: createUserDto.email,
         };
-        const newUser = await this.userRepository.create(dtoUser);
+        const newUser = await this.userRepository.create(dtoUser, emailData);
         return user_helper_1.userHelper.userViewMapper(newUser);
     }
     async findUsers(params) {
@@ -37,6 +37,9 @@ let UserService = class UserService {
     }
     async validateUser(loginOrEmail, pass) {
         return this.userRepository.validateUser(loginOrEmail, pass);
+    }
+    async checkExistUser(email, login) {
+        return this.userRepository.checkExistUser(email, login);
     }
 };
 exports.UserService = UserService;

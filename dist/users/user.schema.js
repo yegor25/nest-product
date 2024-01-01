@@ -9,9 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSchema = exports.CreateUserDtoType = exports.SortDirection = exports.User = void 0;
+exports.UserSchema = exports.CreateUserDtoType = exports.SortDirection = exports.User = exports.EmailConfirmation = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
+let EmailConfirmation = class EmailConfirmation {
+};
+exports.EmailConfirmation = EmailConfirmation;
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], EmailConfirmation.prototype, "code", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", Boolean)
+], EmailConfirmation.prototype, "isConfirmed", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", Date)
+], EmailConfirmation.prototype, "expirationDate", void 0);
+exports.EmailConfirmation = EmailConfirmation = __decorate([
+    (0, mongoose_1.Schema)()
+], EmailConfirmation);
 let User = class User {
 };
 exports.User = User;
@@ -37,6 +55,17 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], User.prototype, "passwordSalt", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({
+        type: EmailConfirmation,
+        default: {
+            code: "none",
+            isConfirmed: true,
+            expirationDate: new Date
+        }
+    }),
+    __metadata("design:type", EmailConfirmation)
+], User.prototype, "emailConfirmation", void 0);
 exports.User = User = __decorate([
     (0, mongoose_1.Schema)()
 ], User);

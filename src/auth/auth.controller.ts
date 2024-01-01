@@ -1,7 +1,7 @@
-import { Body, Controller, HttpCode, Post, Req, UnauthorizedException, UseGuards } from "@nestjs/common"
+import { BadRequestException, Body, Controller, HttpCode, Post, Req, UnauthorizedException, UseGuards } from "@nestjs/common"
 import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
-import { User, loginDtoType } from "../users/user.schema"
+import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
 
 
@@ -16,7 +16,6 @@ export class AuthController {
     @UseGuards(AuthGuard('local'))
     @Post('login')
      async loginUser(@Req() req:{user:User},@Body() body: loginDtoType) {
-        console.log("usersss", req.user)
         // const ip = req.ip
         // const title = req.headers["user-agent"] || "Chrome 105"
         // const session = await this.authService.saveSession({ ip, title, userId: user?._id.toString() })
@@ -27,10 +26,14 @@ export class AuthController {
         // res.status(200).send({ accessToken: token })
         return this.authService.login(body)
     }
-    // async register(req: requestWithBody<userInputType>, res: Response) {
-    //     await this.authService.registerUser(req.body)
-    //     res.sendStatus(204)
-    // }
+
+    @HttpCode(204)
+    @Post('registration')
+    async register(@Body() createUserDto: CreateUserDtoType) {
+        const newUser = await this.authService.registerUser(createUserDto)
+        if(!newUser) throw new BadRequestException();
+        return;    
+    }
     // async registerConfirmation(req: requestWithBody<{ code: string }>, res: Response) {
     //     const code = req.body.code
     //     await this.authService.confirmUser(code)
