@@ -47,10 +47,13 @@ let AuthController = class AuthController {
     }
     async resendingEmail(body) {
         const validData = await this.userService.validateResendingUser(body.email);
-        if (!validData)
+        if (!validData) {
             throw new common_1.BadRequestException([{ field: "email", message: "invalid data" }]);
-        await this.authService.resendingEmail(body.email);
-        return;
+        }
+        else {
+            await this.authService.resendingEmail(body.email);
+            return;
+        }
     }
 };
 exports.AuthController = AuthController;

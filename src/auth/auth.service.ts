@@ -25,6 +25,7 @@ export class AuthService {
   async registerUser(data: CreateUserDtoType):Promise<User | null>{
     const existUser = await this.usersService.checkExistUser(data.email, data.login)
     const confirmationData = authHelper.confiramtionDataMapper()
+    if(existUser) return null
      await this.usersService.createUser(data, confirmationData)
      await mailManager.registerConfirmation(data.email, confirmationData.code)
     return existUser
@@ -35,7 +36,7 @@ async confirmUser(code: string):Promise<boolean>{
 }
 async resendingEmail(email: string){
     const confirmationData = authHelper.confiramtionDataMapper()
-    //  await this.usersService.changeConfirmationData(email, confirmationData)
+     await this.usersService.changeConfirmationData(email, confirmationData)
      await mailManager.registerConfirmation(email,confirmationData.code)
     return
 }
