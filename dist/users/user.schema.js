@@ -51,10 +51,17 @@ exports.CreateUserDtoType = CreateUserDtoType;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(10),
     __metadata("design:type", String)
 ], CreateUserDtoType.prototype, "login", void 0);
 __decorate([
+    (0, class_validator_1.MinLength)(6),
+    (0, class_validator_1.MaxLength)(20),
+    __metadata("design:type", String)
+], CreateUserDtoType.prototype, "password", void 0);
+__decorate([
     (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.Matches)(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     __metadata("design:type", String)
 ], CreateUserDtoType.prototype, "email", void 0);
 ;

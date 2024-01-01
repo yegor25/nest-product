@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { IsEmail, IsNotEmpty, MinLength, isEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength, isEmail } from 'class-validator';
 
 
 export type UserDocument = HydratedDocument<User>;
@@ -51,10 +51,15 @@ export class CreateUserDtoType  {
 
   @IsNotEmpty()
   @MinLength(3)
+  @MaxLength(10)
   login: string;
+
+  @MinLength(6)
+  @MaxLength(20)
   password: string;
 
   @IsEmail()
+  @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
   email: string;
 };
 
