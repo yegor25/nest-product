@@ -13,5 +13,5 @@ export declare class AuthService {
     }>;
     registerUser(data: CreateUserDtoType): Promise<any>;
     confirmUser(code: string): Promise<boolean>;
-    resendingEmail(email: string): Promise<null | undefined>;
+    resendingEmail(email: string): Promise<void>;
 }
