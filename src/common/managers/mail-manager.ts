@@ -9,7 +9,7 @@ class MailManager {
         const subject = "Активация вашего аккаунта в системе"
         const message = `<h1>Thank for your registration</h1>
                         <p>To finish registration please follow the link below:
-                    <a href='https://yandex.ru?code=${code}>complete registration</a>
+                    <a href='https://some-front.com/confirm-registration?code=${code}>complete registration</a>
                     </p>`
         return  mailAdapter.send(email,subject,message)
     }
