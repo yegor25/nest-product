@@ -73,26 +73,26 @@ export class UserRepository {
   async checkCodeConfirmation(code: string):Promise<boolean>{
     const user = await this.userModel.findOne({"emailConfirmation.code": code})
     if(!user) return false
-    if(user.emailConfirmation.isConfirmed) return false
+    if(user.emailConfirmation.isConfirmed === true) return false
     if(user.emailConfirmation.expirationDate < new Date() ) return false
     user.emailConfirmation.isConfirmed = true
     await user.save()
     return true
 }
 async changeConfirmationData(email: string, data: EmailConfirmation):Promise<string | null>{
- const user =  await this.userModel.findOne({email})
+ const user =  await this.userModel.findOne({email:email})
  if(!user) return null
+ if(user.emailConfirmation.isConfirmed) return null
   user.emailConfirmation.code = data.code
   user.emailConfirmation.expirationDate = data.expirationDate
-  user.emailConfirmation.isConfirmed = data.isConfirmed
+  user.emailConfirmation.isConfirmed = false
   await user.save()
   return data.code
  }
  async validateResendingUser(email: string):Promise<boolean>{
   const user = await this.userModel.findOne({email})
-  if(!user) return false
-  if(user.emailConfirmation.isConfirmed === true) return false
-  return true
+  if(user && !user.emailConfirmation.isConfirmed) return true
+  return false
  }
   async delete(id: string): Promise<boolean> {
     const deleteUser = await this.userModel.findByIdAndDelete(id);

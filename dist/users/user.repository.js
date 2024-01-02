@@ -87,7 +87,7 @@ let UserRepository = class UserRepository {
         const user = await this.userModel.findOne({ "emailConfirmation.code": code });
         if (!user)
             return false;
-        if (user.emailConfirmation.isConfirmed)
+        if (user.emailConfirmation.isConfirmed === true)
             return false;
         if (user.emailConfirmation.expirationDate < new Date())
             return false;
@@ -96,22 +96,22 @@ let UserRepository = class UserRepository {
         return true;
     }
     async changeConfirmationData(email, data) {
-        const user = await this.userModel.findOne({ email });
+        const user = await this.userModel.findOne({ email: email });
         if (!user)
+            return null;
+        if (user.emailConfirmation.isConfirmed)
             return null;
         user.emailConfirmation.code = data.code;
         user.emailConfirmation.expirationDate = data.expirationDate;
-        user.emailConfirmation.isConfirmed = data.isConfirmed;
+        user.emailConfirmation.isConfirmed = false;
         await user.save();
         return data.code;
     }
     async validateResendingUser(email) {
         const user = await this.userModel.findOne({ email });
-        if (!user)
-            return false;
-        if (user.emailConfirmation.isConfirmed === true)
-            return false;
-        return true;
+        if (user && !user.emailConfirmation.isConfirmed)
+            return true;
+        return false;
     }
     async delete(id) {
         const deleteUser = await this.userModel.findByIdAndDelete(id);
