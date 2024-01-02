@@ -26,13 +26,6 @@ let AuthController = class AuthController {
     async loginUser(req, body) {
         return this.authService.login(body);
     }
-    async resendingEmail(body) {
-        const validData = await this.userService.validateResendingUser(body.email);
-        if (!validData) {
-            throw new common_1.BadRequestException([{ field: "email", message: "invalid data" }]);
-        }
-        return;
-    }
     async register(createUserDto) {
         const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login);
         if (existUser) {
@@ -49,6 +42,8 @@ let AuthController = class AuthController {
     async registerConfirmation(body) {
         const code = body.code;
         const isConfirmed = await this.userService.checkCodeConfirmation(code);
+        if (!isConfirmed)
+            throw new common_1.BadRequestException([{ field: "code", message: "invalid data" }]);
         return;
     }
 };
@@ -63,14 +58,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
-__decorate([
-    (0, common_1.HttpCode)(204),
-    (0, common_1.Post)('registration-email-resending'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "resendingEmail", null);
 __decorate([
     (0, common_1.HttpCode)(204),
     (0, common_1.Post)('registration'),

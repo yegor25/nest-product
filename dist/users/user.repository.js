@@ -90,8 +90,6 @@ let UserRepository = class UserRepository {
         if (user.emailConfirmation.isConfirmed) {
             return false;
         }
-        if (user.emailConfirmation.expirationDate < new Date())
-            return false;
         user.emailConfirmation.isConfirmed = true;
         await user.save();
         return true;
