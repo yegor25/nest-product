@@ -41,7 +41,7 @@ let AuthController = class AuthController {
     }
     async registerConfirmation(body) {
         const code = body.code;
-        const isConfirmed = await this.authService.confirmUser(code);
+        const isConfirmed = await this.userService.checkCodeConfirmation(code);
         if (!isConfirmed)
             throw new common_1.BadRequestException([{ field: "code", message: "invalid data" }]);
         return;
