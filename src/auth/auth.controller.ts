@@ -61,7 +61,6 @@ export class AuthController {
     @Post('registration-confirmation')
     async registerConfirmation(@Body() body: {code: string}) {
         const code = body.code
-        if(!code) throw new BadRequestException([{field:"code", message: "invalid data"}]);
         const isConfirmed = await this.authService.confirmUser(code)
         if(!isConfirmed) throw new BadRequestException([{field:"code", message: "invalid data"}])
         return

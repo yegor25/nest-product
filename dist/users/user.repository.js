@@ -87,7 +87,7 @@ let UserRepository = class UserRepository {
         const user = await this.userModel.findOne({ "emailConfirmation.code": code });
         if (!user)
             return false;
-        if (user.emailConfirmation.isConfirmed === true)
+        if (user.emailConfirmation.isConfirmed)
             return false;
         if (user.emailConfirmation.expirationDate < new Date())
             return false;
