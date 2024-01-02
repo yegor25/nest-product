@@ -80,14 +80,12 @@ export class UserRepository {
     return true
 }
 async changeConfirmationData(email: string, data: EmailConfirmation):Promise<string | null>{
- const user =  await this.userModel.findOne({email:email})
- if(!user) return null
- if(user.emailConfirmation.isConfirmed) return null
-  user.emailConfirmation.code = data.code
-  user.emailConfirmation.expirationDate = data.expirationDate
-  user.emailConfirmation.isConfirmed = false
-  await user.save()
-  return data.code
+ const newUserCode = await this.userModel.updateOne(
+  {email: email},
+  {$set: {emailConfirmation: data}}
+ )
+ if(newUserCode.modifiedCount === 1) return data.code
+ return null
  }
  async validateResendingUser(email: string):Promise<boolean>{
   const user = await this.userModel.findOne({email})

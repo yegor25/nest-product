@@ -34,10 +34,11 @@ export class AuthController {
         const validData = await this.userService.validateResendingUser(body.email)
         if(!validData) {
             throw new BadRequestException([{field: "email", message: "invalid data"}]);
-        } else {
+        } 
+        
             await this.authService.resendingEmail(body.email)
             return
-    }
+    
     
     
     }

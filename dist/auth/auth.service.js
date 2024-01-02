@@ -49,7 +49,8 @@ let AuthService = class AuthService {
         const modified = await this.usersService.changeConfirmationData(email, confirmationData);
         if (!modified)
             return null;
-        return mail_manager_1.mailManager.registerConfirmation(email, modified);
+        await mail_manager_1.mailManager.registerConfirmation(email, modified);
+        return;
     }
 };
 exports.AuthService = AuthService;
