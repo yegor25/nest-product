@@ -91,7 +91,7 @@ async changeConfirmationData(email: string, data: EmailConfirmation):Promise<str
  async validateResendingUser(email: string):Promise<boolean>{
   const user = await this.userModel.findOne({email})
   if(!user) return false
-  if(user.emailConfirmation.isConfirmed) return false
+  if(user.emailConfirmation.isConfirmed === true) return false
   return true
  }
   async delete(id: string): Promise<boolean> {

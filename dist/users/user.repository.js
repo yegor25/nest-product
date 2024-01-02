@@ -109,7 +109,7 @@ let UserRepository = class UserRepository {
         const user = await this.userModel.findOne({ email });
         if (!user)
             return false;
-        if (user.emailConfirmation.isConfirmed)
+        if (user.emailConfirmation.isConfirmed === true)
             return false;
         return true;
     }

@@ -32,7 +32,6 @@ let AuthController = class AuthController {
             throw new common_1.BadRequestException([{ field: "email", message: "invalid data" }]);
         }
         else {
-            await this.authService.resendingEmail(body.email);
             return;
         }
     }

@@ -35,7 +35,7 @@ export class AuthController {
         if(!validData) {
             throw new BadRequestException([{field: "email", message: "invalid data"}]);
         } else {
-            await this.authService.resendingEmail(body.email)
+            // await this.authService.resendingEmail(body.email)
             return
     }
     
@@ -46,7 +46,6 @@ export class AuthController {
     @Post('registration')
     async register(@Body() createUserDto: CreateUserDtoType) {
         const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login)
-        
         if(existUser) {
             if(existUser.email === createUserDto.email){
                 throw new BadRequestException([{field: "email", message: "already exist"}]);
