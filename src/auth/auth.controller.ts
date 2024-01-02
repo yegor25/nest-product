@@ -45,14 +45,16 @@ export class AuthController {
     @HttpCode(204)
     @Post('registration')
     async register(@Body() createUserDto: CreateUserDtoType) {
-        const newUser = await this.authService.registerUser(createUserDto)
-        if(newUser) {
-            if(newUser.email === createUserDto.email){
+        const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login)
+        
+        if(existUser) {
+            if(existUser.email === createUserDto.email){
                 throw new BadRequestException([{field: "email", message: "already exist"}]);
             } else {
                 throw new BadRequestException([{field: "login", message: "already exist"}]);
             }
         } 
+        await this.authService.registerUser(createUserDto)
         return;    
     }
 

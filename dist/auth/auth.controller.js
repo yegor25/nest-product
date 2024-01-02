@@ -37,15 +37,16 @@ let AuthController = class AuthController {
         }
     }
     async register(createUserDto) {
-        const newUser = await this.authService.registerUser(createUserDto);
-        if (newUser) {
-            if (newUser.email === createUserDto.email) {
+        const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login);
+        if (existUser) {
+            if (existUser.email === createUserDto.email) {
                 throw new common_1.BadRequestException([{ field: "email", message: "already exist" }]);
             }
             else {
                 throw new common_1.BadRequestException([{ field: "login", message: "already exist" }]);
             }
         }
+        await this.authService.registerUser(createUserDto);
         return;
     }
     async registerConfirmation(body) {

@@ -35,11 +35,10 @@ let AuthService = class AuthService {
         };
     }
     async registerUser(data) {
-        const existUser = await this.usersService.checkExistUser(data.email, data.login);
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
         await this.usersService.createUser(data, confirmationData);
         await mail_manager_1.mailManager.registerConfirmation(data.email, confirmationData.code);
-        return existUser;
+        return;
     }
     async confirmUser(code) {
         const res = await this.usersService.checkCodeConfirmation(code);
