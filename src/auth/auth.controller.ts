@@ -36,7 +36,7 @@ export class AuthController {
             throw new BadRequestException([{field: "email", message: "invalid data"}]);
         } 
 
-            await this.authService.resendingEmail(body.email)
+            // await this.authService.resendingEmail(body.email)
             return
     
     

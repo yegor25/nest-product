@@ -31,7 +31,6 @@ let AuthController = class AuthController {
         if (!validData) {
             throw new common_1.BadRequestException([{ field: "email", message: "invalid data" }]);
         }
-        await this.authService.resendingEmail(body.email);
         return;
     }
     async register(createUserDto) {
