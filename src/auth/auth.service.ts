@@ -39,7 +39,7 @@ async resendingEmail(email: string){
     // const modified = await this.usersService.changeConfirmationData(email, confirmationData)
     // if(!modified) return null
     await mailManager.registerConfirmation(email,confirmationData.code)
-    await this.usersService.changeConfirmationData(email, confirmationData)
+    await this.userRepository.changeConfirmationData(email, confirmationData)
     return
 }
 }
