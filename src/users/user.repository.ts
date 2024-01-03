@@ -86,8 +86,7 @@ async changeConfirmationData(email: string, data: EmailConfirmation):Promise<str
   {email: email},
   {$set: {emailConfirmation: data}}
  )
- if(newUserCode.modifiedCount === 1) return data.code
- return null
+ return data.code
  }
  async validateResendingUser(email: string):Promise<boolean>{
   const user = await this.userModel.findOne({email: email})
