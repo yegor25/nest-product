@@ -103,8 +103,8 @@ let UserRepository = class UserRepository {
         return null;
     }
     async validateResendingUser(email) {
-        const user = await this.userModel.findOne({ email });
-        if (user && user.emailConfirmation.isConfirmed === false)
+        const user = await this.userModel.findOne({ email: email });
+        if (user && user.emailConfirmation.isConfirmed)
             return true;
         return false;
     }
