@@ -54,8 +54,8 @@ export class AuthController {
                 throw new BadRequestException([{field: "login", message: "already exist"}]);
             }
         } 
-        await this.authService.registerUser(createUserDto)
-        return;    
+        return this.authService.registerUser(createUserDto)
+        
     }
 
     @HttpCode(204)

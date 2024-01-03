@@ -26,7 +26,11 @@ let UserService = class UserService {
             login: createUserDto.login,
             email: createUserDto.email,
         };
-        const newUser = await this.userRepository.create(dtoUser, emailData);
+        if (emailData) {
+            const newUser = await this.userRepository.create(dtoUser, emailData);
+            return user_helper_1.userHelper.userViewMapper(newUser);
+        }
+        const newUser = await this.userRepository.create(dtoUser);
         return user_helper_1.userHelper.userViewMapper(newUser);
     }
     async findUsers(params) {

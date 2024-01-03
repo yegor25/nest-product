@@ -20,8 +20,13 @@ export class UserService {
       email: createUserDto.email,
 
     }
-    const newUser = await this.userRepository.create(dtoUser, emailData);
+    if(emailData) {
+      const newUser = await this.userRepository.create(dtoUser, emailData);
     return userHelper.userViewMapper(newUser);
+    }
+    const newUser = await this.userRepository.create(dtoUser);
+    return userHelper.userViewMapper(newUser);
+    
   }
   async findUsers(
     params: paramsUserPaginatorType,

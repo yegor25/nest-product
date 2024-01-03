@@ -10,7 +10,7 @@ export declare class AuthController {
     }, body: loginDtoType): Promise<{
         accessToken: string;
     }>;
-    register(createUserDto: CreateUserDtoType): Promise<void>;
+    register(createUserDto: CreateUserDtoType): Promise<any>;
     registerConfirmation(body: {
         code: string;
     }): Promise<void>;
