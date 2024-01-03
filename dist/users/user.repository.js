@@ -85,14 +85,14 @@ let UserRepository = class UserRepository {
     }
     async checkCodeConfirmation(code) {
         const user = await this.userModel.findOne({ "emailConfirmation.code": code });
-        if (user.emailConfirmation.isConfirmed === true) {
-            return false;
+        if (user) {
+            if (user.emailConfirmation.expirationDate < new Date())
+                return false;
+            user.emailConfirmation.isConfirmed = true;
+            await user.save();
+            return true;
         }
-        if (user.emailConfirmation.expirationDate < new Date())
-            return false;
-        user.emailConfirmation.isConfirmed = true;
-        await user.save();
-        return true;
+        return false;
     }
     async changeConfirmationData(email, data) {
         const newUserCode = await this.userModel.updateOne({ email: email }, { $set: { emailConfirmation: data } });
