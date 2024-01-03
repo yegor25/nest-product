@@ -97,7 +97,7 @@ let UserRepository = class UserRepository {
         return false;
     }
     async changeConfirmationData(email, data) {
-        const newUserCode = await this.userModel.updateOne({ email: email }, { $set: { emailConfirmation: data } });
+        const newUserCode = await this.userModel.updateOne({ email: email }, { $set: { "emailConfirmation.code": data.code } });
         return data.code;
     }
     async validateResendingUser(email) {

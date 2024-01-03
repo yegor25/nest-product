@@ -84,7 +84,7 @@ export class UserRepository {
 async changeConfirmationData(email: string, data: EmailConfirmation):Promise<string | null>{
  const newUserCode = await this.userModel.updateOne(
   {email: email},
-  {$set: {emailConfirmation: data}}
+  {$set: {"emailConfirmation.code": data.code}}
  )
  return data.code
  }

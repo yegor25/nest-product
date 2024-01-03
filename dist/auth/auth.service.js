@@ -46,10 +46,8 @@ let AuthService = class AuthService {
     }
     async resendingEmail(email) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
-        const modified = await this.usersService.changeConfirmationData(email, confirmationData);
-        if (!modified)
-            return null;
-        await mail_manager_1.mailManager.registerConfirmation(email, modified);
+        await mail_manager_1.mailManager.registerConfirmation(email, confirmationData.code);
+        await this.usersService.changeConfirmationData(email, confirmationData);
         return;
     }
 };
