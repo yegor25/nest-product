@@ -10,6 +10,9 @@ export declare class AuthController {
     }, body: loginDtoType): Promise<{
         accessToken: string;
     }>;
+    resendingEmail(body: {
+        email: string;
+    }): Promise<void>;
     register(createUserDto: CreateUserDtoType): Promise<any>;
     registerConfirmation(body: {
         code: string;

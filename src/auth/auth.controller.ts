@@ -28,20 +28,20 @@ export class AuthController {
     }
 
 
-    // @HttpCode(204)
-    // @Post('registration-email-resending')
-    // async resendingEmail(@Body() body: {email: string}) {
-    //     const validData = await this.userService.validateResendingUser(body.email)
-    //     if(!validData) {
-    //         throw new BadRequestException([{field: "email", message: "invalid data"}]);
-    //     } 
+    @HttpCode(204)
+    @Post('registration-email-resending')
+    async resendingEmail(@Body() body: {email: string}) {
+        // const validData = await this.userService.validateResendingUser(body.email)
+        // if(!validData) {
+        //     throw new BadRequestException([{field: "email", message: "invalid data"}]);
+        // } 
 
-    //         await this.authService.resendingEmail(body.email)
-    //         return
+            await this.authService.resendingEmail(body.email)
+            return
     
     
     
-    // }
+    }
 
     @HttpCode(204)
     @Post('registration')
