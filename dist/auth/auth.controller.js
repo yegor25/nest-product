@@ -23,7 +23,7 @@ let AuthController = class AuthController {
         this.authService = authService;
         this.userService = userService;
     }
-    async loginUser(req, body) {
+    async loginUser(req, body, res) {
         return this.authService.login(body);
     }
     async resendingEmail(body) {
@@ -61,8 +61,9 @@ __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
 __decorate([

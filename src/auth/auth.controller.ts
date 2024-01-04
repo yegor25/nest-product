@@ -1,8 +1,9 @@
-import { BadRequestException, Body, Controller, HttpCode, Post, Req, UnauthorizedException, UseGuards } from "@nestjs/common"
+import { BadRequestException, Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common"
 import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
 import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
+import { response } from "express"
 
 
 @Controller('auth')
@@ -15,7 +16,7 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(AuthGuard('local'))
     @Post('login')
-     async loginUser(@Req() req:{user:User},@Body() body: loginDtoType) {
+     async loginUser(@Req() req:{user:User},@Body() body: loginDtoType, @Res() res) {
         // const ip = req.ip
         // const title = req.headers["user-agent"] || "Chrome 105"
         // const session = await this.authService.saveSession({ ip, title, userId: user?._id.toString() })

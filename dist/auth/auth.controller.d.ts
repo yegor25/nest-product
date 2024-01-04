@@ -7,7 +7,7 @@ export declare class AuthController {
     constructor(authService: AuthService, userService: UserService);
     loginUser(req: {
         user: User;
-    }, body: loginDtoType): Promise<{
+    }, body: loginDtoType, res: any): Promise<{
         accessToken: string;
     }>;
     resendingEmail(body: {
