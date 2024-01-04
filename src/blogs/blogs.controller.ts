@@ -13,6 +13,8 @@ export class BlogController {
         protected blogService:BlogService,
         protected postService:PostService
         ){}
+
+    @UseGuards(BasicAuthGuard)
     @Post()
     async createBlog(@Body() body: createdDtoBlogType){
         return this.blogService.create(body)
@@ -41,16 +43,16 @@ export class BlogController {
         if(!posts) throw new NotFoundException();
         return posts
     }
-    @Put(':id')
     @UseGuards(BasicAuthGuard)
+    @Put(':id')
     @HttpCode(204)
     async changeBlog(@Param('id') blogId: string, @Body() body: createdDtoBlogType){
         const blog = await this.blogService.changeBlog(blogId,body)
         if(!blog) throw new NotFoundException();
         return;
     }
-    @Delete(':id')
     @UseGuards(BasicAuthGuard)
+    @Delete(':id')
     @HttpCode(204)
     async deleteBlog(@Param('id') blogId: string){
         const deletedBlog = await this.blogService.deleteBlogById(blogId)

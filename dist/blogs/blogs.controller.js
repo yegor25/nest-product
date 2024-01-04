@@ -61,6 +61,7 @@ let BlogController = class BlogController {
 };
 exports.BlogController = BlogController;
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -98,8 +99,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "findPostsForBlog", null);
 __decorate([
-    (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
+    (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -108,8 +109,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "changeBlog", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
+    (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
