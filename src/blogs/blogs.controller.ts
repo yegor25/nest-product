@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { createdDtoBlogType, paramsBlogPaginatorType } from "./blog.schema";
 import { BlogService } from "./blog.service";
 import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/post.schema";
 import { PostService } from "../posts/post.service";
+import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
 
 
 
@@ -41,6 +42,7 @@ export class BlogController {
         return posts
     }
     @Put(':id')
+    @UseGuards(BasicAuthGuard)
     @HttpCode(204)
     async changeBlog(@Param('id') blogId: string, @Body() body: createdDtoBlogType){
         const blog = await this.blogService.changeBlog(blogId,body)
@@ -48,6 +50,7 @@ export class BlogController {
         return;
     }
     @Delete(':id')
+    @UseGuards(BasicAuthGuard)
     @HttpCode(204)
     async deleteBlog(@Param('id') blogId: string){
         const deletedBlog = await this.blogService.deleteBlogById(blogId)

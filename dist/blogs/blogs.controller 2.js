@@ -16,7 +16,6 @@ exports.BlogController = void 0;
 const common_1 = require("@nestjs/common");
 const blog_service_1 = require("./blog.service");
 const post_service_1 = require("../posts/post.service");
-const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
 let BlogController = class BlogController {
     constructor(blogService, postService) {
         this.blogService = blogService;
@@ -99,7 +98,6 @@ __decorate([
 ], BlogController.prototype, "findPostsForBlog", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -109,7 +107,6 @@ __decorate([
 ], BlogController.prototype, "changeBlog", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
