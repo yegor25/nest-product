@@ -56,6 +56,7 @@ export class createdDtoBlogType  {
 
     @IsNotEmpty()
     @Matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
+    @MaxLength(100)
     websiteUrl: string
 }
 export type PaginatorType = {

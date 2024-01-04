@@ -60,6 +60,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Matches)(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], createdDtoBlogType.prototype, "websiteUrl", void 0);
 var SortDirection;
