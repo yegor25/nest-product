@@ -40,11 +40,11 @@ export type blogItemsResponseType = {
     createdAt: string;
     isMembership: boolean;
 };
-export type createdDtoBlogType = {
+export declare class createdDtoBlogType {
     name: string;
     description: string;
     websiteUrl: string;
-};
+}
 export type PaginatorType = {
     pagesCount: number;
     page: number;

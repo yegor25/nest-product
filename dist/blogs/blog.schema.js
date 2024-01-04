@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BlogSchema = exports.SortDirection = exports.Blog = void 0;
+exports.BlogSchema = exports.SortDirection = exports.createdDtoBlogType = exports.Blog = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
+const class_validator_1 = require("class-validator");
 let Blog = class Blog {
 };
 exports.Blog = Blog;
@@ -41,6 +42,26 @@ __decorate([
 exports.Blog = Blog = __decorate([
     (0, mongoose_1.Schema)()
 ], Blog);
+class createdDtoBlogType {
+}
+exports.createdDtoBlogType = createdDtoBlogType;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(15),
+    __metadata("design:type", String)
+], createdDtoBlogType.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(500),
+    __metadata("design:type", String)
+], createdDtoBlogType.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.Matches)(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/),
+    __metadata("design:type", String)
+], createdDtoBlogType.prototype, "websiteUrl", void 0);
 var SortDirection;
 (function (SortDirection) {
     SortDirection["asc"] = "asc";

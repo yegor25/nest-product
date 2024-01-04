@@ -3,6 +3,7 @@
 
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
 import mongoose, { HydratedDocument } from 'mongoose';
 
 export type BlogDocument = HydratedDocument<Blog>;
@@ -42,9 +43,19 @@ export type blogItemsResponseType = {
     isMembership: boolean
 }
 
-export type createdDtoBlogType = {
-    name: string,
-    description: string,
+export class createdDtoBlogType  {
+    @IsNotEmpty()
+    @MinLength(3)
+    @MaxLength(15)
+    name: string;
+
+    @IsNotEmpty()
+    @MinLength(3)
+    @MaxLength(500)
+    description: string;
+
+    @IsNotEmpty()
+    @Matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
     websiteUrl: string
 }
 export type PaginatorType = {

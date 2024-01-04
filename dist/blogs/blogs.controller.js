@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogController = void 0;
 const common_1 = require("@nestjs/common");
+const blog_schema_1 = require("./blog.schema");
 const blog_service_1 = require("./blog.service");
 const post_service_1 = require("../posts/post.service");
 const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
@@ -65,7 +66,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [blog_schema_1.createdDtoBlogType]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createBlog", null);
 __decorate([
@@ -105,7 +106,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, blog_schema_1.createdDtoBlogType]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "changeBlog", null);
 __decorate([
