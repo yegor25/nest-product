@@ -3,8 +3,8 @@
 import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
 
 @Injectable()
-export class TrimPipe implements PipeTransform<string> {
-  transform(value: string): string {
-    return value.trim()
+export class TrimPipe implements PipeTransform<any> {
+  transform(value: string) {
+  if(typeof value === "string")  return value.trim()
   }
 }

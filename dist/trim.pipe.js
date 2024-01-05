@@ -10,7 +10,8 @@ exports.TrimPipe = void 0;
 const common_1 = require("@nestjs/common");
 let TrimPipe = class TrimPipe {
     transform(value) {
-        return value.trim();
+        if (typeof value === "string")
+            return value.trim();
     }
 };
 exports.TrimPipe = TrimPipe;
