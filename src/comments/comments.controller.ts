@@ -31,6 +31,7 @@ export class CommentController  {
         return
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':commentId')
     @HttpCode(204)
     async changeComment(@Body() body: CreatedCommentDto,@Param('commentId') commentId: string, @Req() req: {user: {userId: string}}) {

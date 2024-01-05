@@ -69,6 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "deleteComment", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':commentId'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Body)()),
