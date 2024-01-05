@@ -2,11 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
+import { TrimPipe } from './trim.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({
+  app.useGlobalPipes( new TrimPipe(),new ValidationPipe({
     stopAtFirstError: true,
     exceptionFactory: (errors) => {
       const errorsResponse:Array<{message: string, field: string}> = []
