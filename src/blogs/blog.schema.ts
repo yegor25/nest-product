@@ -46,16 +46,19 @@ export type blogItemsResponseType = {
 
 export class createdDtoBlogType  {
     
+  @Transform(({value}) => (value.trim()) )
     @IsNotEmpty()
     @MinLength(3)
     @MaxLength(15)
     name: string;
 
+    @Transform(({value}) => (value.trim()) )
     @IsNotEmpty()
     @MinLength(3)
     @MaxLength(500)
     description: string;
 
+    @Transform(({value}) => (value.trim()) )
     @IsNotEmpty()
     @Matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
     @MaxLength(100)

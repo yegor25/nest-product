@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogSchema = exports.SortDirection = exports.createdDtoBlogType = exports.Blog = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 let Blog = class Blog {
 };
@@ -46,18 +47,21 @@ class createdDtoBlogType {
 }
 exports.createdDtoBlogType = createdDtoBlogType;
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value.trim())),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(3),
     (0, class_validator_1.MaxLength)(15),
     __metadata("design:type", String)
 ], createdDtoBlogType.prototype, "name", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value.trim())),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(3),
     (0, class_validator_1.MaxLength)(500),
     __metadata("design:type", String)
 ], createdDtoBlogType.prototype, "description", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value.trim())),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Matches)(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/),
     (0, class_validator_1.MaxLength)(100),

@@ -7,7 +7,7 @@ import { TrimPipe } from './trim.pipe';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.useGlobalPipes( new TrimPipe(),new ValidationPipe({
+  app.useGlobalPipes( new ValidationPipe({
     stopAtFirstError: true,
     exceptionFactory: (errors) => {
       const errorsResponse:Array<{message: string, field: string}> = []
