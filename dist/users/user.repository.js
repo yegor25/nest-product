@@ -83,6 +83,10 @@ let UserRepository = class UserRepository {
         });
         return user;
     }
+    async findById(id) {
+        const user = await this.userModel.findById(id);
+        return user;
+    }
     async checkCodeConfirmation(code) {
         const user = await this.userModel.findOne({ "emailConfirmation.code": code });
         if (user) {

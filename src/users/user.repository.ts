@@ -70,6 +70,10 @@ export class UserRepository {
     })
     return user
   }
+  async findById(id: string):Promise<User | null>{
+    const user = await this.userModel.findById(id)
+    return user
+  }
   async checkCodeConfirmation(code: string):Promise<boolean>{
     const user = await this.userModel.findOne({"emailConfirmation.code": code})
     if(user){

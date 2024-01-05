@@ -32,6 +32,11 @@ const auth_service_1 = require("./auth/auth.service");
 const local_srategy_1 = require("./auth/straregies/local.srategy");
 const auth_controller_1 = require("./auth/auth.controller");
 const auth_basic_strategy_1 = require("./auth/straregies/auth-basic.strategy");
+const comment_schema_1 = require("./comments/comment.schema");
+const comments_controller_1 = require("./comments/comments.controller");
+const comments_service_1 = require("./comments/comments.service");
+const comments_repository_1 = require("./comments/comments.repository");
+const jwt_strategy_1 = require("./auth/straregies/jwt.strategy");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,10 +53,11 @@ exports.AppModule = AppModule = __decorate([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },
                 { name: post_schema_1.Post.name, schema: post_schema_1.PostSchema },
+                { name: comment_schema_1.Comments.name, schema: comment_schema_1.CommentsSchema }
             ]),
         ],
-        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy],
+        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

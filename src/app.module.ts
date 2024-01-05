@@ -23,6 +23,11 @@ import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './auth/straregies/local.srategy';
 import { AuthController } from './auth/auth.controller';
 import { BasicStrategy } from './auth/straregies/auth-basic.strategy';
+import { Comments, CommentsSchema } from './comments/comment.schema';
+import { CommentController } from './comments/comments.controller';
+import { CommentService } from './comments/comments.service';
+import { CommentsRepository } from './comments/comments.repository';
+import { JwtStrategy } from './auth/straregies/jwt.strategy';
 
 @Module({
   imports: [
@@ -39,9 +44,10 @@ import { BasicStrategy } from './auth/straregies/auth-basic.strategy';
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
       {name: Post.name, schema: PostSchema},
+      {name: Comments.name, schema: CommentsSchema}
     ]),
   ],
-  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy],
+  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository],
 })
 export class AppModule {}

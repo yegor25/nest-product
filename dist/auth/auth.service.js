@@ -28,11 +28,14 @@ let AuthService = class AuthService {
             return user;
         return null;
     }
-    async login(user) {
-        const payload = { sub: user };
-        return {
+    async login(userId) {
+        const payload = {
+            sub: userId
+        };
+        const data = {
             accessToken: this.jwtService.sign(payload),
         };
+        return data;
     }
     async registerUser(data) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();

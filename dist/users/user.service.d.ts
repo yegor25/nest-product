@@ -5,6 +5,7 @@ export declare class UserService {
     constructor(userRepository: UserRepository);
     createUser(createUserDto: CreateUserDtoType, emailData?: EmailConfirmation): Promise<ResponseUserDtoType>;
     findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
+    findById(id: string): Promise<User | null>;
     deleteUser(id: string): Promise<boolean>;
     validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
     checkExistUser(email: string, login: string): Promise<User | null>;

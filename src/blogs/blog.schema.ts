@@ -3,6 +3,7 @@
 
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
 import mongoose, { HydratedDocument } from 'mongoose';
 
@@ -44,6 +45,7 @@ export type blogItemsResponseType = {
 }
 
 export class createdDtoBlogType  {
+    
     @IsNotEmpty()
     @MinLength(3)
     @MaxLength(15)

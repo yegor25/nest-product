@@ -15,9 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_service_1 = require("./post.service");
+const comment_schema_1 = require("../comments/comment.schema");
+const comments_service_1 = require("../comments/comments.service");
+const user_service_1 = require("../users/user.service");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth-guard");
 let PostController = class PostController {
-    constructor(postService) {
+    constructor(postService, commentService, userService) {
         this.postService = postService;
+        this.commentService = commentService;
+        this.userService = userService;
     }
     async createPost(body) {
         return this.postService.create(body);
@@ -42,6 +48,12 @@ let PostController = class PostController {
         if (!deletedPost)
             throw new common_1.NotFoundException();
         return;
+    }
+    async createComment(body, postId, req) {
+        const comment = await this.commentService.createComment(postId, body, req.user.userId);
+        if (!comment)
+            throw new common_1.NotFoundException();
+        return comment;
     }
 };
 exports.PostController = PostController;
@@ -83,8 +95,20 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "deletePost", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)(':postId/comments'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('postId')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [comment_schema_1.CreatedCommentDto, String, Object]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "createComment", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
-    __metadata("design:paramtypes", [post_service_1.PostService])
+    __metadata("design:paramtypes", [post_service_1.PostService,
+        comments_service_1.CommentService,
+        user_service_1.UserService])
 ], PostController);
 //# sourceMappingURL=post.controller.js.map

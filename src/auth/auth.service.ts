@@ -18,11 +18,14 @@ export class AuthService {
     if (user) return user
     return null;
   }
-  async login(user: any) {
-    const payload = {  sub: user };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+  async login(userId: string) {
+    const payload = {
+        sub: userId
+    }
+    const data = {
+      accessToken:  this.jwtService.sign(payload),
+    }
+    return data
   }
   async registerUser(data: CreateUserDtoType):Promise<any>{
     const confirmationData = authHelper.confiramtionDataMapper()

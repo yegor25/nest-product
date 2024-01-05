@@ -36,6 +36,9 @@ let UserService = class UserService {
     async findUsers(params) {
         return this.userRepository.findUsers(params);
     }
+    async findById(id) {
+        return this.userRepository.findById(id);
+    }
     async deleteUser(id) {
         return this.userRepository.delete(id);
     }

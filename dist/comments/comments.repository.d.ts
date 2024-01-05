@@ -22,19 +22,13 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { CreatedUserDtoDbType, EmailConfirmation, ResponseAllUserDto, User, paramsUserPaginatorType } from './user.schema';
-import { Model } from 'mongoose';
-export declare class UserRepository {
-    private userModel;
-    constructor(userModel: Model<User>);
-    create(createUserDto: CreatedUserDtoDbType, emailData?: EmailConfirmation): Promise<User>;
-    findUsers(params: paramsUserPaginatorType): Promise<ResponseAllUserDto>;
-    validateUser(loginOrEmail: string, pass: string): Promise<User | null>;
-    checkExistUser(email: string, login: string): Promise<User | null>;
-    findById(id: string): Promise<User | null>;
-    checkCodeConfirmation(code: string): Promise<boolean>;
-    changeConfirmationData(email: string, data: EmailConfirmation): Promise<string | null>;
-    validateResendingUser(email: string): Promise<boolean>;
-    delete(id: string): Promise<boolean>;
-    deleteAll(): Promise<import("mongodb").DeleteResult>;
+import { CommentViewModelType, Comments, commentForDbDtoType } from "./comment.schema";
+import { Model } from "mongoose";
+export declare class CommentsRepository {
+    private commentsModel;
+    constructor(commentsModel: Model<Comments>);
+    createComment(comment: commentForDbDtoType): Promise<CommentViewModelType>;
+    deleteComments(id: string, userId: string): Promise<boolean>;
+    updateComment(id: string, userId: string, content: string): Promise<boolean>;
+    deleteAll(): Promise<boolean>;
 }

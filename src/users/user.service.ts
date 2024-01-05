@@ -33,6 +33,10 @@ export class UserService {
   ): Promise<ResponseAllUserDto> {
     return this.userRepository.findUsers(params);
   }
+
+  async findById(id: string):Promise<User | null>{
+    return this.userRepository.findById(id)
+  }
   async deleteUser(id: string): Promise<boolean> {
     return this.userRepository.delete(id);
   }

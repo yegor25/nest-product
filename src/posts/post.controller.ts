@@ -1,12 +1,21 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
+import { CreatedCommentDto } from "../comments/comment.schema";
+import { CommentService } from "../comments/comments.service";
+import { UserService } from "../users/user.service";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
+import { User } from "../users/user.schema";
 
 
 
 @Controller('posts')
 export class PostController {
-    constructor(protected postService: PostService){}
+    constructor(
+      protected postService: PostService,
+      protected commentService: CommentService,
+      protected userService: UserService
+      ){}
 
  @Post()
    async createPost(@Body() body:createdPostDtoType){
@@ -43,4 +52,12 @@ export class PostController {
     if(!deletedPost) throw new NotFoundException();
     return;
    }
+
+   @UseGuards(JwtAuthGuard)
+   @Post(':postId/comments')
+   async createComment(@Body() body: CreatedCommentDto, @Param('postId') postId: string,  @Req() req: {user: {userId: string}}) {
+      const comment = await this.commentService.createComment(postId,body,req.user.userId)
+      if(!comment) throw new NotFoundException();
+      return comment
+  }
 }

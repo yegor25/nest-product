@@ -16,7 +16,7 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(AuthGuard('local'))
     @Post('login')
-     async loginUser(@Req() req:{user:User},@Body() body: loginDtoType, @Res() res) {
+     async loginUser(@Req() req:{user:User}) {
         // const ip = req.ip
         // const title = req.headers["user-agent"] || "Chrome 105"
         // const session = await this.authService.saveSession({ ip, title, userId: user?._id.toString() })
@@ -25,7 +25,8 @@ export class AuthController {
         // const refresh = await jwtService.createRefreshToken(user, session.deviceId)
         // res.cookie("refreshToken", refresh, { httpOnly: true, secure: true })
         // res.status(200).send({ accessToken: token })
-        return this.authService.login(body)
+        return this.authService.login(req.user._id.toString())
+        
     }
 
 
