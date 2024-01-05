@@ -30,5 +30,6 @@ export declare class CommentsRepository {
     createComment(comment: commentForDbDtoType): Promise<CommentViewModelType>;
     deleteComments(id: string, userId: string): Promise<boolean>;
     updateComment(id: string, userId: string, content: string): Promise<boolean>;
+    findById(id: string): Promise<Comments | null>;
     deleteAll(): Promise<boolean>;
 }

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { LikeStatus } from "../postLikes/like.schema"
 import { MaxLength, MinLength } from "class-validator"
+import { Transform } from "class-transformer"
 
 
 
@@ -66,6 +67,7 @@ export class Comments {
 }
 
 export class CreatedCommentDto  {
+    @Transform(({value}) => (value.trim()))
     @MinLength(20)
     @MaxLength(300)
     content: string

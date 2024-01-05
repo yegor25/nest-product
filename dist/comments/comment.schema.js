@@ -13,6 +13,7 @@ exports.CommentsSchema = exports.CreatedCommentDto = exports.Comments = exports.
 const mongoose_1 = require("@nestjs/mongoose");
 const like_schema_1 = require("../postLikes/like.schema");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 let CommentatorInfo = class CommentatorInfo {
 };
 exports.CommentatorInfo = CommentatorInfo;
@@ -91,6 +92,7 @@ class CreatedCommentDto {
 }
 exports.CreatedCommentDto = CreatedCommentDto;
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value.trim())),
     (0, class_validator_1.MinLength)(20),
     (0, class_validator_1.MaxLength)(300),
     __metadata("design:type", String)

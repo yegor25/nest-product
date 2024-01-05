@@ -1,7 +1,7 @@
 import { UserService } from "../users/user.service"
 import { PostService } from "../posts/post.service"
 import { User } from "../users/user.schema"
-import { CommentViewModelType, CreatedCommentDto, commentForDbDtoType } from "./comment.schema"
+import { CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType } from "./comment.schema"
 import { CommentsRepository } from "./comments.repository"
 import { Injectable } from "@nestjs/common"
 
@@ -13,7 +13,6 @@ export class CommentService {
         private userService: UserService
     ){}
     async createComment(postId: string, data: CreatedCommentDto, userId: string): Promise<CommentViewModelType | null> {
-        console.log("userid", userId)
         const post = await this.postService.findPostById(postId)
         if (!post) {
             return null
@@ -30,12 +29,15 @@ export class CommentService {
         }
         return  this.commentsRepository.createComment(newComment)
     }
-    // async deleteComment(id: string, userId: string): Promise<boolean> {
-    //     return this.commentsRepository.deleteComments(convertId(id), userId)
-    // }
-    // async updateComment(id: string, userId: string, content: string): Promise<boolean> {
-    //     return this.commentsRepository.updateComment(convertId(id), userId, content)
-    // }
+    async findById(id: string):Promise<Comments | null>{
+        return this.commentsRepository.findById(id)
+    }
+    async deleteComment(id: string, userId: string): Promise<boolean> {
+        return this.commentsRepository.deleteComments(id, userId)
+    }
+    async updateComment(id: string, userId: string, content: string): Promise<boolean> {
+        return this.commentsRepository.updateComment(id, userId, content)
+    }
     // async deleteAllComments():Promise<boolean>{
     //     return this.commentsRepository.deleteAll()
     // }

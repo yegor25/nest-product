@@ -16,20 +16,25 @@ export class CommentsRepository {
         return commentHelper.commentsMapper(res, comment.commentatorInfo.userId)
     }
     async deleteComments(id: string, userId: string): Promise<boolean> {
-        const comment = await this.commentsModel.findOne({ _id: id })
+        const comment = await this.commentsModel.findById(id)
         if (comment?.commentatorInfo.userId !== userId) {
             return false
         }
-        const res = await this.commentsModel.deleteOne({ _id: id })
-        return res.deletedCount === 1
+        const res = await this.commentsModel.findByIdAndDelete(id)
+        if(!res) return false
+        return true
     }
     async updateComment(id: string, userId: string, content: string): Promise<boolean> {
-        const comment = await this.commentsModel.findOne({ _id: id })
+        const comment = await this.commentsModel.findById(id)
         if (comment?.commentatorInfo.userId !== userId) {
             return false
         }
-        const res = await this.commentsModel.updateOne({ _id: id }, { $set: { content: content } })
-        return res.matchedCount === 1
+        const res = await this.commentsModel.findByIdAndUpdate( id , { $set: { content: content } })
+        if(!res) return false
+        return true
+    }
+    async findById(id: string):Promise<Comments | null>{
+        return this.commentsModel.findById(id)
     }
     async deleteAll(): Promise<boolean> {
         const res = await this.commentsModel.deleteMany({})

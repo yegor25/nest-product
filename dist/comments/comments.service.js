@@ -21,7 +21,6 @@ let CommentService = class CommentService {
         this.userService = userService;
     }
     async createComment(postId, data, userId) {
-        console.log("userid", userId);
         const post = await this.postService.findPostById(postId);
         if (!post) {
             return null;
@@ -38,6 +37,15 @@ let CommentService = class CommentService {
             }
         };
         return this.commentsRepository.createComment(newComment);
+    }
+    async findById(id) {
+        return this.commentsRepository.findById(id);
+    }
+    async deleteComment(id, userId) {
+        return this.commentsRepository.deleteComments(id, userId);
+    }
+    async updateComment(id, userId, content) {
+        return this.commentsRepository.updateComment(id, userId, content);
     }
 };
 exports.CommentService = CommentService;

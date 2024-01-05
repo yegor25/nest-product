@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSchema = exports.CreateUserDtoType = exports.SortDirection = exports.User = exports.EmailConfirmation = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 let EmailConfirmation = class EmailConfirmation {
 };
 exports.EmailConfirmation = EmailConfirmation;
@@ -78,6 +79,7 @@ class CreateUserDtoType {
 }
 exports.CreateUserDtoType = CreateUserDtoType;
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value.trim())),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(3),
     (0, class_validator_1.MaxLength)(10),

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength, isEmail } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 
 @Schema()
@@ -66,6 +67,7 @@ export enum SortDirection {
 
 export class CreateUserDtoType  {
 
+  @Transform(({value}) => (value.trim()))
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(10)
