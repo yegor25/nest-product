@@ -36,6 +36,9 @@ export class CommentsRepository {
     async findById(id: string):Promise<Comments | null>{
         return this.commentsModel.findById(id)
     }
+    async findCommentsByPostId(postId: string):Promise<Comments[]>{
+        return this.commentsModel.find({postId: postId})
+    }
     async deleteAll(): Promise<boolean> {
         const res = await this.commentsModel.deleteMany({})
         return res.deletedCount > 0

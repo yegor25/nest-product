@@ -18,4 +18,5 @@ export declare class PostController {
             userId: string;
         };
     }): Promise<import("../comments/comment.schema").CommentViewModelType>;
+    findComments(postId: string): Promise<import("../comments/comment.schema").Comments[]>;
 }

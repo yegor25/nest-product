@@ -60,4 +60,10 @@ export class PostController {
       if(!comment) throw new NotFoundException();
       return comment
   }
+   @Get(':postId/comments')
+   async findComments( @Param('postId') postId: string) {
+      const post = await this.postService.findPostById(postId)
+      if(!post) throw new NotFoundException();
+      return this.commentService.findCommentsByPostId(postId)
+  }
 }

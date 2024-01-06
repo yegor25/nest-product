@@ -9,6 +9,7 @@ export declare class CommentService {
     constructor(commentsRepository: CommentsRepository, postService: PostService, userService: UserService);
     createComment(postId: string, data: CreatedCommentDto, userId: string): Promise<CommentViewModelType | null>;
     findById(id: string): Promise<Comments | null>;
+    findCommentsByPostId(postId: string): Promise<Comments[]>;
     deleteComment(id: string, userId: string): Promise<boolean>;
     updateComment(id: string, userId: string, content: string): Promise<boolean>;
 }

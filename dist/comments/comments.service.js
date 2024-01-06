@@ -41,6 +41,9 @@ let CommentService = class CommentService {
     async findById(id) {
         return this.commentsRepository.findById(id);
     }
+    async findCommentsByPostId(postId) {
+        return this.commentsRepository.findCommentsByPostId(postId);
+    }
     async deleteComment(id, userId) {
         return this.commentsRepository.deleteComments(id, userId);
     }

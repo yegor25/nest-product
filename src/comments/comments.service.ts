@@ -32,6 +32,9 @@ export class CommentService {
     async findById(id: string):Promise<Comments | null>{
         return this.commentsRepository.findById(id)
     }
+    async findCommentsByPostId(postId: string):Promise<Comments[]>{
+        return this.commentsRepository.findCommentsByPostId(postId)
+    }
     async deleteComment(id: string, userId: string): Promise<boolean> {
         return this.commentsRepository.deleteComments(id, userId)
     }

@@ -31,5 +31,6 @@ export declare class CommentsRepository {
     deleteComments(id: string, userId: string): Promise<boolean>;
     updateComment(id: string, userId: string, content: string): Promise<boolean>;
     findById(id: string): Promise<Comments | null>;
+    findCommentsByPostId(postId: string): Promise<Comments[]>;
     deleteAll(): Promise<boolean>;
 }

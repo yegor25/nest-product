@@ -55,6 +55,12 @@ let PostController = class PostController {
             throw new common_1.NotFoundException();
         return comment;
     }
+    async findComments(postId) {
+        const post = await this.postService.findPostById(postId);
+        if (!post)
+            throw new common_1.NotFoundException();
+        return this.commentService.findCommentsByPostId(postId);
+    }
 };
 exports.PostController = PostController;
 __decorate([
@@ -105,6 +111,13 @@ __decorate([
     __metadata("design:paramtypes", [comment_schema_1.CreatedCommentDto, String, Object]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.Get)(':postId/comments'),
+    __param(0, (0, common_1.Param)('postId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "findComments", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService,

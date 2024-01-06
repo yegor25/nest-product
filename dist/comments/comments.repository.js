@@ -50,6 +50,9 @@ let CommentsRepository = class CommentsRepository {
     async findById(id) {
         return this.commentsModel.findById(id);
     }
+    async findCommentsByPostId(postId) {
+        return this.commentsModel.find({ postId: postId });
+    }
     async deleteAll() {
         const res = await this.commentsModel.deleteMany({});
         return res.deletedCount > 0;
