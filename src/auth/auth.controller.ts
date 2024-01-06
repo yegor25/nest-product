@@ -3,7 +3,7 @@ import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
 import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
-import { response } from "express"
+import { Response, response } from "express"
 
 
 @Controller('auth')
@@ -16,7 +16,7 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(AuthGuard('local'))
     @Post('login')
-     async loginUser(@Req() req:{user:User}) {
+     async loginUser(@Req() req:{user:User}, @Res() res: Response) {
         // const ip = req.ip
         // const title = req.headers["user-agent"] || "Chrome 105"
         // const session = await this.authService.saveSession({ ip, title, userId: user?._id.toString() })
@@ -25,8 +25,9 @@ export class AuthController {
         // const refresh = await jwtService.createRefreshToken(user, session.deviceId)
         // res.cookie("refreshToken", refresh, { httpOnly: true, secure: true })
         // res.status(200).send({ accessToken: token })
-        return this.authService.login(req.user._id.toString())
-        
+        const credentials = await this.authService.login(req.user._id.toString())
+        res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
+        res.status(200).send({ accessToken: credentials.accessToken })
     }
 
 

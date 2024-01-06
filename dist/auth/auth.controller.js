@@ -23,8 +23,10 @@ let AuthController = class AuthController {
         this.authService = authService;
         this.userService = userService;
     }
-    async loginUser(req) {
-        return this.authService.login(req.user._id.toString());
+    async loginUser(req, res) {
+        const credentials = await this.authService.login(req.user._id.toString());
+        res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
+        res.status(200).send({ accessToken: credentials.accessToken });
     }
     async resendingEmail(body) {
         const validData = await this.userService.validateResendingUser(body.email);
@@ -60,8 +62,9 @@ __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('local')),
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
 __decorate([

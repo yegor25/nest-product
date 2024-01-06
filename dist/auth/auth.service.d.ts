@@ -10,6 +10,7 @@ export declare class AuthService {
     validateUser(loginOrEmail: string, pass: string): Promise<any>;
     login(userId: string): Promise<{
         accessToken: string;
+        refreshToken: string;
     }>;
     registerUser(data: CreateUserDtoType): Promise<any>;
     confirmUser(code: string): Promise<boolean>;

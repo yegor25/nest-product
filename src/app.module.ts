@@ -36,6 +36,7 @@ import { JwtStrategy } from './auth/straregies/jwt.strategy';
       secret: jwtConstants.secret,
       signOptions: {expiresIn: "15m"}
     }),
+    
     // MongooseModule.forRoot('mongodb://localhost/nest'),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',

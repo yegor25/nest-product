@@ -18,12 +18,14 @@ export class AuthService {
     if (user) return user
     return null;
   }
-  async login(userId: string) {
+  async login(userId: string):Promise<{accessToken: string;
+    refreshToken: string;}> {
     const payload = {
         sub: userId
     }
     const data = {
       accessToken:  this.jwtService.sign(payload),
+      refreshToken: this.jwtService.sign(payload, {secret: "dcsdcdscds", expiresIn: "2h"})
     }
     return data
   }

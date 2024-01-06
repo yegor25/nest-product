@@ -34,6 +34,7 @@ let AuthService = class AuthService {
         };
         const data = {
             accessToken: this.jwtService.sign(payload),
+            refreshToken: this.jwtService.sign(payload, { secret: "dcsdcdscds", expiresIn: "2h" })
         };
         return data;
     }
