@@ -56,7 +56,7 @@ exports.postHelper = {
                 likesCount,
                 dislikesCount,
                 myStatus,
-                newestLikes: newestLikes
+                newestLikes: []
             }
         };
         return res;
