@@ -3,7 +3,7 @@ import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType, SortDirection } from "../users/user.schema";
 import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
 import { Transform } from "class-transformer";
-import { IsNotEmpty, MaxLength } from "class-validator";
+import { IsNotEmpty, MaxLength, isString } from "class-validator";
 import { BadRequestException } from "@nestjs/common";
 
 export type PostDocument = HydratedDocument<Post>
@@ -74,9 +74,6 @@ export class createdPostDtoType  {
     @MaxLength(1000)
     content: string
     @IsNotEmpty()
-    @Transform(({value}) => {
-        if(!mongoose.isValidObjectId(value)) throw new BadRequestException([{field: "blogId", message: "invlad blogId"}])
-    })
     blogId: string
 }
 export type createdPosForBlogtDtoType = {

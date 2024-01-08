@@ -9,7 +9,7 @@ export declare class PostController {
     protected commentService: CommentService;
     protected userService: UserService;
     constructor(postService: PostService, commentService: CommentService, userService: UserService);
-    createPost(body: createdPostDtoType): Promise<import("./post.schema").postDtoResponseType | null>;
+    createPost(body: createdPostDtoType): Promise<import("./post.schema").postDtoResponseType>;
     findPosts(params: paramsPostPaginatorType & {
         userId?: string;
     }): Promise<import("./post.schema").viewAllPostsType>;
