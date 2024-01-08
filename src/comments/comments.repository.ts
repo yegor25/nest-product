@@ -13,7 +13,6 @@ export class CommentsRepository {
 
     async createComment(comment: commentForDbDtoType): Promise<CommentViewModelType> {
         const res = await this.commentsModel.create(comment)
-        console.log("res", res)
         return commentHelper.commentsMapper(res, comment.commentatorInfo.userId)
     }
     async deleteComments(id: string, userId: string): Promise<boolean> {

@@ -24,7 +24,6 @@ let CommentsRepository = class CommentsRepository {
     }
     async createComment(comment) {
         const res = await this.commentsModel.create(comment);
-        console.log("res", res);
         return comment_helper_1.commentHelper.commentsMapper(res, comment.commentatorInfo.userId);
     }
     async deleteComments(id, userId) {
