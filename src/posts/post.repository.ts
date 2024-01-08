@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Post, createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, viewAllPostsType } from "./post.schema";
 import { Model } from "mongoose";
 import { postHelper } from "./postHelper";
+import { LikeStatus, LikesPost } from "../postLikes/like.schema";
 
 
 @Injectable()
@@ -44,7 +45,7 @@ export class PostRepository {
         return post
     }
 
-    async findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType> {
+    async findPosts(params: paramsPostPaginatorType, likePosts: LikesPost[],userId?: string): Promise<viewAllPostsType> {
         const parametres = postHelper.postParamsMapper(params)
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
         const user = userId ? userId : null
@@ -54,7 +55,7 @@ export class PostRepository {
             .limit(parametres.pageSize)
 
         const totalCount = await this.postModel.countDocuments({})
-        const totalResult = res.map((el) => postHelper.postViewMapper(el, el.getDefaultLikes()))
+        const totalResult = res.map((el) => postHelper.postViewMapper(el,likePosts,userId))
         const query:viewAllPostsType = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
@@ -64,7 +65,7 @@ export class PostRepository {
         }
         return query
     }
-    async findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType> {
+    async findPostsForBlog(params: paramsPostPaginatorType, blogId: string, likePosts: LikesPost[],userId?: string): Promise<viewAllPostsType> {
         const parametres = postHelper.postParamsMapper(params)
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
         const user = userId ? userId : null
@@ -72,9 +73,10 @@ export class PostRepository {
             .sort({ [parametres.sortBy]: parametres.sortDirection, "_id":parametres.sortDirection })
             .skip(skipcount)
             .limit(parametres.pageSize)
-        console.log("res", res)
+            .lean()
         const totalCount = await this.postModel.countDocuments({blogId})
-        const totalResult = res.map((el) => postHelper.postViewMapper(el, el.getDefaultLikes()))
+        const reactions:LikesPost[] = likePosts.filter(el => res.find(item => item._id.toString() === el.postId))
+        const totalResult = res.map((el) => postHelper.postViewMapper(el, likePosts, userId))
         const query:viewAllPostsType = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
@@ -84,6 +86,7 @@ export class PostRepository {
         }
         return query
     }
+   
 
     async deleteAll () {
         return this.postModel.deleteMany()

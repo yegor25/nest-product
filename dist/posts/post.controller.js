@@ -19,6 +19,8 @@ const comment_schema_1 = require("../comments/comment.schema");
 const comments_service_1 = require("../comments/comments.service");
 const user_service_1 = require("../users/user.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth-guard");
+const like_schema_1 = require("../postLikes/like.schema");
+const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
 let PostController = class PostController {
     constructor(postService, commentService, userService) {
         this.postService = postService;
@@ -29,10 +31,10 @@ let PostController = class PostController {
         return this.postService.create(body);
     }
     async findPosts(params) {
-        return this.postService.findPosts(params);
+        return this.postService.findPosts(params, params.userId);
     }
-    async findPostById(postId) {
-        const post = await this.postService.findPostById(postId);
+    async findPostById(postId, data) {
+        const post = await this.postService.findPostById(postId, data.userId);
         if (!post)
             throw new common_1.NotFoundException();
         return post;
@@ -61,9 +63,18 @@ let PostController = class PostController {
             throw new common_1.NotFoundException();
         return this.commentService.findCommentsByPostId(postId);
     }
+    async changeLikeStatus(postId, body, req) {
+        const post = await this.postService.findPostById(postId);
+        if (!post)
+            throw new common_1.NotFoundException();
+        if (!Object.values(like_schema_1.LikeStatus).includes(body.likeStatus))
+            throw new common_1.BadRequestException([{ message: "invalid like-status", field: "likeStatus" }]);
+        return this.postService.changeLikeStatus(req.user.userId, postId, body.likeStatus, req.user.login);
+    }
 };
 exports.PostController = PostController;
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -80,11 +91,13 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findPostById", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
@@ -94,6 +107,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "changePost", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
@@ -118,6 +132,17 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findComments", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.HttpCode)(204),
+    (0, common_1.Put)(':postId/like-status'),
+    __param(0, (0, common_1.Param)('postId')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "changeLikeStatus", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService,

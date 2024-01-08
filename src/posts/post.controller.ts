@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
 import { CreatedCommentDto } from "../comments/comment.schema";
@@ -6,6 +6,9 @@ import { CommentService } from "../comments/comments.service";
 import { UserService } from "../users/user.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
 import { User } from "../users/user.schema";
+import { LikeStatus } from "../postLikes/like.schema";
+import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
+import { Request } from "express";
 
 
 
@@ -17,24 +20,26 @@ export class PostController {
       protected userService: UserService
       ){}
 
+@UseGuards(BasicAuthGuard)
  @Post()
    async createPost(@Body() body:createdPostDtoType){
     return this.postService.create(body)
    }
 
    @Get()
-   async findPosts(@Query() params: paramsPostPaginatorType){
-    return this.postService.findPosts(params)
+   async findPosts(@Query() params: paramsPostPaginatorType & {userId?: string}){
+    return this.postService.findPosts(params, params.userId)
    }
 
    @Get(':id')
-   async findPostById(@Param('id') postId: string){
-    const post = await this.postService.findPostById(postId)
+   async findPostById(@Param('id') postId: string, @Query() data:{userId: string}){
+    const post = await this.postService.findPostById(postId, data.userId)
     if(!post) throw new NotFoundException();
     return post
    }
 
 
+   @UseGuards(BasicAuthGuard)
    @Put(':id')
    @HttpCode(204)
    async changePost(@Param('id') postId: string, @Body() body: createdPostDtoType){
@@ -45,6 +50,7 @@ export class PostController {
    }
 
 
+   @UseGuards(BasicAuthGuard)
    @Delete(':id')
    @HttpCode(204)
    async deletePost(@Param('id') postId: string){
@@ -65,5 +71,14 @@ export class PostController {
       const post = await this.postService.findPostById(postId)
       if(!post) throw new NotFoundException();
       return this.commentService.findCommentsByPostId(postId)
+  }
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  @Put(':postId/like-status')
+  async changeLikeStatus(@Param('postId') postId: string ,@Body() body: {likeStatus:LikeStatus}, @Req() req: {user: {userId: string, login: string}}){
+   const post = await this.postService.findPostById(postId)
+   if(!post) throw new NotFoundException();
+   if(!Object.values(LikeStatus).includes(body.likeStatus)) throw new BadRequestException([{message: "invalid like-status", field: "likeStatus"}])
+   return this.postService.changeLikeStatus(req.user.userId,postId,body.likeStatus,req.user.login)
   }
 }

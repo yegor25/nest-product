@@ -42,7 +42,7 @@ let BlogController = class BlogController {
         return blog;
     }
     async findPostsForBlog(blogId, params) {
-        const posts = await this.postService.findPostsForBlog(params, blogId);
+        const posts = await this.postService.findPostsForBlog(params, blogId, params.userId);
         if (!posts)
             throw new common_1.NotFoundException();
         return posts;
@@ -70,6 +70,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createBlog", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Post)(':blogId/posts'),
     __param(0, (0, common_1.Param)('blogId')),
     __param(1, (0, common_1.Body)()),

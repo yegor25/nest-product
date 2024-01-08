@@ -52,7 +52,7 @@ let PostRepository = class PostRepository {
             return null;
         return post;
     }
-    async findPosts(params, userId) {
+    async findPosts(params, likePosts, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
         const user = userId ? userId : null;
@@ -61,7 +61,7 @@ let PostRepository = class PostRepository {
             .skip(skipcount)
             .limit(parametres.pageSize);
         const totalCount = await this.postModel.countDocuments({});
-        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
+        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, likePosts, userId));
         const query = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
@@ -71,17 +71,18 @@ let PostRepository = class PostRepository {
         };
         return query;
     }
-    async findPostsForBlog(params, blogId, userId) {
+    async findPostsForBlog(params, blogId, likePosts, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
         const user = userId ? userId : null;
         const res = await this.postModel.find({ blogId })
             .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
             .skip(skipcount)
-            .limit(parametres.pageSize);
-        console.log("res", res);
+            .limit(parametres.pageSize)
+            .lean();
         const totalCount = await this.postModel.countDocuments({ blogId });
-        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, el.getDefaultLikes()));
+        const reactions = likePosts.filter(el => res.find(item => item._id.toString() === el.postId));
+        const totalResult = res.map((el) => postHelper_1.postHelper.postViewMapper(el, likePosts, userId));
         const query = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,

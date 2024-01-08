@@ -18,28 +18,6 @@ var LikeStatus;
     LikeStatus["Dislike"] = "Dislike";
 })(LikeStatus || (exports.LikeStatus = LikeStatus = {}));
 let LikesPost = class LikesPost {
-    getNewstLikes(userId, reactions) {
-        let likeCount = 0;
-        let disLikeCount = 0;
-        let userStatus = LikeStatus.None;
-        reactions.forEach(el => {
-            if (el.status === LikeStatus.Like)
-                likeCount += 1;
-            if (el.status === LikeStatus.Dislike)
-                disLikeCount += 1;
-            if (userId && el.userId === userId)
-                userStatus = el.status;
-        });
-        const likes = reactions.filter(el => el.status === LikeStatus.Like).sort((a, b) => new Date(a.addedAt) < new Date(b.addedAt) ? 1 : -1);
-        const newest = likes.splice(0, 3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
-        const result = {
-            likesCount: likeCount,
-            dislikesCount: disLikeCount,
-            myStatus: userStatus,
-            newestLikes: newest
-        };
-        return result;
-    }
 };
 exports.LikesPost = LikesPost;
 __decorate([
@@ -72,7 +50,4 @@ exports.LikesPost = LikesPost = __decorate([
     (0, mongoose_1.Schema)()
 ], LikesPost);
 exports.LikePostSchema = mongoose_1.SchemaFactory.createForClass(LikesPost);
-exports.LikePostSchema.methods = {
-    getNewestLikes: LikesPost.prototype.getNewstLikes
-};
 //# sourceMappingURL=like.schema.js.map

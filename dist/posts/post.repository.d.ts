@@ -24,6 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { Post, createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, viewAllPostsType } from "./post.schema";
 import { Model } from "mongoose";
+import { LikesPost } from "../postLikes/like.schema";
 export declare class PostRepository {
     private postModel;
     constructor(postModel: Model<Post>);
@@ -32,7 +33,7 @@ export declare class PostRepository {
     changePost(dto: createdPostDtoType, id: string, blogName: string): Promise<boolean>;
     deletePost(id: string): Promise<boolean>;
     findPostById(id: string): Promise<Post | null>;
-    findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
-    findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType>;
+    findPosts(params: paramsPostPaginatorType, likePosts: LikesPost[], userId?: string): Promise<viewAllPostsType>;
+    findPostsForBlog(params: paramsPostPaginatorType, blogId: string, likePosts: LikesPost[], userId?: string): Promise<viewAllPostsType>;
     deleteAll(): Promise<import("mongodb").DeleteResult>;
 }

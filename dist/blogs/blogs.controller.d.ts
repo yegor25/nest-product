@@ -10,7 +10,9 @@ export declare class BlogController {
     createPost(blogId: string, body: createdPosForBlogtDtoType): Promise<import("../posts/post.schema").postDtoResponseType>;
     findBlogs(params: paramsBlogPaginatorType): Promise<import("./blog.schema").responseDtoBlogType>;
     findBlogById(blogId: string): Promise<import("./blog.schema").blogItemsResponseType>;
-    findPostsForBlog(blogId: string, params: paramsPostPaginatorType): Promise<import("../posts/post.schema").viewAllPostsType>;
+    findPostsForBlog(blogId: string, params: paramsPostPaginatorType & {
+        userId: string;
+    }): Promise<import("../posts/post.schema").viewAllPostsType>;
     changeBlog(blogId: string, body: createdDtoBlogType): Promise<void>;
     deleteBlog(blogId: string): Promise<void>;
 }

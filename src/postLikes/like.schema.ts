@@ -50,26 +50,7 @@ export class LikesPost  {
     isFirst: boolean
 
      
-   getNewstLikes ( userId: string | null, reactions: LikesPost[]): extendedLikesInfo  {
-        let likeCount = 0
-        let disLikeCount = 0
-        let userStatus: LikeStatus = LikeStatus.None
-        reactions.forEach(el => {
-            if (el.status === LikeStatus.Like) likeCount += 1
-            if (el.status === LikeStatus.Dislike) disLikeCount += 1
-            if (userId && el.userId === userId) userStatus = el.status
-        })
-        const likes = reactions.filter(el => el.status === LikeStatus.Like  ).sort((a, b) => new Date(a.addedAt) < new Date(b.addedAt) ? 1 : -1)
-        const newest: postLikeType[] = likes.splice(0,3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
-        const result: extendedLikesInfo = {
-            likesCount: likeCount,
-            dislikesCount: disLikeCount,
-            myStatus: userStatus,
-            newestLikes: newest
-        }
-        return result
-
-    }
+   
 }
 
 
@@ -79,9 +60,7 @@ export class LikesPost  {
 
 export const LikePostSchema = SchemaFactory.createForClass(LikesPost)
 
-LikePostSchema.methods = {
-    getNewestLikes: LikesPost.prototype.getNewstLikes
-}
+
 
 
 

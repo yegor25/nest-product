@@ -2,8 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postHelper = void 0;
 const user_schema_1 = require("../users/user.schema");
+const like_schema_1 = require("../postLikes/like.schema");
 exports.postHelper = {
-    postViewMapper(post, likes) {
+    postViewMapperDefault(post) {
+        let likesCount = 0;
+        let dislikesCount = 0;
+        let myStatus = like_schema_1.LikeStatus.None;
         const res = {
             id: post._id.toString(),
             blogId: post.blogId,
@@ -12,7 +16,48 @@ exports.postHelper = {
             content: post.content,
             blogName: post.blogName,
             createdAt: post.createdAt,
-            extendedLikesInfo: likes
+            extendedLikesInfo: {
+                likesCount,
+                dislikesCount,
+                myStatus,
+                newestLikes: []
+            }
+        };
+        return res;
+    },
+    postViewMapper(post, likePosts, userId) {
+        let likesCount = 0;
+        let dislikesCount = 0;
+        let myStatus = like_schema_1.LikeStatus.None;
+        likePosts.forEach(el => {
+            if (el.status === like_schema_1.LikeStatus.Like) {
+                likesCount += 1;
+                if (el.userId === userId)
+                    myStatus = el.status;
+                return;
+            }
+            if (el.status === like_schema_1.LikeStatus.Dislike) {
+                dislikesCount += 1;
+                if (el.userId === userId)
+                    myStatus = el.status;
+                return;
+            }
+        });
+        const newestLikes = likePosts.sort((a, b) => a.addedAt < b.addedAt ? 1 : -1).splice(0, 3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
+        const res = {
+            id: post._id.toString(),
+            blogId: post.blogId,
+            shortDescription: post.shortDescription,
+            title: post.title,
+            content: post.content,
+            blogName: post.blogName,
+            createdAt: post.createdAt,
+            extendedLikesInfo: {
+                likesCount,
+                dislikesCount,
+                myStatus,
+                newestLikes: newestLikes
+            }
         };
         return res;
     },

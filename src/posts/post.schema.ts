@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType, SortDirection } from "../users/user.schema";
-import { extendedLikesInfo, LikeStatus } from "../postLikes/like.schema";
+import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
 
 export type PostDocument = HydratedDocument<Post>
 
@@ -24,6 +24,7 @@ export class Post {
     @Prop()
     blogName: string
    
+
     @Prop({
         default: new Date().toISOString()
     })

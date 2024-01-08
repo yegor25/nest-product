@@ -19,6 +19,8 @@ export class BlogController {
     async createBlog(@Body() body: createdDtoBlogType){
         return this.blogService.create(body)
     }
+
+    @UseGuards(BasicAuthGuard)
     @Post(':blogId/posts')
     async createPost(@Param('blogId') blogId: string, @Body() body: createdPosForBlogtDtoType){
         const post = await this.postService.createForBlog(body,blogId)
@@ -38,8 +40,8 @@ export class BlogController {
         return blog
     }
     @Get(':blogId/posts')
-    async findPostsForBlog(@Param('blogId') blogId: string, @Query() params: paramsPostPaginatorType){
-        const posts = await this.postService.findPostsForBlog(params, blogId)
+    async findPostsForBlog(@Param('blogId') blogId: string, @Query() params: paramsPostPaginatorType & {userId: string}){
+        const posts = await this.postService.findPostsForBlog(params, blogId,params.userId)
         if(!posts) throw new NotFoundException();
         return posts
     }

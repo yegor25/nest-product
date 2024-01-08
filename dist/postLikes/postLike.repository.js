@@ -12,23 +12,50 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postLikeRepository = void 0;
+exports.PostLikeRepository = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const like_schema_1 = require("./like.schema");
 const mongoose_2 = require("mongoose");
-let postLikeRepository = class postLikeRepository {
+let PostLikeRepository = class PostLikeRepository {
     constructor(likesPost) {
         this.likesPost = likesPost;
     }
-    async getLikePosts(postId, userId) {
+    async getByPostId(postId) {
         const likes = await this.likesPost.find({ postId });
+        return likes;
+    }
+    async getAll() {
+        return this.likesPost.find();
+    }
+    async checkReaction(userId, postId) {
+        const reaction = await this.likesPost.findOne({ userId: userId, postId: postId });
+        if (!reaction)
+            return false;
+        return true;
+    }
+    async changeExistReaction(userId, postId, likeStatus) {
+        const newReaction = await this.likesPost.findOneAndUpdate({ userId: userId, postId: postId }, { $set: { status: likeStatus, isFirst: false, addedAt: new Date() } });
+        if (!newReaction)
+            return false;
+        return true;
+    }
+    async addNewReaction(userId, postId, likeStatus, login) {
+        const newReaction = new this.likesPost({
+            status: likeStatus,
+            userId,
+            login,
+            postId,
+            isFirst: true
+        });
+        await newReaction.save();
+        return;
     }
 };
-exports.postLikeRepository = postLikeRepository;
-exports.postLikeRepository = postLikeRepository = __decorate([
+exports.PostLikeRepository = PostLikeRepository;
+exports.PostLikeRepository = PostLikeRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(like_schema_1.LikesPost.name)),
     __metadata("design:paramtypes", [mongoose_2.Model])
-], postLikeRepository);
+], PostLikeRepository);
 //# sourceMappingURL=postLike.repository.js.map

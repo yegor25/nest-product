@@ -43,7 +43,6 @@ let CommentController = class CommentController {
         const data = await this.commentService.findById(commentId);
         if (!data)
             throw new common_1.NotFoundException();
-        const user = req.user;
         const result = await this.commentService.updateComment(commentId, userId, content);
         if (!result)
             throw new common_1.ForbiddenException();

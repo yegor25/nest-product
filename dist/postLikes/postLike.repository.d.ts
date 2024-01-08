@@ -22,10 +22,18 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { LikesPost } from "./like.schema";
+import { LikeStatus, LikesPost } from "./like.schema";
 import { Model } from "mongoose";
-export declare class postLikeRepository {
+export declare class PostLikeRepository {
     private likesPost;
     constructor(likesPost: Model<LikesPost>);
-    getLikePosts(postId: string, userId: string | null): Promise<void>;
+    getByPostId(postId: string): Promise<(import("mongoose").Document<unknown, {}, LikesPost> & LikesPost & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>)[]>;
+    getAll(): Promise<(import("mongoose").Document<unknown, {}, LikesPost> & LikesPost & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>)[]>;
+    checkReaction(userId: string, postId: string): Promise<boolean>;
+    changeExistReaction(userId: string, postId: string, likeStatus: LikeStatus): Promise<boolean>;
+    addNewReaction(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<void>;
 }

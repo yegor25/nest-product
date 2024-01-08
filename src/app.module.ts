@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -28,6 +28,10 @@ import { CommentController } from './comments/comments.controller';
 import { CommentService } from './comments/comments.service';
 import { CommentsRepository } from './comments/comments.repository';
 import { JwtStrategy } from './auth/straregies/jwt.strategy';
+import { LikePostSchema, LikesPost } from './postLikes/like.schema';
+import { PostLikeRepository } from './postLikes/postLike.repository';
+import { PostLikeService } from './postLikes/postLike.service';
+import { CheckGuess } from './auth/middlewares/check-guess.middleware';
 
 @Module({
   imports: [
@@ -37,18 +41,24 @@ import { JwtStrategy } from './auth/straregies/jwt.strategy';
       signOptions: {expiresIn: "15m"}
     }),
     
-    // MongooseModule.forRoot('mongodb://localhost/nest'),
-    MongooseModule.forRoot(
-      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot('mongodb://localhost/nest'),
+    // MongooseModule.forRoot(
+    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    // ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
       {name: Post.name, schema: PostSchema},
-      {name: Comments.name, schema: CommentsSchema}
+      {name: Comments.name, schema: CommentsSchema},
+      {name: LikesPost.name, schema: LikePostSchema}
     ]),
   ],
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService],
+
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CheckGuess).forRoutes('posts','blogs')
+  }
+}
