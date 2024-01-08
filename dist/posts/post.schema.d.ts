@@ -52,11 +52,11 @@ export declare class createdPostDtoType {
     content: string;
     blogId: string;
 }
-export type createdPosForBlogtDtoType = {
+export declare class createdPosForBlogtDtoType {
     title: string;
     shortDescription: string;
     content: string;
-};
+}
 export declare class postDtoTypeForBlog {
     title: string;
     shortDescription: string;
