@@ -43,7 +43,7 @@ export const postHelper = {
                 return
             }
         })
-        const newestLikes:postLikeType[] = likePosts.sort((a,b) => a.addedAt < b.addedAt ? 1 : -1).splice(0,3).map(el => ({addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login}))
+        const newestLikes:postLikeType[] = likePosts.filter(el => el.status === LikeStatus.Like).sort((a,b) => a.addedAt < b.addedAt ? 1 : -1).splice(0,3).map(el => ({addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login}))
         const res:postDtoResponseType = {
             id: post._id.toString(),
             blogId: post.blogId,

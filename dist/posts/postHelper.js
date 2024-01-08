@@ -43,7 +43,7 @@ exports.postHelper = {
                 return;
             }
         });
-        const newestLikes = likePosts.sort((a, b) => a.addedAt < b.addedAt ? 1 : -1).splice(0, 3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
+        const newestLikes = likePosts.filter(el => el.status === like_schema_1.LikeStatus.Like).sort((a, b) => a.addedAt < b.addedAt ? 1 : -1).splice(0, 3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
         const res = {
             id: post._id.toString(),
             blogId: post.blogId,

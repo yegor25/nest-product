@@ -76,7 +76,7 @@ export class PostRepository {
             .lean()
         const totalCount = await this.postModel.countDocuments({blogId})
         const reactions:LikesPost[] = likePosts.filter(el => res.find(item => item._id.toString() === el.postId))
-        const totalResult = res.map((el) => postHelper.postViewMapper(el, likePosts, userId))
+        const totalResult = res.map((el) => postHelper.postViewMapper(el, reactions, userId))
         const query:viewAllPostsType = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
