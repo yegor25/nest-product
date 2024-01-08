@@ -23,7 +23,9 @@ export class PostController {
 @UseGuards(BasicAuthGuard)
  @Post()
    async createPost(@Body() body:createdPostDtoType){
-    return this.postService.create(body)
+    const data = await this.postService.create(body)
+    if(!data) throw new BadRequestException([{message: "invalid blogid", field: "blogId"}])
+    return data
    }
 
    @Get()

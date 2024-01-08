@@ -15,10 +15,10 @@ export class PostService {
         protected postLikeService: PostLikeService
         ){}
 
-    async create(dto: createdPostDtoType):Promise<postDtoResponseType>{
+    async create(dto: createdPostDtoType):Promise<postDtoResponseType | null>{
         const blog = await this.blogService.findById(dto.blogId)
+        if(!blog) return null
         const newPost = await this.postRepository.create(dto, blog?.name as string)
-        const likes = newPost.getDefaultLikes()
         const resultDto = postHelper.postViewMapperDefault(newPost)
         return resultDto
     }

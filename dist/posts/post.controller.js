@@ -29,7 +29,10 @@ let PostController = class PostController {
         this.userService = userService;
     }
     async createPost(body) {
-        return this.postService.create(body);
+        const data = await this.postService.create(body);
+        if (!data)
+            throw new common_1.BadRequestException([{ message: "invalid blogid", field: "blogId" }]);
+        return data;
     }
     async findPosts(params) {
         return this.postService.findPosts(params, params.userId);

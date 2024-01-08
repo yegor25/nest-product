@@ -8,7 +8,7 @@ export declare class PostService {
     protected blogService: BlogService;
     protected postLikeService: PostLikeService;
     constructor(postRepository: PostRepository, blogService: BlogService, postLikeService: PostLikeService);
-    create(dto: createdPostDtoType): Promise<postDtoResponseType>;
+    create(dto: createdPostDtoType): Promise<postDtoResponseType | null>;
     createForBlog(dto: createdPosForBlogtDtoType, blogId: string): Promise<postDtoResponseType | null>;
     changePost(dto: createdPostDtoType, postId: string): Promise<boolean>;
     delete(id: string): Promise<boolean>;

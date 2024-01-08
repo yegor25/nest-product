@@ -23,8 +23,9 @@ let PostService = class PostService {
     }
     async create(dto) {
         const blog = await this.blogService.findById(dto.blogId);
+        if (!blog)
+            return null;
         const newPost = await this.postRepository.create(dto, blog?.name);
-        const likes = newPost.getDefaultLikes();
         const resultDto = postHelper_1.postHelper.postViewMapperDefault(newPost);
         return resultDto;
     }
