@@ -8,17 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostSchema = exports.createdPosForBlogtDtoType = exports.createdPostDtoType = exports.Post = void 0;
+exports.PostSchema = exports.postDtoTypeForBlog = exports.createdPostDtoType = exports.Post = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
-const mongoose_2 = __importDefault(require("mongoose"));
 const like_schema_1 = require("../postLikes/like.schema");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const common_1 = require("@nestjs/common");
 let Post = class Post {
     getDefaultLikes() {
         return {
@@ -82,34 +77,29 @@ __decorate([
 ], createdPostDtoType.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_transformer_1.Type)(() => mongoose_2.default.Types.ObjectId),
-    (0, class_transformer_1.Transform)(({ value }) => {
-        if (!mongoose_2.default.isValidObjectId(value))
-            throw new common_1.BadRequestException([{ message: "inclva", field: "blogId" }]);
-    }),
     __metadata("design:type", String)
 ], createdPostDtoType.prototype, "blogId", void 0);
-class createdPosForBlogtDtoType {
+class postDtoTypeForBlog {
 }
-exports.createdPosForBlogtDtoType = createdPosForBlogtDtoType;
+exports.postDtoTypeForBlog = postDtoTypeForBlog;
 __decorate([
     (0, class_transformer_1.Transform)(({ value }) => value.trim()),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(30),
     __metadata("design:type", String)
-], createdPosForBlogtDtoType.prototype, "title", void 0);
+], postDtoTypeForBlog.prototype, "title", void 0);
 __decorate([
     (0, class_transformer_1.Transform)(({ value }) => value.trim()),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
-], createdPosForBlogtDtoType.prototype, "shortDescription", void 0);
+], postDtoTypeForBlog.prototype, "shortDescription", void 0);
 __decorate([
     (0, class_transformer_1.Transform)(({ value }) => value.trim()),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(1000),
     __metadata("design:type", String)
-], createdPosForBlogtDtoType.prototype, "content", void 0);
+], postDtoTypeForBlog.prototype, "content", void 0);
 exports.PostSchema = mongoose_1.SchemaFactory.createForClass(Post);
 exports.PostSchema.methods = {
     getDefaultLikes: Post.prototype.getDefaultLikes

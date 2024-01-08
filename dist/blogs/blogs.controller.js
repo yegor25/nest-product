@@ -16,7 +16,6 @@ exports.BlogController = void 0;
 const common_1 = require("@nestjs/common");
 const blog_schema_1 = require("./blog.schema");
 const blog_service_1 = require("./blog.service");
-const post_schema_1 = require("../posts/post.schema");
 const post_service_1 = require("../posts/post.service");
 const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
 let BlogController = class BlogController {
@@ -76,7 +75,7 @@ __decorate([
     __param(0, (0, common_1.Param)('blogId')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, post_schema_1.createdPosForBlogtDtoType]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "createPost", null);
 __decorate([

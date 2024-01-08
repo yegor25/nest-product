@@ -2,9 +2,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType, SortDirection } from "../users/user.schema";
 import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
-import { Transform, Type } from "class-transformer";
+import { Transform } from "class-transformer";
 import { IsNotEmpty, MaxLength } from "class-validator";
-import { BadRequestException } from "@nestjs/common";
 
 export type PostDocument = HydratedDocument<Post>
 
@@ -74,13 +73,14 @@ export class createdPostDtoType  {
     @MaxLength(1000)
     content: string
     @IsNotEmpty()
-    @Type(() => mongoose.Types.ObjectId)
-    @Transform(({value}) => {
-        if (!mongoose.isValidObjectId(value)) throw new BadRequestException([{message: "inclva", field: "blogId"}])
-    } )
     blogId: string
 }
-export class createdPosForBlogtDtoType  {
+export type createdPosForBlogtDtoType = {
+    title: string,
+    shortDescription: string,
+    content: string,
+}
+export class postDtoTypeForBlog {
     @Transform(({value}) => value.trim())
     @IsNotEmpty()
     @MaxLength(30)
@@ -94,20 +94,6 @@ export class createdPosForBlogtDtoType  {
     @MaxLength(1000)
     content: string
 }
-// export class postDtoTypeForBlog {
-//     @Transform(({value}) => value.trim())
-//     @IsNotEmpty()
-//     @MaxLength(30)
-//     title: string
-//     @Transform(({value}) => value.trim())
-//     @IsNotEmpty()
-//     @MaxLength(100)
-//     shortDescription: string
-//     @Transform(({value}) => value.trim())
-//     @IsNotEmpty()
-//     @MaxLength(1000)
-//     content: string
-// }
 
 
 
