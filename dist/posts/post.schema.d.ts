@@ -57,11 +57,6 @@ export declare class createdPosForBlogtDtoType {
     shortDescription: string;
     content: string;
 }
-export declare class postDtoTypeForBlog {
-    title: string;
-    shortDescription: string;
-    content: string;
-}
 export type viewAllPostsType = PaginatorType & {
     items: postDtoResponseType[];
 };

@@ -94,20 +94,20 @@ export class createdPosForBlogtDtoType  {
     @MaxLength(1000)
     content: string
 }
-export class postDtoTypeForBlog {
-    @Transform(({value}) => value.trim())
-    @IsNotEmpty()
-    @MaxLength(30)
-    title: string
-    @Transform(({value}) => value.trim())
-    @IsNotEmpty()
-    @MaxLength(100)
-    shortDescription: string
-    @Transform(({value}) => value.trim())
-    @IsNotEmpty()
-    @MaxLength(1000)
-    content: string
-}
+// export class postDtoTypeForBlog {
+//     @Transform(({value}) => value.trim())
+//     @IsNotEmpty()
+//     @MaxLength(30)
+//     title: string
+//     @Transform(({value}) => value.trim())
+//     @IsNotEmpty()
+//     @MaxLength(100)
+//     shortDescription: string
+//     @Transform(({value}) => value.trim())
+//     @IsNotEmpty()
+//     @MaxLength(1000)
+//     content: string
+// }
 
 
 

@@ -30,8 +30,6 @@ let PostController = class PostController {
     }
     async createPost(body) {
         const data = await this.postService.create(body);
-        if (!data)
-            throw new common_1.BadRequestException([{ message: "invalid blogid", field: "blogId" }]);
         return data;
     }
     async findPosts(params) {

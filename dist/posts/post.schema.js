@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostSchema = exports.postDtoTypeForBlog = exports.createdPosForBlogtDtoType = exports.createdPostDtoType = exports.Post = void 0;
+exports.PostSchema = exports.createdPosForBlogtDtoType = exports.createdPostDtoType = exports.Post = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = __importDefault(require("mongoose"));
 const like_schema_1 = require("../postLikes/like.schema");
@@ -110,27 +110,6 @@ __decorate([
     (0, class_validator_1.MaxLength)(1000),
     __metadata("design:type", String)
 ], createdPosForBlogtDtoType.prototype, "content", void 0);
-class postDtoTypeForBlog {
-}
-exports.postDtoTypeForBlog = postDtoTypeForBlog;
-__decorate([
-    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(30),
-    __metadata("design:type", String)
-], postDtoTypeForBlog.prototype, "title", void 0);
-__decorate([
-    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(100),
-    __metadata("design:type", String)
-], postDtoTypeForBlog.prototype, "shortDescription", void 0);
-__decorate([
-    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(1000),
-    __metadata("design:type", String)
-], postDtoTypeForBlog.prototype, "content", void 0);
 exports.PostSchema = mongoose_1.SchemaFactory.createForClass(Post);
 exports.PostSchema.methods = {
     getDefaultLikes: Post.prototype.getDefaultLikes

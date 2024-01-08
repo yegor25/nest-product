@@ -24,7 +24,6 @@ export class PostController {
  @Post()
    async createPost(@Body() body:createdPostDtoType){
     const data = await this.postService.create(body)
-    if(!data) throw new BadRequestException([{message: "invalid blogid", field: "blogId"}])
     return data
    }
 
