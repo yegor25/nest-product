@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { CommentViewModelType, Comments, commentForDbDtoType } from "./comment.schema";
+import { CommentViewModelType, Comments, CommentsLike, commentForDbDtoType } from "./comment.schema";
 import { Model } from "mongoose";
 import { commentHelper } from "./comment.helper";
+import { LikeStatus } from "../postLikes/like.schema";
 
 
 
@@ -42,5 +43,28 @@ export class CommentsRepository {
     async deleteAll(): Promise<boolean> {
         const res = await this.commentsModel.deleteMany({})
         return res.deletedCount > 0
+    }
+
+    // async changeLikeStatus(status:LikeStatus, commentId: string, userId: string) {
+    //     const post = await this.commentsModel.findById(commentId)
+    //     if(!post) return false
+    //     const newItem:CommentsLike = {userId, status}
+    //     post.likeComments.push(newItem)
+    //     await post.save()
+    // }
+    async changeExistLikeStatus(status:LikeStatus, commentId: string, userId: string){
+        const post = await this.commentsModel.findById(commentId)
+        if(!post) return false
+        const newItem:CommentsLike = {userId, status}
+        const existReaction = post.likeComments.find(el => el.userId === userId)
+        if(!existReaction){
+            post.likeComments.push(newItem)
+            await post.save()
+            return true
+        } else {
+            post.likeComments = post.likeComments.map(el => el.userId === userId ? {...el, status: status} : el)
+            await post.save()
+            return
+        }
     }
 }

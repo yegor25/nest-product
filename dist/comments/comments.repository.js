@@ -57,6 +57,23 @@ let CommentsRepository = class CommentsRepository {
         const res = await this.commentsModel.deleteMany({});
         return res.deletedCount > 0;
     }
+    async changeExistLikeStatus(status, commentId, userId) {
+        const post = await this.commentsModel.findById(commentId);
+        if (!post)
+            return false;
+        const newItem = { userId, status };
+        const existReaction = post.likeComments.find(el => el.userId === userId);
+        if (!existReaction) {
+            post.likeComments.push(newItem);
+            await post.save();
+            return true;
+        }
+        else {
+            post.likeComments = post.likeComments.map(el => el.userId === userId ? { ...el, status: status } : el);
+            await post.save();
+            return;
+        }
+    }
 };
 exports.CommentsRepository = CommentsRepository;
 exports.CommentsRepository = CommentsRepository = __decorate([

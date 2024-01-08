@@ -5,14 +5,16 @@ const like_schema_1 = require("../postLikes/like.schema");
 class CommentHelper {
     commentsMapper(comment, userId) {
         const userReaction = comment.likeComments.find(c => c.userId === userId);
+        const likesCount = comment.likeComments.filter(el => el.status === like_schema_1.LikeStatus.Like);
+        const dislikesCount = comment.likeComments.filter(el => el.status === like_schema_1.LikeStatus.Dislike);
         const res = {
             id: comment._id.toString(),
             content: comment.content,
             commentatorInfo: comment.commentatorInfo,
             createdAt: comment.createdAt,
             likesInfo: {
-                likesCount: comment.likesCount,
-                dislikesCount: comment.dislikesCount,
+                likesCount: likesCount.length,
+                dislikesCount: dislikesCount.length,
                 myStatus: userReaction ? userReaction.status : like_schema_1.LikeStatus.None
             }
         };

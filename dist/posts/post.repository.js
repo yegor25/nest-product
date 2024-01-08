@@ -74,7 +74,6 @@ let PostRepository = class PostRepository {
     async findPostsForBlog(params, blogId, likePosts, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
-        const user = userId ? userId : null;
         const res = await this.postModel.find({ blogId })
             .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
             .skip(skipcount)

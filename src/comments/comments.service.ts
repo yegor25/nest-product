@@ -4,6 +4,8 @@ import { User } from "../users/user.schema"
 import { CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType } from "./comment.schema"
 import { CommentsRepository } from "./comments.repository"
 import { Injectable } from "@nestjs/common"
+import { LikeStatus } from "../postLikes/like.schema"
+import { commentHelper } from "./comment.helper"
 
 @Injectable()
 export class CommentService {
@@ -29,11 +31,16 @@ export class CommentService {
         }
         return  this.commentsRepository.createComment(newComment)
     }
-    async findById(id: string):Promise<Comments | null>{
-        return this.commentsRepository.findById(id)
+    async findById(id: string, userId?: string):Promise<CommentViewModelType | null>{
+        const query = await this.commentsRepository.findById(id)
+        if(!query) return null
+        return commentHelper.commentsMapper(query,userId)
     }
-    async findCommentsByPostId(postId: string):Promise<Comments[]>{
-        return this.commentsRepository.findCommentsByPostId(postId)
+    async findCommentsByPostId(postId: string, userId?: string):Promise<CommentViewModelType[]>{
+
+        const query = await this.commentsRepository.findCommentsByPostId(postId)
+        const result: CommentViewModelType[] = query.map(el => commentHelper.commentsMapper(el))
+        return result
     }
     async deleteComment(id: string, userId: string): Promise<boolean> {
         return this.commentsRepository.deleteComments(id, userId)
@@ -44,10 +51,9 @@ export class CommentService {
     // async deleteAllComments():Promise<boolean>{
     //     return this.commentsRepository.deleteAll()
     // }
-    // async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
-    //     const comment = await QueryCommentsRepository.getCommentModelById(commentId)
-    //     comment?.changeLikeStatus(userId, likeStatus)
-    //     await comment?.save()
-    //     return true
-    // }
+    async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
+       const newStatus = await this.commentsRepository.changeExistLikeStatus(likeStatus, commentId,userId)
+       if(!newStatus) return false
+        return true
+    }
 }

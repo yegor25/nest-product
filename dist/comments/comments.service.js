@@ -14,6 +14,7 @@ const user_service_1 = require("../users/user.service");
 const post_service_1 = require("../posts/post.service");
 const comments_repository_1 = require("./comments.repository");
 const common_1 = require("@nestjs/common");
+const comment_helper_1 = require("./comment.helper");
 let CommentService = class CommentService {
     constructor(commentsRepository, postService, userService) {
         this.commentsRepository = commentsRepository;
@@ -38,17 +39,28 @@ let CommentService = class CommentService {
         };
         return this.commentsRepository.createComment(newComment);
     }
-    async findById(id) {
-        return this.commentsRepository.findById(id);
+    async findById(id, userId) {
+        const query = await this.commentsRepository.findById(id);
+        if (!query)
+            return null;
+        return comment_helper_1.commentHelper.commentsMapper(query, userId);
     }
-    async findCommentsByPostId(postId) {
-        return this.commentsRepository.findCommentsByPostId(postId);
+    async findCommentsByPostId(postId, userId) {
+        const query = await this.commentsRepository.findCommentsByPostId(postId);
+        const result = query.map(el => comment_helper_1.commentHelper.commentsMapper(el));
+        return result;
     }
     async deleteComment(id, userId) {
         return this.commentsRepository.deleteComments(id, userId);
     }
     async updateComment(id, userId, content) {
         return this.commentsRepository.updateComment(id, userId, content);
+    }
+    async updateLikeStatus(likeStatus, userId, commentId) {
+        const newStatus = await this.commentsRepository.changeExistLikeStatus(likeStatus, commentId, userId);
+        if (!newStatus)
+            return false;
+        return true;
     }
 };
 exports.CommentService = CommentService;

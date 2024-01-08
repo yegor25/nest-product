@@ -24,6 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { CommentViewModelType, Comments, commentForDbDtoType } from "./comment.schema";
 import { Model } from "mongoose";
+import { LikeStatus } from "../postLikes/like.schema";
 export declare class CommentsRepository {
     private commentsModel;
     constructor(commentsModel: Model<Comments>);
@@ -33,4 +34,5 @@ export declare class CommentsRepository {
     findById(id: string): Promise<Comments | null>;
     findCommentsByPostId(postId: string): Promise<Comments[]>;
     deleteAll(): Promise<boolean>;
+    changeExistLikeStatus(status: LikeStatus, commentId: string, userId: string): Promise<boolean | undefined>;
 }

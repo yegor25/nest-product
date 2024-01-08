@@ -1,8 +1,9 @@
 
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, NotFoundException, Param, Put, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, HttpCode, NotFoundException, Param, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { CommentService } from "./comments.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
 import { CreatedCommentDto } from "./comment.schema";
+import { LikeStatus } from "../postLikes/like.schema";
 
 
 @Controller('comments')
@@ -13,8 +14,8 @@ export class CommentController  {
     ){}
 
     @Get(":id")
-    async getById(@Param('id') commentId: string){
-        const data = await this.commentService.findById(commentId)
+    async getById(@Param('id') commentId: string,@Query() params:{userId: string}){
+        const data = await this.commentService.findById(commentId,params.userId)
         if(!data) throw new NotFoundException();
         return data
     } 
@@ -43,15 +44,14 @@ export class CommentController  {
         if(!result) throw new ForbiddenException();
         return
     }
-    // @Put(':commentId/like-status')
-    // @HttpCode(204)
-    // async changeLikeStatus(@Param('commentId') commentId: string, @Req() req) {
-    //     const status = req.body.likeStatus
-    //     const data = await QueryCommentsRepository.getCommentsById(req.params.commentId, req.user?._id.toString())
-    //     if(!data) throw new NotFoundException();
-    //     const user = req.user
-    //     const result = await commentService.updateLikeStatus(status,user?._id.toString() as string,commentId)
-    //     if(!result) throw new ForbiddenException();
-    //     return
-    // }
+
+    @UseGuards(JwtAuthGuard)
+    @Put(':commentId/like-status')
+    @HttpCode(204)
+    async changeLikeStatus(@Param('commentId') commentId: string, @Body() body: {likeStatus:LikeStatus}, @Req() req: {user: {userId: string, login: string}}) {
+        const comment = await this.commentService.findById(commentId)
+        if(!comment) throw new NotFoundException();
+        if(!Object.values(LikeStatus).includes(body.likeStatus)) throw new BadRequestException([{message: "invalid like-status", field: "likeStatus"}])
+        return this.commentService.updateLikeStatus(body.likeStatus,req.user.userId,commentId)
+    }
 }

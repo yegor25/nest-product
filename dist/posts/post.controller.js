@@ -57,11 +57,11 @@ let PostController = class PostController {
             throw new common_1.NotFoundException();
         return comment;
     }
-    async findComments(postId) {
+    async findComments(postId, data) {
         const post = await this.postService.findPostById(postId);
         if (!post)
             throw new common_1.NotFoundException();
-        return this.commentService.findCommentsByPostId(postId);
+        return this.commentService.findCommentsByPostId(postId, data.userId);
     }
     async changeLikeStatus(postId, body, req) {
         const post = await this.postService.findPostById(postId);
@@ -128,8 +128,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':postId/comments'),
     __param(0, (0, common_1.Param)('postId')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findComments", null);
 __decorate([

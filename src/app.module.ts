@@ -59,6 +59,6 @@ import { CheckGuess } from './auth/middlewares/check-guess.middleware';
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckGuess).forRoutes('posts','blogs')
+    consumer.apply(CheckGuess).forRoutes('posts','blogs','comments')
   }
 }

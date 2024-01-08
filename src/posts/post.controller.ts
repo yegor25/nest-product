@@ -67,10 +67,10 @@ export class PostController {
       return comment
   }
    @Get(':postId/comments')
-   async findComments( @Param('postId') postId: string) {
+   async findComments( @Param('postId') postId: string, @Query() data:{userId: string}) {
       const post = await this.postService.findPostById(postId)
       if(!post) throw new NotFoundException();
-      return this.commentService.findCommentsByPostId(postId)
+      return this.commentService.findCommentsByPostId(postId,data.userId)
   }
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)

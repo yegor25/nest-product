@@ -27,7 +27,7 @@ export class CommentsLike {
     @Prop({
         type: String,
         enum: LikeStatus,
-        default: []
+        default: LikeStatus.None
     })
     status: LikeStatus
 }
@@ -53,7 +53,7 @@ export class Comments {
     @Prop({
         default: []
     })
-    likeComments: [CommentsLike]
+    likeComments: CommentsLike[]
 
     @Prop({
         default: 0

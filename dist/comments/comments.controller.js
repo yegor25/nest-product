@@ -17,12 +17,13 @@ const common_1 = require("@nestjs/common");
 const comments_service_1 = require("./comments.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth-guard");
 const comment_schema_1 = require("./comment.schema");
+const like_schema_1 = require("../postLikes/like.schema");
 let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
-    async getById(commentId) {
-        const data = await this.commentService.findById(commentId);
+    async getById(commentId, params) {
+        const data = await this.commentService.findById(commentId, params.userId);
         if (!data)
             throw new common_1.NotFoundException();
         return data;
@@ -48,13 +49,22 @@ let CommentController = class CommentController {
             throw new common_1.ForbiddenException();
         return;
     }
+    async changeLikeStatus(commentId, body, req) {
+        const comment = await this.commentService.findById(commentId);
+        if (!comment)
+            throw new common_1.NotFoundException();
+        if (!Object.values(like_schema_1.LikeStatus).includes(body.likeStatus))
+            throw new common_1.BadRequestException([{ message: "invalid like-status", field: "likeStatus" }]);
+        return this.commentService.updateLikeStatus(body.likeStatus, req.user.userId, commentId);
+    }
 };
 exports.CommentController = CommentController;
 __decorate([
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getById", null);
 __decorate([
@@ -78,6 +88,17 @@ __decorate([
     __metadata("design:paramtypes", [comment_schema_1.CreatedCommentDto, String, Object]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "changeComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Put)(':commentId/like-status'),
+    (0, common_1.HttpCode)(204),
+    __param(0, (0, common_1.Param)('commentId')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "changeLikeStatus", null);
 exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comments'),
     __metadata("design:paramtypes", [comments_service_1.CommentService])

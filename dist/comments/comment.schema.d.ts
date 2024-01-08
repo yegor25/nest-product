@@ -39,7 +39,7 @@ export declare class Comments {
     commentatorInfo: CommentatorInfo;
     createdAt: string;
     postId: string;
-    likeComments: [CommentsLike];
+    likeComments: CommentsLike[];
     likesCount: number;
     dislikesCount: number;
 }

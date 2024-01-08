@@ -23,7 +23,9 @@ export declare class PostController {
             userId: string;
         };
     }): Promise<import("../comments/comment.schema").CommentViewModelType>;
-    findComments(postId: string): Promise<import("../comments/comment.schema").Comments[]>;
+    findComments(postId: string, data: {
+        userId: string;
+    }): Promise<import("../comments/comment.schema").CommentViewModelType[]>;
     changeLikeStatus(postId: string, body: {
         likeStatus: LikeStatus;
     }, req: {

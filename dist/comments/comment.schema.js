@@ -39,7 +39,7 @@ __decorate([
     (0, mongoose_1.Prop)({
         type: String,
         enum: like_schema_1.LikeStatus,
-        default: []
+        default: like_schema_1.LikeStatus.None
     }),
     __metadata("design:type", String)
 ], CommentsLike.prototype, "status", void 0);

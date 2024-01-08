@@ -43,7 +43,7 @@ const postLike_service_1 = require("./postLikes/postLike.service");
 const check_guess_middleware_1 = require("./auth/middlewares/check-guess.middleware");
 let AppModule = class AppModule {
     configure(consumer) {
-        consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs');
+        consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments');
     }
 };
 exports.AppModule = AppModule;
