@@ -32,12 +32,12 @@ export const postHelper = {
         let dislikesCount = 0
         let myStatus:LikeStatus = LikeStatus.None
         likePosts.forEach(el => {
-            if(el.status === LikeStatus.Like){
+            if(el.status === LikeStatus.Like && el.postId === post._id.toString()){
                 likesCount += 1
                if (el.userId === userId )myStatus = el.status
                return
             }
-            if(el.status === LikeStatus.Dislike){
+            if(el.status === LikeStatus.Dislike && el.postId === post._id.toString()){
                 dislikesCount += 1
                 if(el.userId === userId) myStatus = el.status
                 return

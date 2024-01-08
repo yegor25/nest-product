@@ -30,13 +30,13 @@ exports.postHelper = {
         let dislikesCount = 0;
         let myStatus = like_schema_1.LikeStatus.None;
         likePosts.forEach(el => {
-            if (el.status === like_schema_1.LikeStatus.Like) {
+            if (el.status === like_schema_1.LikeStatus.Like && el.postId === post._id.toString()) {
                 likesCount += 1;
                 if (el.userId === userId)
                     myStatus = el.status;
                 return;
             }
-            if (el.status === like_schema_1.LikeStatus.Dislike) {
+            if (el.status === like_schema_1.LikeStatus.Dislike && el.postId === post._id.toString()) {
                 dislikesCount += 1;
                 if (el.userId === userId)
                     myStatus = el.status;
