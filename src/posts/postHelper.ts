@@ -56,7 +56,7 @@ export const postHelper = {
                 likesCount,
                 dislikesCount,
                 myStatus,
-                newestLikes:[]
+                newestLikes:newestLikes
             }
         }
         return res
