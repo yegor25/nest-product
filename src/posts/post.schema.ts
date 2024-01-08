@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType, SortDirection } from "../users/user.schema";
 import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
+import { Transform } from "class-transformer";
+import { IsNotEmpty, MaxLength } from "class-validator";
 
 export type PostDocument = HydratedDocument<Post>
 
@@ -56,10 +58,21 @@ export type postDtoResponseType = {
 }
 
 
-export type createdPostDtoType = {
-    title: string,
-    shortDescription: string,
-    content: string,
+export class createdPostDtoType  {
+
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(30)
+    title: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(100)
+    shortDescription: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(1000)
+    content: string
+    @IsNotEmpty()
     blogId: string
 }
 export type createdPosForBlogtDtoType = {
@@ -67,10 +80,19 @@ export type createdPosForBlogtDtoType = {
     shortDescription: string,
     content: string,
 }
-export type postDtoTypeForBlog = {
-    title: string,
-    shortDescription: string,
-    content: string,
+export class postDtoTypeForBlog {
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(30)
+    title: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(100)
+    shortDescription: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(1000)
+    content: string
 }
 
 

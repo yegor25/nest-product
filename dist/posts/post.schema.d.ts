@@ -46,22 +46,22 @@ export type postDtoResponseType = {
     createdAt: string;
     extendedLikesInfo: extendedLikesInfo;
 };
-export type createdPostDtoType = {
+export declare class createdPostDtoType {
     title: string;
     shortDescription: string;
     content: string;
     blogId: string;
-};
+}
 export type createdPosForBlogtDtoType = {
     title: string;
     shortDescription: string;
     content: string;
 };
-export type postDtoTypeForBlog = {
+export declare class postDtoTypeForBlog {
     title: string;
     shortDescription: string;
     content: string;
-};
+}
 export type viewAllPostsType = PaginatorType & {
     items: postDtoResponseType[];
 };

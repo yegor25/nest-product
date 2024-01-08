@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_service_1 = require("./post.service");
+const post_schema_1 = require("./post.schema");
 const comment_schema_1 = require("../comments/comment.schema");
 const comments_service_1 = require("../comments/comments.service");
 const user_service_1 = require("../users/user.service");
@@ -78,7 +79,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [post_schema_1.createdPostDtoType]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "createPost", null);
 __decorate([
@@ -103,7 +104,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, post_schema_1.createdPostDtoType]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "changePost", null);
 __decorate([
