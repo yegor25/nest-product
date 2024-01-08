@@ -12,15 +12,22 @@ export class CheckGuess implements NestMiddleware {
 
     }
   async  use(req: Request, res: Response, next: NextFunction) {
-      const token =  req.headers.authorization
-     if(!token) {
+    if(!req.headers.authorization){
         req.query.userId = ""
-      next();
-     } else {
-        const payload = token.split(" ")[1]
-        const data = await this.jwtService.verify(payload)
-       req.query.userId = data.sub
-        next()
+        next();
+    } else {
+        const token =  req.headers.authorization
+        const payload = token.split(" ")[1] 
+        try {
+            const data = await this.jwtService.verify(payload)
+            if(data) req.query.userId = data.sub
+            next()
+        } catch (error) {
+            req.query.userId = ""
+            next()
+        }
+       
+    }
+  
      }
    }
-}
