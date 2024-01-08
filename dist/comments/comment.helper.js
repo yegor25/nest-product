@@ -4,6 +4,7 @@ exports.commentHelper = void 0;
 const like_schema_1 = require("../postLikes/like.schema");
 class CommentHelper {
     commentsMapper(comment, userId) {
+        console.log("userId", userId);
         const userReaction = comment.likeComments.find(c => c.userId === userId);
         const likesCount = comment.likeComments.filter(el => el.status === like_schema_1.LikeStatus.Like);
         const dislikesCount = comment.likeComments.filter(el => el.status === like_schema_1.LikeStatus.Dislike);

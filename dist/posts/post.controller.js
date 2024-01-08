@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
@@ -22,6 +25,7 @@ const user_service_1 = require("../users/user.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth-guard");
 const like_schema_1 = require("../postLikes/like.schema");
 const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
+const mongoose_1 = __importDefault(require("mongoose"));
 let PostController = class PostController {
     constructor(postService, commentService, userService) {
         this.postService = postService;
@@ -29,6 +33,8 @@ let PostController = class PostController {
         this.userService = userService;
     }
     async createPost(body) {
+        if (!mongoose_1.default.isValidObjectId(body.blogId))
+            throw new common_1.BadRequestException([{ field: "blogId", message: "blogId" }]);
         const data = await this.postService.create(body);
         if (!data)
             throw new common_1.BadRequestException([{ field: "blogId", message: "invalid blogid" }]);

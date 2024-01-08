@@ -5,6 +5,7 @@ import { CommentViewModelType, Comments } from "./comment.schema";
 
 class CommentHelper {
     commentsMapper(comment: Comments, userId?: string):CommentViewModelType{
+        console.log("userId", userId)
         const userReaction = comment.likeComments.find(c => c.userId === userId)
         const likesCount = comment.likeComments.filter(el => el.status === LikeStatus.Like)
         const dislikesCount = comment.likeComments.filter(el => el.status === LikeStatus.Dislike)

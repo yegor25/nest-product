@@ -39,7 +39,7 @@ export class CommentService {
     async findCommentsByPostId(postId: string, userId?: string):Promise<CommentViewModelType[]>{
 
         const query = await this.commentsRepository.findCommentsByPostId(postId)
-        const result: CommentViewModelType[] = query.map(el => commentHelper.commentsMapper(el))
+        const result: CommentViewModelType[] = query.map(el => commentHelper.commentsMapper(el, userId))
         return result
     }
     async deleteComment(id: string, userId: string): Promise<boolean> {

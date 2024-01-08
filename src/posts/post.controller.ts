@@ -9,6 +9,7 @@ import { User } from "../users/user.schema";
 import { LikeStatus } from "../postLikes/like.schema";
 import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
 import { Request } from "express";
+import mongoose from "mongoose";
 
 
 
@@ -23,6 +24,7 @@ export class PostController {
 @UseGuards(BasicAuthGuard)
  @Post()
    async createPost(@Body() body:createdPostDtoType){
+   if(!mongoose.isValidObjectId(body.blogId)) throw new BadRequestException([{field: "blogId", message: "blogId"}])
     const data = await this.postService.create(body)
     if(!data) throw new BadRequestException([{field: "blogId", message: "invalid blogid"}])
     return data
