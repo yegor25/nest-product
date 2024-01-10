@@ -59,11 +59,11 @@ let PostController = class PostController {
             throw new common_1.NotFoundException();
         return comment;
     }
-    async findComments(postId, data) {
+    async findComments(postId, params) {
         const post = await this.postService.findPostById(postId);
         if (!post)
             throw new common_1.NotFoundException();
-        return this.commentService.findCommentsByPostId(postId, data.userId);
+        return this.commentService.findCommentsByPostId(postId, { sortDirection: params.sortDirection, sortBy: params.sortBy, pageNumber: params.pageNumber, pageSize: params.pageSize }, params.userId);
     }
     async changeLikeStatus(postId, body, req) {
         const post = await this.postService.findPostById(postId);

@@ -3,6 +3,7 @@ import mongoose, { HydratedDocument } from "mongoose"
 import { LikeStatus } from "../postLikes/like.schema"
 import { MaxLength, MinLength } from "class-validator"
 import { Transform } from "class-transformer"
+import { PaginatorType, SortDirection } from "../blogs/blog.schema"
 
 
 
@@ -85,6 +86,21 @@ export type CommentViewModelType = {
     commentatorInfo: CommentatorInfo,
     createdAt: string,
     likesInfo: likeInfo
+}
+export type paramsCommentsPaginatorType = {
+    sortBy: keyof Comments,
+    sortDirection: SortDirection,
+    pageNumber: number,
+    pageSize: number
+}
+export type dbCommentsPaginatorType = {
+    sortBy: keyof Comments,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
+export type viewAllCommentsType = PaginatorType & {
+    items: CommentViewModelType[]
 }
 
 export type likeInfo = {

@@ -22,7 +22,7 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { CommentViewModelType, Comments, commentForDbDtoType } from "./comment.schema";
+import { CommentViewModelType, Comments, commentForDbDtoType, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema";
 import { Model } from "mongoose";
 import { LikeStatus } from "../postLikes/like.schema";
 export declare class CommentsRepository {
@@ -32,7 +32,7 @@ export declare class CommentsRepository {
     deleteComments(id: string, userId: string): Promise<boolean>;
     updateComment(id: string, userId: string, content: string): Promise<boolean>;
     findById(id: string): Promise<Comments | null>;
-    findCommentsByPostId(postId: string): Promise<Comments[]>;
+    findCommentsByPostId(postId: string, params: paramsCommentsPaginatorType, userId?: string): Promise<viewAllCommentsType>;
     deleteAll(): Promise<boolean>;
     changeExistLikeStatus(status: LikeStatus, commentId: string, userId: string): Promise<boolean | undefined>;
 }

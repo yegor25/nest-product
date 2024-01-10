@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { CommentViewModelType, Comments, CommentsLike, commentForDbDtoType } from "./comment.schema";
+import { CommentViewModelType, Comments, CommentsLike, commentForDbDtoType, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema";
 import { Model } from "mongoose";
 import { commentHelper } from "./comment.helper";
 import { LikeStatus } from "../postLikes/like.schema";
@@ -36,21 +36,29 @@ export class CommentsRepository {
     async findById(id: string):Promise<Comments | null>{
         return this.commentsModel.findById(id)
     }
-    async findCommentsByPostId(postId: string):Promise<Comments[]>{
-        return this.commentsModel.find({postId: postId})
+    async findCommentsByPostId(postId: string, params: paramsCommentsPaginatorType,userId?: string):Promise<viewAllCommentsType>{
+              const parametres = commentHelper.commentsParamsMapper(params)
+      const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
+      const comments = await this.commentsModel.find({postId: postId})
+     .sort({[parametres.sortBy]: parametres.sortDirection, "_id":parametres.sortDirection })
+     .skip(skipCount)
+     .limit(parametres.pageSize)
+
+     const totalCount = await this.commentsModel.countDocuments({postId})
+          return {
+              pagesCount:Math.ceil(totalCount/+parametres.pageSize),
+              page: +parametres.pageNumber,
+              pageSize: +parametres.pageSize,
+              totalCount,
+              items: comments.map(el => commentHelper.commentsMapper(el,userId))
+          }
+  
     }
     async deleteAll(): Promise<boolean> {
         const res = await this.commentsModel.deleteMany({})
         return res.deletedCount > 0
     }
 
-    // async changeLikeStatus(status:LikeStatus, commentId: string, userId: string) {
-    //     const post = await this.commentsModel.findById(commentId)
-    //     if(!post) return false
-    //     const newItem:CommentsLike = {userId, status}
-    //     post.likeComments.push(newItem)
-    //     await post.save()
-    // }
     async changeExistLikeStatus(status:LikeStatus, commentId: string, userId: string){
         const post = await this.commentsModel.findById(commentId)
         if(!post) return false

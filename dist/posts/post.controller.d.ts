@@ -1,6 +1,6 @@
 import { PostService } from "./post.service";
 import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
-import { CreatedCommentDto } from "../comments/comment.schema";
+import { CreatedCommentDto, paramsCommentsPaginatorType } from "../comments/comment.schema";
 import { CommentService } from "../comments/comments.service";
 import { UserService } from "../users/user.service";
 import { LikeStatus } from "../postLikes/like.schema";
@@ -23,9 +23,9 @@ export declare class PostController {
             userId: string;
         };
     }): Promise<import("../comments/comment.schema").CommentViewModelType>;
-    findComments(postId: string, data: {
+    findComments(postId: string, params: paramsCommentsPaginatorType & {
         userId: string;
-    }): Promise<import("../comments/comment.schema").CommentViewModelType[]>;
+    }): Promise<import("../comments/comment.schema").viewAllCommentsType>;
     changeLikeStatus(postId: string, body: {
         likeStatus: LikeStatus;
     }, req: {

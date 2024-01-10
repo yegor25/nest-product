@@ -60,6 +60,7 @@ export type postDtoResponseType = {
 }
 
 
+
 export class createdPostDtoType  {
 
     @Transform(({value}) => value.trim())

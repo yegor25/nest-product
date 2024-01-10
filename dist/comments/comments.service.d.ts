@@ -1,6 +1,6 @@
 import { UserService } from "../users/user.service";
 import { PostService } from "../posts/post.service";
-import { CommentViewModelType, CreatedCommentDto } from "./comment.schema";
+import { CommentViewModelType, CreatedCommentDto, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema";
 import { CommentsRepository } from "./comments.repository";
 import { LikeStatus } from "../postLikes/like.schema";
 export declare class CommentService {
@@ -10,7 +10,7 @@ export declare class CommentService {
     constructor(commentsRepository: CommentsRepository, postService: PostService, userService: UserService);
     createComment(postId: string, data: CreatedCommentDto, userId: string): Promise<CommentViewModelType | null>;
     findById(id: string, userId?: string): Promise<CommentViewModelType | null>;
-    findCommentsByPostId(postId: string, userId?: string): Promise<CommentViewModelType[]>;
+    findCommentsByPostId(postId: string, params: paramsCommentsPaginatorType, userId?: string): Promise<viewAllCommentsType>;
     deleteComment(id: string, userId: string): Promise<boolean>;
     updateComment(id: string, userId: string, content: string): Promise<boolean>;
     updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string): Promise<boolean>;

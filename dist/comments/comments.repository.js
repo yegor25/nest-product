@@ -49,8 +49,21 @@ let CommentsRepository = class CommentsRepository {
     async findById(id) {
         return this.commentsModel.findById(id);
     }
-    async findCommentsByPostId(postId) {
-        return this.commentsModel.find({ postId: postId });
+    async findCommentsByPostId(postId, params, userId) {
+        const parametres = comment_helper_1.commentHelper.commentsParamsMapper(params);
+        const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const comments = await this.commentsModel.find({ postId: postId })
+            .sort({ [parametres.sortBy]: parametres.sortDirection, "_id": parametres.sortDirection })
+            .skip(skipCount)
+            .limit(parametres.pageSize);
+        const totalCount = await this.commentsModel.countDocuments({ postId });
+        return {
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: +parametres.pageSize,
+            totalCount,
+            items: comments.map(el => comment_helper_1.commentHelper.commentsMapper(el, userId))
+        };
     }
     async deleteAll() {
         const res = await this.commentsModel.deleteMany({});

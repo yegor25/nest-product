@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { createdPostDtoType, paramsPostPaginatorType } from "./post.schema";
-import { CreatedCommentDto } from "../comments/comment.schema";
+import { CreatedCommentDto, paramsCommentsPaginatorType } from "../comments/comment.schema";
 import { CommentService } from "../comments/comments.service";
 import { UserService } from "../users/user.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
@@ -69,10 +69,11 @@ export class PostController {
       return comment
   }
    @Get(':postId/comments')
-   async findComments( @Param('postId') postId: string, @Query() data:{userId: string}) {
+   async findComments( @Param('postId') postId: string, @Query() params: paramsCommentsPaginatorType & {userId: string}) {
       const post = await this.postService.findPostById(postId)
       if(!post) throw new NotFoundException();
-      return this.commentService.findCommentsByPostId(postId,data.userId)
+      return this.commentService.findCommentsByPostId(postId,{sortDirection: params.sortDirection,sortBy: params.sortBy,pageNumber: params.pageNumber,pageSize: params.pageSize},params.userId)
+
   }
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)

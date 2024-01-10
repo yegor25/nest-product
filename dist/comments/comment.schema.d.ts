@@ -24,6 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { HydratedDocument } from "mongoose";
 import { LikeStatus } from "../postLikes/like.schema";
+import { PaginatorType, SortDirection } from "../blogs/blog.schema";
 export type commentType = HydratedDocument<Comments>;
 export declare class CommentatorInfo {
     userId: string;
@@ -57,6 +58,21 @@ export type CommentViewModelType = {
     commentatorInfo: CommentatorInfo;
     createdAt: string;
     likesInfo: likeInfo;
+};
+export type paramsCommentsPaginatorType = {
+    sortBy: keyof Comments;
+    sortDirection: SortDirection;
+    pageNumber: number;
+    pageSize: number;
+};
+export type dbCommentsPaginatorType = {
+    sortBy: keyof Comments;
+    sortDirection: 1 | -1;
+    pageNumber: number;
+    pageSize: number;
+};
+export type viewAllCommentsType = PaginatorType & {
+    items: CommentViewModelType[];
 };
 export type likeInfo = {
     likesCount: number;

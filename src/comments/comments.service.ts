@@ -1,7 +1,7 @@
 import { UserService } from "../users/user.service"
 import { PostService } from "../posts/post.service"
 import { User } from "../users/user.schema"
-import { CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType } from "./comment.schema"
+import { CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema"
 import { CommentsRepository } from "./comments.repository"
 import { Injectable } from "@nestjs/common"
 import { LikeStatus } from "../postLikes/like.schema"
@@ -36,11 +36,8 @@ export class CommentService {
         if(!query) return null
         return commentHelper.commentsMapper(query,userId)
     }
-    async findCommentsByPostId(postId: string, userId?: string):Promise<CommentViewModelType[]>{
-
-        const query = await this.commentsRepository.findCommentsByPostId(postId)
-        const result: CommentViewModelType[] = query.map(el => commentHelper.commentsMapper(el, userId))
-        return result
+    async findCommentsByPostId(postId: string,params: paramsCommentsPaginatorType ,userId?: string):Promise<viewAllCommentsType>{
+        return this.commentsRepository.findCommentsByPostId(postId, params,userId)
     }
     async deleteComment(id: string, userId: string): Promise<boolean> {
         return this.commentsRepository.deleteComments(id, userId)

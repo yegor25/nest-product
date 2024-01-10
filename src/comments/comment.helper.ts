@@ -1,5 +1,6 @@
 import { LikeStatus } from "../postLikes/like.schema";
-import { CommentViewModelType, Comments } from "./comment.schema";
+import { CommentViewModelType, Comments, dbCommentsPaginatorType, paramsCommentsPaginatorType } from "./comment.schema";
+import { SortDirection } from "../blogs/blog.schema";
 
 
 
@@ -24,6 +25,16 @@ class CommentHelper {
         }
         return res
     }
+    commentsParamsMapper(params: paramsCommentsPaginatorType):dbCommentsPaginatorType {
+        const res:dbCommentsPaginatorType = {
+            sortDirection: params.sortDirection === SortDirection.asc ? 1 : -1,
+            pageNumber: params.pageNumber ? params.pageNumber : 1,
+            pageSize: params.pageSize ? +params.pageSize : 10,
+            sortBy: params.sortBy ? params.sortBy : "createdAt"
+        }
+        return res
+    }
+    
 
     
 }
