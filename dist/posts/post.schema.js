@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const like_schema_1 = require("../postLikes/like.schema");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const post_validate_1 = require("./post.validate");
 let Post = class Post {
     getDefaultLikes() {
         return {
@@ -77,6 +78,9 @@ __decorate([
 ], createdPostDtoType.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Validate)(post_validate_1.PostValidator),
     __metadata("design:type", String)
 ], createdPostDtoType.prototype, "blogId", void 0);
 class createdPosForBlogtDtoType {

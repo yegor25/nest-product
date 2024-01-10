@@ -32,6 +32,7 @@ import { LikePostSchema, LikesPost } from './postLikes/like.schema';
 import { PostLikeRepository } from './postLikes/postLike.repository';
 import { PostLikeService } from './postLikes/postLike.service';
 import { CheckGuess } from './auth/middlewares/check-guess.middleware';
+import { PostValidator } from './posts/post.validate';
 
 @Module({
   imports: [
@@ -54,7 +55,7 @@ import { CheckGuess } from './auth/middlewares/check-guess.middleware';
     ]),
   ],
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator],
 
 })
 export class AppModule implements NestModule{
