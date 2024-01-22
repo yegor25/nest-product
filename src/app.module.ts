@@ -43,10 +43,10 @@ import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middlew
       signOptions: {expiresIn: "10s"}
     }),
     
-    MongooseModule.forRoot('mongodb://localhost/nest'),
-    // MongooseModule.forRoot(
-    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    // ),
+    // MongooseModule.forRoot('mongodb://localhost/nest'),
+    MongooseModule.forRoot(
+      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
