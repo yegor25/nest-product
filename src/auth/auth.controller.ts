@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common"
+import { BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common"
 import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
 import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
 import { Response, response } from "express"
+import { JwtAuthGuard } from "./guards/jwt-auth-guard"
 
 
 @Controller('auth')
@@ -68,19 +69,18 @@ export class AuthController {
         if(!isConfirmed) throw new BadRequestException([{field:"code", message: "invalid data"}])
         return
     }   
-
-
-    
    
-    // async authMe(req: Request, res: Response) {
-    //     if (req.user) {
-    //         const { email, login, _id } = req.user
-    //         const userId = _id.toString()
-    //         res.status(200).send({ email, login, userId })
-    //         return
-    //     }
-    //     res.sendStatus(401)
-    // }
+    @HttpCode(200)
+    @UseGuards(JwtAuthGuard)
+    @Get('me')
+    async authMe(@Req() req:{user:User}) {
+        if (req.user) {
+            const { email, login, _id } = req.user
+            const userId = _id.toString()
+            return { email, login, userId }
+        }
+        throw new UnauthorizedException();
+    }
     // async logout(req: Request, res: Response) {
     //     if (req.user) await this.authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
     //     await sessionService.deactivateSession(req.body.deviceId)

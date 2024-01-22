@@ -16,4 +16,11 @@ export declare class AuthController {
     registerConfirmation(body: {
         code: string;
     }): Promise<void>;
+    authMe(req: {
+        user: User;
+    }): Promise<{
+        email: string;
+        login: string;
+        userId: string;
+    }>;
 }

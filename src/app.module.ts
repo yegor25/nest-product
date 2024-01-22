@@ -39,7 +39,7 @@ import { PostValidator } from './posts/post.validate';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: "15m"}
+      signOptions: {expiresIn: "10s"}
     }),
     
     // MongooseModule.forRoot('mongodb://localhost/nest'),

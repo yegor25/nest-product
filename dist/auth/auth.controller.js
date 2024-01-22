@@ -18,6 +18,7 @@ const user_service_1 = require("../users/user.service");
 const auth_service_1 = require("./auth.service");
 const user_schema_1 = require("../users/user.schema");
 const passport_1 = require("@nestjs/passport");
+const jwt_auth_guard_1 = require("./guards/jwt-auth-guard");
 let AuthController = class AuthController {
     constructor(authService, userService) {
         this.authService = authService;
@@ -55,6 +56,14 @@ let AuthController = class AuthController {
             throw new common_1.BadRequestException([{ field: "code", message: "invalid data" }]);
         return;
     }
+    async authMe(req) {
+        if (req.user) {
+            const { email, login, _id } = req.user;
+            const userId = _id.toString();
+            return { email, login, userId };
+        }
+        throw new common_1.UnauthorizedException();
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -91,6 +100,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "registerConfirmation", null);
+__decorate([
+    (0, common_1.HttpCode)(200),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('me'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "authMe", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
