@@ -1,7 +1,7 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
 import { CreateUserDtoType, User } from "../users/user.schema";
-import { Response } from "express";
+import { Request, Response } from "express";
 export declare class AuthController {
     protected authService: AuthService;
     protected userService: UserService;
@@ -23,10 +23,10 @@ export declare class AuthController {
         login: string;
         userId: string;
     }>;
-    logout(req: {
-        user: User;
-    }, res: Response): Promise<void>;
+    logout(req: Request, res: Response): Promise<void>;
     refreshToken(req: {
-        user: User;
+        body: {
+            user: User;
+        };
     }, res: Response): Promise<void>;
 }

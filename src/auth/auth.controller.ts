@@ -3,7 +3,7 @@ import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
 import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
-import { Response, response } from "express"
+import { Request, Response, response } from "express"
 import { JwtAuthGuard } from "./guards/jwt-auth-guard"
 
 
@@ -83,14 +83,14 @@ export class AuthController {
     }
 
     @Post('logout')
-    async logout(@Req() req: {user:User}, @Res() res: Response) {
+    async logout(@Req() req: Request, @Res() res: Response) {
         // await sessionService.deactivateSession(req.body.deviceId)
         res.clearCookie("refreshToken")
         res.sendStatus(204)
     }
     @Post('refresh-token')
-    async refreshToken(@Req() req: {user: User},@Res() res: Response) {
-        const user = req.user
+    async refreshToken(@Req() req: {body: {user: User} },@Res() res: Response) {
+        const user = req.body.user
         const credentials = await this.authService.login(user._id.toString()) 
         // await sessionService.changectiveDate(req.body.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
