@@ -68,6 +68,12 @@ let AuthController = class AuthController {
         res.clearCookie("refreshToken");
         res.sendStatus(204);
     }
+    async refreshToken(req, res) {
+        const user = req.user;
+        const credentials = await this.authService.login(user._id.toString());
+        res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
+        res.status(200).send({ accessToken: credentials.accessToken });
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -121,6 +127,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Post)('refresh-token'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "refreshToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

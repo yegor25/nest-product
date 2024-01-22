@@ -88,15 +88,14 @@ export class AuthController {
         res.clearCookie("refreshToken")
         res.sendStatus(204)
     }
-    // async refreshToken(req: Request, res: Response) {
-    //     const user = req.user as userDbType
-    //     if (user) await this.authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
-    //     const refreshToken = await jwtService.createRefreshToken(user, req.body.deviceId)
-    //     const accessToken = await jwtService.createAccesToken(user)
-    //     await sessionService.changectiveDate(req.body.deviceId)
-    //     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
-    //     res.status(200).send({ accessToken })
-    // }
+    @Post('refresh-token')
+    async refreshToken(@Req() req: {user: User}, res: Response) {
+        const user = req.user
+        const credentials = await this.authService.login(user._id.toString()) 
+        // await sessionService.changectiveDate(req.body.deviceId)
+        res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
+        res.status(200).send({ accessToken:credentials.accessToken })
+    }
     // async recoverPass(req: requestWithBody<{ email: string }>, res: Response) {
     //     await this.authService.recoverPassword(req.body.email)
     //     res.sendStatus(204)

@@ -46,7 +46,7 @@ const check_refreshToken_middleware_1 = require("./auth/middlewares/check-refres
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
-            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout');
+            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout', 'auth/refresh-token');
     }
 };
 exports.AppModule = AppModule;

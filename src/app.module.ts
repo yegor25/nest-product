@@ -62,6 +62,6 @@ import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middlew
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckGuess).forRoutes('posts','blogs','comments'),
-    consumer.apply(CheckRefreshToken).forRoutes('auth/logout')
+    consumer.apply(CheckRefreshToken).forRoutes('auth/logout','auth/refresh-token')
   }
 }
