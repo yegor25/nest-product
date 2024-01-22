@@ -75,6 +75,9 @@ let AuthController = class AuthController {
     async refreshToken(req, res) {
         const user = req.body.user;
         const credentials = await this.authService.login(user._id.toString());
+        const token = req.cookies.refreshToken;
+        const userId = req.body.user._id.toString();
+        await this.tokenService.save(userId, token);
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
         res.status(200).send({ accessToken: credentials.accessToken });
     }

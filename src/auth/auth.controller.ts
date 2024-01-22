@@ -95,9 +95,12 @@ export class AuthController {
         res.sendStatus(204)
     }
     @Post('refresh-token')
-    async refreshToken(@Req() req: {body: {user: User} },@Res() res: Response) {
+    async refreshToken(@Req() req: Request<{},{},{user:User},{}> ,@Res() res: Response) {
         const user = req.body.user
         const credentials = await this.authService.login(user._id.toString()) 
+        const token = req.cookies.refreshToken
+        const userId = req.body.user._id.toString()
+        await this.tokenService.save(userId, token)
         // await sessionService.changectiveDate(req.body.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
         res.status(200).send({ accessToken:credentials.accessToken })
