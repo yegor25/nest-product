@@ -43,7 +43,7 @@ import { TokenRepository } from './tokens/token.repository';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: "30s"}
+      signOptions: {expiresIn: "10s"}
     }),
     
     // MongooseModule.forRoot('mongodb://localhost/nest'),
