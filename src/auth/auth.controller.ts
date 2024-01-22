@@ -89,7 +89,7 @@ export class AuthController {
         res.sendStatus(204)
     }
     @Post('refresh-token')
-    async refreshToken(@Req() req: {user: User}, res: Response) {
+    async refreshToken(@Req() req: {user: User},@Res() res: Response) {
         const user = req.user
         const credentials = await this.authService.login(user._id.toString()) 
         // await sessionService.changectiveDate(req.body.deviceId)
