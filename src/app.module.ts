@@ -33,6 +33,7 @@ import { PostLikeRepository } from './postLikes/postLike.repository';
 import { PostLikeService } from './postLikes/postLike.service';
 import { CheckGuess } from './auth/middlewares/check-guess.middleware';
 import { PostValidator } from './posts/post.validate';
+import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middleware';
 
 @Module({
   imports: [
@@ -42,10 +43,10 @@ import { PostValidator } from './posts/post.validate';
       signOptions: {expiresIn: "10s"}
     }),
     
-    // MongooseModule.forRoot('mongodb://localhost/nest'),
-    MongooseModule.forRoot(
-      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot('mongodb://localhost/nest'),
+    // MongooseModule.forRoot(
+    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    // ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
@@ -60,6 +61,7 @@ import { PostValidator } from './posts/post.validate';
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckGuess).forRoutes('posts','blogs','comments')
+    consumer.apply(CheckGuess).forRoutes('posts','blogs','comments'),
+    consumer.apply(CheckRefreshToken).forRoutes('auth/logout')
   }
 }

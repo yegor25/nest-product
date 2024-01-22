@@ -16,6 +16,7 @@ const jwt_1 = require("@nestjs/jwt");
 const mail_manager_1 = require("../common/managers/mail-manager");
 const authHelper_1 = require("./authHelper");
 const user_repository_1 = require("../users/user.repository");
+const constants_1 = require("./constants");
 let AuthService = class AuthService {
     constructor(usersService, jwtService, userRepository) {
         this.usersService = usersService;
@@ -34,7 +35,7 @@ let AuthService = class AuthService {
         };
         const data = {
             accessToken: this.jwtService.sign(payload),
-            refreshToken: this.jwtService.sign(payload, { secret: "dcsdcdscds", expiresIn: "2h" })
+            refreshToken: this.jwtService.sign(payload, { secret: constants_1.jwtConstants.refreshSecret, expiresIn: "2h" })
         };
         return data;
     }

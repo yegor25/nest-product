@@ -5,6 +5,7 @@ import { CreateUserDtoType, CreatedUserDtoDbType, User } from '../users/user.sch
 import { mailManager } from '../common/managers/mail-manager';
 import { authHelper } from './authHelper';
 import { UserRepository } from 'src/users/user.repository';
+import { jwtConstants } from './constants';
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,7 +26,7 @@ export class AuthService {
     }
     const data = {
       accessToken:  this.jwtService.sign(payload),
-      refreshToken: this.jwtService.sign(payload, {secret: "dcsdcdscds", expiresIn: "2h"})
+      refreshToken: this.jwtService.sign(payload, {secret: jwtConstants.refreshSecret, expiresIn: "2h"})
     }
     return data
   }

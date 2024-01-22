@@ -4,6 +4,7 @@ import { CommentService } from "./comments.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
 import { CreatedCommentDto } from "./comment.schema";
 import { LikeStatus } from "../postLikes/like.schema";
+import { Request } from "express";
 
 
 @Controller('comments')
@@ -14,7 +15,7 @@ export class CommentController  {
     ){}
 
     @Get(":id")
-    async getById(@Param('id') commentId: string,@Query() params:{userId: string}){
+    async getById(@Param('id') commentId: string,@Query() params:{userId: string}, @Req() req:Request){
         const data = await this.commentService.findById(commentId,params.userId)
         if(!data) throw new NotFoundException();
         return data

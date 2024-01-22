@@ -81,12 +81,13 @@ export class AuthController {
         }
         throw new UnauthorizedException();
     }
-    // async logout(req: Request, res: Response) {
-    //     if (req.user) await this.authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
-    //     await sessionService.deactivateSession(req.body.deviceId)
-    //     res.clearCookie("refreshToken")
-    //     res.sendStatus(204)
-    // }
+
+    @Post('logout')
+    async logout(@Req() req: {user:User}, @Res() res: Response) {
+        // await sessionService.deactivateSession(req.body.deviceId)
+        res.clearCookie("refreshToken")
+        res.sendStatus(204)
+    }
     // async refreshToken(req: Request, res: Response) {
     //     const user = req.user as userDbType
     //     if (user) await this.authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)

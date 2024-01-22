@@ -22,7 +22,7 @@ let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
-    async getById(commentId, params) {
+    async getById(commentId, params, req) {
         const data = await this.commentService.findById(commentId, params.userId);
         if (!data)
             throw new common_1.NotFoundException();
@@ -63,8 +63,9 @@ __decorate([
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Query)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getById", null);
 __decorate([

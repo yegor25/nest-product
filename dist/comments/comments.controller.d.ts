@@ -1,12 +1,13 @@
 import { CommentService } from "./comments.service";
 import { CreatedCommentDto } from "./comment.schema";
 import { LikeStatus } from "../postLikes/like.schema";
+import { Request } from "express";
 export declare class CommentController {
     private commentService;
     constructor(commentService: CommentService);
     getById(commentId: string, params: {
         userId: string;
-    }): Promise<import("./comment.schema").CommentViewModelType>;
+    }, req: Request): Promise<import("./comment.schema").CommentViewModelType>;
     deleteComment(commentId: string, req: {
         user: {
             userId: string;

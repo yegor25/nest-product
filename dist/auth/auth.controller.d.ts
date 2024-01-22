@@ -23,4 +23,7 @@ export declare class AuthController {
         login: string;
         userId: string;
     }>;
+    logout(req: {
+        user: User;
+    }, res: Response): Promise<void>;
 }
