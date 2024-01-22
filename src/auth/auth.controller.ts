@@ -5,13 +5,15 @@ import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
 import { Request, Response, response } from "express"
 import { JwtAuthGuard } from "./guards/jwt-auth-guard"
+import { TokenService } from "src/tokens/token.service"
 
 
 @Controller('auth')
 export class AuthController {
     constructor(
         protected authService:AuthService,
-        protected userService: UserService
+        protected userService: UserService,
+        protected tokenService:TokenService
     ) {}
     
     @HttpCode(200)
@@ -83,7 +85,10 @@ export class AuthController {
     }
 
     @Post('logout')
-    async logout(@Req() req: Request, @Res() res: Response) {
+    async logout(@Req() req:Request<{},{},{user:User},{}>, @Res() res: Response) {
+        const token = req.cookies.refreshToken
+        const userId = req.body.user._id.toString()
+        await this.tokenService.save(userId, token)
         // await sessionService.deactivateSession(req.body.deviceId)
         res.clearCookie("refreshToken")
         res.sendStatus(204)

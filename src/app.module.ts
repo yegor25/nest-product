@@ -34,6 +34,9 @@ import { PostLikeService } from './postLikes/postLike.service';
 import { CheckGuess } from './auth/middlewares/check-guess.middleware';
 import { PostValidator } from './posts/post.validate';
 import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middleware';
+import { TokenSchema, Tokens } from './tokens/token.schema';
+import { TokenService } from './tokens/token.service';
+import { TokenRepository } from './tokens/token.repository';
 
 @Module({
   imports: [
@@ -52,11 +55,12 @@ import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middlew
       {name: Blog.name, schema: BlogSchema},
       {name: Post.name, schema: PostSchema},
       {name: Comments.name, schema: CommentsSchema},
-      {name: LikesPost.name, schema: LikePostSchema}
+      {name: LikesPost.name, schema: LikePostSchema},
+      {name: Tokens.name, schema: TokenSchema}
     ]),
   ],
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository],
 
 })
 export class AppModule implements NestModule{

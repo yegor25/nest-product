@@ -4,6 +4,7 @@ import { verify } from "crypto";
 import { NextFunction, Request, Response } from "express";
 import { jwtConstants } from "../constants";
 import { UserService } from "src/users/user.service";
+import { TokenService } from "src/tokens/token.service";
 
 
 
@@ -11,11 +12,11 @@ import { UserService } from "src/users/user.service";
 export class CheckRefreshToken implements NestMiddleware {
     constructor(
         public jwtService: JwtService,
-        private userService:UserService
+        private userService:UserService,
+        protected tokenService:TokenService
     ){}
 
     async use(req:Request, res:Response, next: NextFunction){
-        console.log("ref",req.cookies)
         
         const token = req.cookies.refreshToken
         if(!token){
@@ -26,6 +27,15 @@ export class CheckRefreshToken implements NestMiddleware {
             const data = await this.jwtService.verify(token,{secret: jwtConstants.refreshSecret})
             if(data){
                 const user =  await this.userService.findById(data.sub)
+                if(!user){
+                    res.sendStatus(401)
+                    return
+                }
+                const blackToken = await this.tokenService.find(user._id.toString(), token)
+                if(blackToken){
+                    res.sendStatus(401)
+                    return
+                }
                 req.body.user = user
                 // req.body.deviceId = isValid.deviceId
                 next()

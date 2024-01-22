@@ -14,13 +14,14 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const constants_1 = require("../constants");
 const user_service_1 = require("../../users/user.service");
+const token_service_1 = require("../../tokens/token.service");
 let CheckRefreshToken = class CheckRefreshToken {
-    constructor(jwtService, userService) {
+    constructor(jwtService, userService, tokenService) {
         this.jwtService = jwtService;
         this.userService = userService;
+        this.tokenService = tokenService;
     }
     async use(req, res, next) {
-        console.log("ref", req.cookies);
         const token = req.cookies.refreshToken;
         if (!token) {
             res.sendStatus(401);
@@ -30,6 +31,15 @@ let CheckRefreshToken = class CheckRefreshToken {
             const data = await this.jwtService.verify(token, { secret: constants_1.jwtConstants.refreshSecret });
             if (data) {
                 const user = await this.userService.findById(data.sub);
+                if (!user) {
+                    res.sendStatus(401);
+                    return;
+                }
+                const blackToken = await this.tokenService.find(user._id.toString(), token);
+                if (blackToken) {
+                    res.sendStatus(401);
+                    return;
+                }
                 req.body.user = user;
                 next();
             }
@@ -46,6 +56,7 @@ exports.CheckRefreshToken = CheckRefreshToken;
 exports.CheckRefreshToken = CheckRefreshToken = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        token_service_1.TokenService])
 ], CheckRefreshToken);
 //# sourceMappingURL=check-refreshToken.middleware.js.map

@@ -2,10 +2,12 @@ import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
 import { CreateUserDtoType, User } from "../users/user.schema";
 import { Request, Response } from "express";
+import { TokenService } from "src/tokens/token.service";
 export declare class AuthController {
     protected authService: AuthService;
     protected userService: UserService;
-    constructor(authService: AuthService, userService: UserService);
+    protected tokenService: TokenService;
+    constructor(authService: AuthService, userService: UserService, tokenService: TokenService);
     loginUser(req: {
         user: User;
     }, res: Response): Promise<void>;
@@ -23,7 +25,9 @@ export declare class AuthController {
         login: string;
         userId: string;
     }>;
-    logout(req: Request, res: Response): Promise<void>;
+    logout(req: Request<{}, {}, {
+        user: User;
+    }, {}>, res: Response): Promise<void>;
     refreshToken(req: {
         body: {
             user: User;

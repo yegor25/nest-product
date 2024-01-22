@@ -43,6 +43,9 @@ const postLike_service_1 = require("./postLikes/postLike.service");
 const check_guess_middleware_1 = require("./auth/middlewares/check-guess.middleware");
 const post_validate_1 = require("./posts/post.validate");
 const check_refreshToken_middleware_1 = require("./auth/middlewares/check-refreshToken.middleware");
+const token_schema_1 = require("./tokens/token.schema");
+const token_service_1 = require("./tokens/token.service");
+const token_repository_1 = require("./tokens/token.repository");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -64,11 +67,12 @@ exports.AppModule = AppModule = __decorate([
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },
                 { name: post_schema_1.Post.name, schema: post_schema_1.PostSchema },
                 { name: comment_schema_1.Comments.name, schema: comment_schema_1.CommentsSchema },
-                { name: like_schema_1.LikesPost.name, schema: like_schema_1.LikePostSchema }
+                { name: like_schema_1.LikesPost.name, schema: like_schema_1.LikePostSchema },
+                { name: token_schema_1.Tokens.name, schema: token_schema_1.TokenSchema }
             ]),
         ],
         controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

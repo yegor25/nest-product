@@ -19,10 +19,12 @@ const auth_service_1 = require("./auth.service");
 const user_schema_1 = require("../users/user.schema");
 const passport_1 = require("@nestjs/passport");
 const jwt_auth_guard_1 = require("./guards/jwt-auth-guard");
+const token_service_1 = require("../tokens/token.service");
 let AuthController = class AuthController {
-    constructor(authService, userService) {
+    constructor(authService, userService, tokenService) {
         this.authService = authService;
         this.userService = userService;
+        this.tokenService = tokenService;
     }
     async loginUser(req, res) {
         const credentials = await this.authService.login(req.user._id.toString());
@@ -65,6 +67,9 @@ let AuthController = class AuthController {
         throw new common_1.UnauthorizedException();
     }
     async logout(req, res) {
+        const token = req.cookies.refreshToken;
+        const userId = req.body.user._id.toString();
+        await this.tokenService.save(userId, token);
         res.clearCookie("refreshToken");
         res.sendStatus(204);
     }
@@ -138,6 +143,7 @@ __decorate([
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        token_service_1.TokenService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
