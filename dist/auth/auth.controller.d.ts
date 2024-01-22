@@ -19,7 +19,10 @@ export declare class AuthController {
         code: string;
     }): Promise<void>;
     authMe(req: {
-        user: User;
+        user: {
+            userId: string;
+            login: string;
+        };
     }): Promise<{
         email: string;
         login: string;

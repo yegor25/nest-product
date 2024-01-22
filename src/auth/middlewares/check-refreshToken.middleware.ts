@@ -40,10 +40,12 @@ export class CheckRefreshToken implements NestMiddleware {
                 // req.body.deviceId = isValid.deviceId
                 next()
             } else {
-                throw new UnauthorizedException();
+                res.sendStatus(401)
+                return
             }
         } catch (error) {
-            throw new UnauthorizedException();
+            res.sendStatus(401)
+            return
         }
     }
 }

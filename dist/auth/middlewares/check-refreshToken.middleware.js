@@ -44,11 +44,13 @@ let CheckRefreshToken = class CheckRefreshToken {
                 next();
             }
             else {
-                throw new common_1.UnauthorizedException();
+                res.sendStatus(401);
+                return;
             }
         }
         catch (error) {
-            throw new common_1.UnauthorizedException();
+            res.sendStatus(401);
+            return;
         }
     }
 };

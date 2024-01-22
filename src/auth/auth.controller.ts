@@ -75,12 +75,13 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(JwtAuthGuard)
     @Get('me')
-    async authMe(@Req() req:{user:User}) {
-        if (req.user) {
-            const { email, login, _id } = req.user
-            const userId = _id.toString()
-            return { email, login, userId }
-        }
+    async authMe(@Req() req:{user: { userId: string, login: string}}) {
+            const user = await this.userService.findById(req.user.userId)
+            if(user){
+                return { email:user.email, login:req.user.login, userId:req.user.userId }
+            }
+            
+        
         throw new UnauthorizedException();
     }
 

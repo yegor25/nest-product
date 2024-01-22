@@ -59,10 +59,9 @@ let AuthController = class AuthController {
         return;
     }
     async authMe(req) {
-        if (req.user) {
-            const { email, login, _id } = req.user;
-            const userId = _id.toString();
-            return { email, login, userId };
+        const user = await this.userService.findById(req.user.userId);
+        if (user) {
+            return { email: user.email, login: req.user.login, userId: req.user.userId };
         }
         throw new common_1.UnauthorizedException();
     }
