@@ -37,6 +37,10 @@ import { CheckRefreshToken } from './auth/middlewares/check-refreshToken.middlew
 import { TokenSchema, Tokens } from './tokens/token.schema';
 import { TokenService } from './tokens/token.service';
 import { TokenRepository } from './tokens/token.repository';
+import { SecurityDevices, SecurityDevicesSchema } from './securityDevices/securityDevices.schema';
+import { SecurityDevicesController } from './securityDevices/securityDevices.controller';
+import { SecurityDevicesRepository } from './securityDevices/securityDevices.repository';
+import { SecurityDevicesService } from './securityDevices/securityDevices.service';
 
 @Module({
   imports: [
@@ -46,21 +50,22 @@ import { TokenRepository } from './tokens/token.repository';
       signOptions: {expiresIn: "10s"}
     }),
     
-    // MongooseModule.forRoot('mongodb://localhost/nest'),
-    MongooseModule.forRoot(
-      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot('mongodb://localhost/nest'),
+    // MongooseModule.forRoot(
+    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    // ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
       {name: Post.name, schema: PostSchema},
       {name: Comments.name, schema: CommentsSchema},
       {name: LikesPost.name, schema: LikePostSchema},
-      {name: Tokens.name, schema: TokenSchema}
+      {name: Tokens.name, schema: TokenSchema},
+      {name:SecurityDevices.name, schema:SecurityDevicesSchema}
     ]),
   ],
-  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository],
+  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController,SecurityDevicesController],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService],
 
 })
 export class AppModule implements NestModule{

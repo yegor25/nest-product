@@ -41,6 +41,7 @@ let CheckRefreshToken = class CheckRefreshToken {
                     return;
                 }
                 req.body.user = user;
+                req.body.deviceId = data.deviceId;
                 next();
             }
             else {

@@ -3,9 +3,11 @@ import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
 import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
-import { Request, Response, response } from "express"
+import {  Response, Request } from "express"
 import { JwtAuthGuard } from "./guards/jwt-auth-guard"
-import { TokenService } from "src/tokens/token.service"
+import { TokenService } from "../tokens/token.service"
+import { SecurityDevices } from "../securityDevices/securityDevices.schema"
+import { SecurityDevicesService } from "src/securityDevices/securityDevices.service"
 
 
 @Controller('auth')
@@ -13,22 +15,23 @@ export class AuthController {
     constructor(
         protected authService:AuthService,
         protected userService: UserService,
-        protected tokenService:TokenService
+        protected tokenService:TokenService,
+        protected securityDevicesService:SecurityDevicesService
     ) {}
     
     @HttpCode(200)
     @UseGuards(AuthGuard('local'))
     @Post('login')
-     async loginUser(@Req() req:{user:User}, @Res() res: Response) {
-        // const ip = req.ip
-        // const title = req.headers["user-agent"] || "Chrome 105"
-        // const session = await this.authService.saveSession({ ip, title, userId: user?._id.toString() })
+     async loginUser(@Req() req:{user:User,ip: string, headers: {"user-agent": string | any}}, @Res() res: Response) {
+        const ip = req.ip
+        const title = req.headers["user-agent"] || "Chrome 105"
+        const session = await this.securityDevicesService.create({ ip, title, userId: req.user._id.toString() })
 
         // const token = await jwtService.createAccesToken(user)
         // const refresh = await jwtService.createRefreshToken(user, session.deviceId)
         // res.cookie("refreshToken", refresh, { httpOnly: true, secure: true })
         // res.status(200).send({ accessToken: token })
-        const credentials = await this.authService.login(req.user._id.toString())
+        const credentials = await this.authService.login(req.user._id.toString(),session.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
         res.status(200).send({ accessToken: credentials.accessToken })
     }
@@ -95,12 +98,12 @@ export class AuthController {
         res.sendStatus(204)
     }
     @Post('refresh-token')
-    async refreshToken(@Req() req: Request<{},{},{user:User},{}> ,@Res() res: Response) {
+    async refreshToken(@Req() req: Request<{},{},{user:User,deviceId: string},{}> ,@Res() res: Response) {
         const userId = req.body.user._id.toString()
-        const credentials = await this.authService.login(userId) 
+        const credentials = await this.authService.login(userId,req.body.deviceId) 
         const token = req.cookies.refreshToken
         await this.tokenService.save(userId, token)
-        // await sessionService.changectiveDate(req.body.deviceId)
+        await this.securityDevicesService.changeActiveDate(req.body.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
         res.status(200).send({ accessToken:credentials.accessToken })
     }

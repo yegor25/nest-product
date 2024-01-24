@@ -29,13 +29,13 @@ let AuthService = class AuthService {
             return user;
         return null;
     }
-    async login(userId) {
+    async login(userId, deviceId) {
         const payload = {
             sub: userId
         };
         const data = {
             accessToken: this.jwtService.sign(payload),
-            refreshToken: this.jwtService.sign(payload, { secret: constants_1.jwtConstants.refreshSecret, expiresIn: "20s" })
+            refreshToken: this.jwtService.sign({ ...payload, deviceId: deviceId }, { secret: constants_1.jwtConstants.refreshSecret, expiresIn: "20s" })
         };
         return data;
     }

@@ -1,15 +1,21 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
 import { CreateUserDtoType, User } from "../users/user.schema";
-import { Request, Response } from "express";
-import { TokenService } from "src/tokens/token.service";
+import { Response, Request } from "express";
+import { TokenService } from "../tokens/token.service";
+import { SecurityDevicesService } from "src/securityDevices/securityDevices.service";
 export declare class AuthController {
     protected authService: AuthService;
     protected userService: UserService;
     protected tokenService: TokenService;
-    constructor(authService: AuthService, userService: UserService, tokenService: TokenService);
+    protected securityDevicesService: SecurityDevicesService;
+    constructor(authService: AuthService, userService: UserService, tokenService: TokenService, securityDevicesService: SecurityDevicesService);
     loginUser(req: {
         user: User;
+        ip: string;
+        headers: {
+            "user-agent": string | any;
+        };
     }, res: Response): Promise<void>;
     resendingEmail(body: {
         email: string;
@@ -33,5 +39,6 @@ export declare class AuthController {
     }, {}>, res: Response): Promise<void>;
     refreshToken(req: Request<{}, {}, {
         user: User;
+        deviceId: string;
     }, {}>, res: Response): Promise<void>;
 }

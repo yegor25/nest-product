@@ -19,14 +19,14 @@ export class AuthService {
     if (user) return user
     return null;
   }
-  async login(userId: string):Promise<{accessToken: string;
+  async login(userId: string,deviceId: string):Promise<{accessToken: string;
     refreshToken: string;}> {
     const payload = {
         sub: userId
     }
     const data = {
       accessToken:  this.jwtService.sign(payload),
-      refreshToken: this.jwtService.sign(payload, {secret: jwtConstants.refreshSecret, expiresIn: "20s"})
+      refreshToken: this.jwtService.sign({...payload, deviceId:deviceId}, {secret: jwtConstants.refreshSecret, expiresIn: "20s"})
     }
     return data
   }

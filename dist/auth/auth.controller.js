@@ -20,14 +20,19 @@ const user_schema_1 = require("../users/user.schema");
 const passport_1 = require("@nestjs/passport");
 const jwt_auth_guard_1 = require("./guards/jwt-auth-guard");
 const token_service_1 = require("../tokens/token.service");
+const securityDevices_service_1 = require("../securityDevices/securityDevices.service");
 let AuthController = class AuthController {
-    constructor(authService, userService, tokenService) {
+    constructor(authService, userService, tokenService, securityDevicesService) {
         this.authService = authService;
         this.userService = userService;
         this.tokenService = tokenService;
+        this.securityDevicesService = securityDevicesService;
     }
     async loginUser(req, res) {
-        const credentials = await this.authService.login(req.user._id.toString());
+        const ip = req.ip;
+        const title = req.headers["user-agent"] || "Chrome 105";
+        const session = await this.securityDevicesService.create({ ip, title, userId: req.user._id.toString() });
+        const credentials = await this.authService.login(req.user._id.toString(), session.deviceId);
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
         res.status(200).send({ accessToken: credentials.accessToken });
     }
@@ -74,9 +79,10 @@ let AuthController = class AuthController {
     }
     async refreshToken(req, res) {
         const userId = req.body.user._id.toString();
-        const credentials = await this.authService.login(userId);
+        const credentials = await this.authService.login(userId, req.body.deviceId);
         const token = req.cookies.refreshToken;
         await this.tokenService.save(userId, token);
+        await this.securityDevicesService.changeActiveDate(req.body.deviceId);
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
         res.status(200).send({ accessToken: credentials.accessToken });
     }
@@ -145,6 +151,7 @@ exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         user_service_1.UserService,
-        token_service_1.TokenService])
+        token_service_1.TokenService,
+        securityDevices_service_1.SecurityDevicesService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
