@@ -41,6 +41,10 @@ import { SecurityDevices, SecurityDevicesSchema } from './securityDevices/securi
 import { SecurityDevicesController } from './securityDevices/securityDevices.controller';
 import { SecurityDevicesRepository } from './securityDevices/securityDevices.repository';
 import { SecurityDevicesService } from './securityDevices/securityDevices.service';
+import { UserRequestInfo, UserRequestInfoSchema } from './requestUserInfo/requestUserInfo.schema';
+import { RequestUserInfoRepository } from './requestUserInfo/requestUserInfo.repository';
+import { RequestUserInfoService } from './requestUserInfo/requestUserInfoService';
+import { RateLimiting } from './requestUserInfo/middleware/rateLimiting.middleware';
 
 @Module({
   imports: [
@@ -61,16 +65,18 @@ import { SecurityDevicesService } from './securityDevices/securityDevices.servic
       {name: Comments.name, schema: CommentsSchema},
       {name: LikesPost.name, schema: LikePostSchema},
       {name: Tokens.name, schema: TokenSchema},
-      {name:SecurityDevices.name, schema:SecurityDevicesSchema}
+      {name:SecurityDevices.name, schema:SecurityDevicesSchema},
+      {name: UserRequestInfo.name, schema:UserRequestInfoSchema}
     ]),
   ],
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController,SecurityDevicesController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService, RequestUserInfoRepository, RequestUserInfoService],
 
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckGuess).forRoutes('posts','blogs','comments'),
-    consumer.apply(CheckRefreshToken).forRoutes('auth/logout','auth/refresh-token','security')
+    consumer.apply(CheckRefreshToken).forRoutes('auth/logout','auth/refresh-token','security'),
+    consumer.apply(RateLimiting).forRoutes('auth/registration-confirmation','auth/registration-email-resending','auth/login','auth/registration')
   }
 }

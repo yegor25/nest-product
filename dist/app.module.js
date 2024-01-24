@@ -50,10 +50,15 @@ const securityDevices_schema_1 = require("./securityDevices/securityDevices.sche
 const securityDevices_controller_1 = require("./securityDevices/securityDevices.controller");
 const securityDevices_repository_1 = require("./securityDevices/securityDevices.repository");
 const securityDevices_service_1 = require("./securityDevices/securityDevices.service");
+const requestUserInfo_schema_1 = require("./requestUserInfo/requestUserInfo.schema");
+const requestUserInfo_repository_1 = require("./requestUserInfo/requestUserInfo.repository");
+const requestUserInfoService_1 = require("./requestUserInfo/requestUserInfoService");
+const rateLimiting_middleware_1 = require("./requestUserInfo/middleware/rateLimiting.middleware");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
-            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout', 'auth/refresh-token', 'security');
+            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout', 'auth/refresh-token', 'security'),
+            consumer.apply(rateLimiting_middleware_1.RateLimiting).forRoutes('auth/registration-confirmation', 'auth/registration-email-resending', 'auth/login', 'auth/registration');
     }
 };
 exports.AppModule = AppModule;
@@ -73,11 +78,12 @@ exports.AppModule = AppModule = __decorate([
                 { name: comment_schema_1.Comments.name, schema: comment_schema_1.CommentsSchema },
                 { name: like_schema_1.LikesPost.name, schema: like_schema_1.LikePostSchema },
                 { name: token_schema_1.Tokens.name, schema: token_schema_1.TokenSchema },
-                { name: securityDevices_schema_1.SecurityDevices.name, schema: securityDevices_schema_1.SecurityDevicesSchema }
+                { name: securityDevices_schema_1.SecurityDevices.name, schema: securityDevices_schema_1.SecurityDevicesSchema },
+                { name: requestUserInfo_schema_1.UserRequestInfo.name, schema: requestUserInfo_schema_1.UserRequestInfoSchema }
             ]),
         ],
         controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController, securityDevices_controller_1.SecurityDevicesController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, requestUserInfo_repository_1.RequestUserInfoRepository, requestUserInfoService_1.RequestUserInfoService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
