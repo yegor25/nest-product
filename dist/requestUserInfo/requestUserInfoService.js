@@ -21,7 +21,7 @@ let RequestUserInfoService = class RequestUserInfoService {
     }
     async checkRateLimiting(url, ip) {
         const count = await this.requestUserInfoRepository.countLastRequet(url, ip);
-        if (!count || count < 5)
+        if (count < 5)
             return true;
         return false;
     }
