@@ -42,7 +42,7 @@ let CheckRefreshToken = class CheckRefreshToken {
                 }
                 req.body.user = user;
                 req.body.deviceId = data.deviceId;
-                next();
+                return next();
             }
             else {
                 res.sendStatus(401);

@@ -26,7 +26,17 @@ let SecurityDevicesController = class SecurityDevicesController {
             throw new common_1.NotFoundException();
         return result;
     }
-    async deleteAllSessionsBesideCurrent() {
+    async deleteDeviceById(deviceId, data) {
+        const session = await this.securityDevicesService.checkUserSession(deviceId);
+        if (!session)
+            throw new common_1.NotFoundException();
+        if (session.userId !== data.user._id.toString())
+            throw new common_1.ForbiddenException();
+        await this.securityDevicesService.deleteDeviceSession(deviceId);
+        return;
+    }
+    async deleteAllSessionsBesideCurrent(req) {
+        await this.securityDevicesService.deleteAllsessionBesideCurrent(req.body.deviceId, req.body.user._id.toString());
         return;
     }
 };
@@ -40,9 +50,19 @@ __decorate([
 ], SecurityDevicesController.prototype, "getById", null);
 __decorate([
     (0, common_1.HttpCode)(204),
-    (0, common_1.Delete)('devices'),
+    (0, common_1.Delete)('devices/:deviceId'),
+    __param(0, (0, common_1.Param)('deviceId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], SecurityDevicesController.prototype, "deleteDeviceById", null);
+__decorate([
+    (0, common_1.HttpCode)(204),
+    (0, common_1.Delete)('devices'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SecurityDevicesController.prototype, "deleteAllSessionsBesideCurrent", null);
 exports.SecurityDevicesController = SecurityDevicesController = __decorate([

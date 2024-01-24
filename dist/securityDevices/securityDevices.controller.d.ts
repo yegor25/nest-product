@@ -7,5 +7,11 @@ export declare class SecurityDevicesController {
     getById(req: Request<{}, {}, {
         user: User;
     }, {}>): Promise<import("./securityDevices.schema").securityDevicesViewType[]>;
-    deleteAllSessionsBesideCurrent(): Promise<void>;
+    deleteDeviceById(deviceId: string, data: {
+        user: User;
+    }): Promise<void>;
+    deleteAllSessionsBesideCurrent(req: Request<{}, {}, {
+        user: User;
+        deviceId: string;
+    }, {}>): Promise<void>;
 }

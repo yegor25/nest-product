@@ -53,7 +53,7 @@ const securityDevices_service_1 = require("./securityDevices/securityDevices.ser
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
-            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout', 'auth/refresh-token');
+            consumer.apply(check_refreshToken_middleware_1.CheckRefreshToken).forRoutes('auth/logout', 'auth/refresh-token', 'security');
     }
 };
 exports.AppModule = AppModule;
@@ -65,7 +65,7 @@ exports.AppModule = AppModule = __decorate([
                 secret: constants_1.jwtConstants.secret,
                 signOptions: { expiresIn: "10s" }
             }),
-            mongoose_1.MongooseModule.forRoot('mongodb://localhost/nest'),
+            mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },

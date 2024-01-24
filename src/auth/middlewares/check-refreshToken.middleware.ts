@@ -38,7 +38,7 @@ export class CheckRefreshToken implements NestMiddleware {
                 }
                 req.body.user = user
                 req.body.deviceId = data.deviceId
-                next()
+               return next()
             } else {
                 res.sendStatus(401)
                 return
