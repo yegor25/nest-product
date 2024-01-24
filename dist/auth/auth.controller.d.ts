@@ -36,6 +36,7 @@ export declare class AuthController {
     }>;
     logout(req: Request<{}, {}, {
         user: User;
+        deviceId: string;
     }, {}>, res: Response): Promise<void>;
     refreshToken(req: Request<{}, {}, {
         user: User;

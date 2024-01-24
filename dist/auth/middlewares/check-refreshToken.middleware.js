@@ -15,11 +15,13 @@ const jwt_1 = require("@nestjs/jwt");
 const constants_1 = require("../constants");
 const user_service_1 = require("../../users/user.service");
 const token_service_1 = require("../../tokens/token.service");
+const securityDevices_repository_1 = require("../../securityDevices/securityDevices.repository");
 let CheckRefreshToken = class CheckRefreshToken {
-    constructor(jwtService, userService, tokenService) {
+    constructor(jwtService, userService, tokenService, securityDevicesRepository) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.tokenService = tokenService;
+        this.securityDevicesRepository = securityDevicesRepository;
     }
     async use(req, res, next) {
         const token = req.cookies.refreshToken;
@@ -37,6 +39,11 @@ let CheckRefreshToken = class CheckRefreshToken {
                 }
                 const blackToken = await this.tokenService.find(user._id.toString(), token);
                 if (blackToken) {
+                    res.sendStatus(401);
+                    return;
+                }
+                const isActiveDevice = await this.securityDevicesRepository.checkActiveSession(data.deviceId);
+                if (!isActiveDevice) {
                     res.sendStatus(401);
                     return;
                 }
@@ -60,6 +67,7 @@ exports.CheckRefreshToken = CheckRefreshToken = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService,
         user_service_1.UserService,
-        token_service_1.TokenService])
+        token_service_1.TokenService,
+        securityDevices_repository_1.SecurityDevicesRepository])
 ], CheckRefreshToken);
 //# sourceMappingURL=check-refreshToken.middleware.js.map

@@ -89,11 +89,11 @@ export class AuthController {
     }
 
     @Post('logout')
-    async logout(@Req() req:Request<{},{},{user:User},{}>, @Res() res: Response) {
+    async logout(@Req() req:Request<{},{},{user:User,deviceId: string},{}>, @Res() res: Response) {
         const token = req.cookies.refreshToken
         const userId = req.body.user._id.toString()
         await this.tokenService.save(userId, token)
-        // await sessionService.deactivateSession(req.body.deviceId)
+        await this.securityDevicesService.deactivateSession(req.body.deviceId)
         res.clearCookie("refreshToken")
         res.sendStatus(204)
     }

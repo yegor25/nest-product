@@ -74,6 +74,7 @@ let AuthController = class AuthController {
         const token = req.cookies.refreshToken;
         const userId = req.body.user._id.toString();
         await this.tokenService.save(userId, token);
+        await this.securityDevicesService.deactivateSession(req.body.deviceId);
         res.clearCookie("refreshToken");
         res.sendStatus(204);
     }

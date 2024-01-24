@@ -37,7 +37,12 @@ export class SecurityDevicesRepository {
         return res.deviceId
     }
 
-    
+    async checkActiveSession(deviceId: string):Promise<boolean>{
+        const device = await this.securityDevicesModel.findOne({deviceId})
+        if(!device || !device.isActive) return false
+        return true
+    }
+
     async deleteDeviceSession(deviceId: string):Promise<boolean>{
         const res = await this.securityDevicesModel.deleteOne({deviceId: deviceId})
         return res.deletedCount === 1

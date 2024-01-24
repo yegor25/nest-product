@@ -49,6 +49,12 @@ let SecurityDevicesRepository = class SecurityDevicesRepository {
             return null;
         return res.deviceId;
     }
+    async checkActiveSession(deviceId) {
+        const device = await this.securityDevicesModel.findOne({ deviceId });
+        if (!device || !device.isActive)
+            return false;
+        return true;
+    }
     async deleteDeviceSession(deviceId) {
         const res = await this.securityDevicesModel.deleteOne({ deviceId: deviceId });
         return res.deletedCount === 1;

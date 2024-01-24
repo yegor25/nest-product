@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import { jwtConstants } from "../constants";
 import { UserService } from "src/users/user.service";
 import { TokenService } from "src/tokens/token.service";
+import { SecurityDevicesRepository } from "src/securityDevices/securityDevices.repository";
 
 
 
@@ -13,7 +14,8 @@ export class CheckRefreshToken implements NestMiddleware {
     constructor(
         public jwtService: JwtService,
         private userService:UserService,
-        protected tokenService:TokenService
+        protected tokenService:TokenService,
+        protected securityDevicesRepository: SecurityDevicesRepository
     ){}
 
     async use(req:Request, res:Response, next: NextFunction){
@@ -33,6 +35,11 @@ export class CheckRefreshToken implements NestMiddleware {
                 }
                 const blackToken = await this.tokenService.find(user._id.toString(), token)
                 if(blackToken){
+                    res.sendStatus(401)
+                    return
+                }
+                const isActiveDevice = await this.securityDevicesRepository.checkActiveSession(data.deviceId)
+                if(!isActiveDevice) {
                     res.sendStatus(401)
                     return
                 }

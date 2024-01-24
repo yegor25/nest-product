@@ -34,6 +34,7 @@ export declare class SecurityDevicesRepository {
     getAllSessions(userId: string): Promise<securityDevicesViewType[] | null>;
     checkUserSession(deviceId: string): Promise<SecurityDevices | null>;
     checkSession(data: securityDevicesInputType): Promise<string | null>;
+    checkActiveSession(deviceId: string): Promise<boolean>;
     deleteDeviceSession(deviceId: string): Promise<boolean>;
     deactivateSession(deviceId: string): Promise<boolean>;
     changeActiveDate(deviceId: string): Promise<boolean>;
