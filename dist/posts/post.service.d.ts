@@ -16,5 +16,5 @@ export declare class PostService {
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType | null>;
     changeLikeStatus(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<boolean | void>;
-    deleteAll(): Promise<import("mongodb").DeleteResult>;
+    deleteAll(): Promise<any>;
 }

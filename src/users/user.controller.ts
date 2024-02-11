@@ -31,13 +31,7 @@ export class UserController {
 
   
 
-  @Get(':id')
-  getUserById(@Param('id') userId: string) {
-    return [
-      { id: 1, name: 'Sam' },
-      { id: 2, name: 'John' },
-    ].find((u) => u.id === +userId);
-  }
+  
 
   @UseGuards(BasicAuthGuard)
   @Delete(':id')

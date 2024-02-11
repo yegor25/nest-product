@@ -37,7 +37,7 @@ let CheckRefreshToken = class CheckRefreshToken {
                     res.sendStatus(401);
                     return;
                 }
-                const blackToken = await this.tokenService.find(user._id.toString(), token);
+                const blackToken = await this.tokenService.find(user.id, token);
                 if (blackToken) {
                     res.sendStatus(401);
                     return;

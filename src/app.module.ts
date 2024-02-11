@@ -45,6 +45,12 @@ import { UserRequestInfo, UserRequestInfoSchema } from './requestUserInfo/reques
 import { RequestUserInfoRepository } from './requestUserInfo/requestUserInfo.repository';
 import { RequestUserInfoService } from './requestUserInfo/requestUserInfoService';
 import { RateLimiting } from './requestUserInfo/middleware/rateLimiting.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SuperUsersModule } from './super-users/superUsers.module';
+import { UserSqlRepository } from './users/userSql.repository';
+import { DataConfirmationRepository } from './users/dataConfirmation.repository';
+import { TokenSqlRepository } from './tokens/tokenSql.repository';
+import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesSql.repository';
 
 @Module({
   imports: [
@@ -54,10 +60,21 @@ import { RateLimiting } from './requestUserInfo/middleware/rateLimiting.middlewa
       signOptions: {expiresIn: "10s"}
     }),
     
-    // MongooseModule.forRoot('mongodb://localhost/nest'),
-    MongooseModule.forRoot(
-      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot('mongodb://localhost/nest'),
+    TypeOrmModule.forRoot({
+      type: "postgres",
+      host: "ep-wandering-firefly-a2ymf77e.eu-central-1.aws.neon.tech",
+      port: 5432,
+      ssl: true,
+      username: "egorlesnicij86",
+      password: "VBqk7GPv8LIh",
+      synchronize: false,
+      autoLoadEntities: false,
+      database: "neondb"
+    }),
+    // MongooseModule.forRoot(
+    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    // ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},
@@ -68,9 +85,11 @@ import { RateLimiting } from './requestUserInfo/middleware/rateLimiting.middlewa
       {name:SecurityDevices.name, schema:SecurityDevicesSchema},
       {name: UserRequestInfo.name, schema:UserRequestInfoSchema}
     ]),
+    SuperUsersModule,
   ],
+  
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController,SecurityDevicesController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService, RequestUserInfoRepository, RequestUserInfoService],
+  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService, RequestUserInfoRepository, RequestUserInfoService, UserSqlRepository, DataConfirmationRepository, TokenSqlRepository,SecurityDevicesSqlRepository],
 
 })
 export class AppModule implements NestModule{

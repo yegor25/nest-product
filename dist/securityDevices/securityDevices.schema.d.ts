@@ -53,6 +53,15 @@ export type createSecurityDevicesDto = {
     isActive: boolean;
     userId: string;
 };
+export type securityDevicesSqlDbType = {
+    id: string;
+    ip: string;
+    title: string;
+    lastActiveDate: string;
+    deviceId: string;
+    isActive: boolean;
+    userId: string;
+};
 export declare const SecurityDevicesSchema: mongoose.Schema<SecurityDevices, mongoose.Model<SecurityDevices, any, any, any, mongoose.Document<unknown, any, SecurityDevices> & SecurityDevices & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, SecurityDevices, mongoose.Document<unknown, {}, mongoose.FlatRecord<SecurityDevices>> & mongoose.FlatRecord<SecurityDevices> & Required<{

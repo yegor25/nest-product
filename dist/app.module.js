@@ -54,6 +54,12 @@ const requestUserInfo_schema_1 = require("./requestUserInfo/requestUserInfo.sche
 const requestUserInfo_repository_1 = require("./requestUserInfo/requestUserInfo.repository");
 const requestUserInfoService_1 = require("./requestUserInfo/requestUserInfoService");
 const rateLimiting_middleware_1 = require("./requestUserInfo/middleware/rateLimiting.middleware");
+const typeorm_1 = require("@nestjs/typeorm");
+const superUsers_module_1 = require("./super-users/superUsers.module");
+const userSql_repository_1 = require("./users/userSql.repository");
+const dataConfirmation_repository_1 = require("./users/dataConfirmation.repository");
+const tokenSql_repository_1 = require("./tokens/tokenSql.repository");
+const securityDevicesSql_repository_1 = require("./securityDevices/securityDevicesSql.repository");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -70,7 +76,18 @@ exports.AppModule = AppModule = __decorate([
                 secret: constants_1.jwtConstants.secret,
                 signOptions: { expiresIn: "10s" }
             }),
-            mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
+            mongoose_1.MongooseModule.forRoot('mongodb://localhost/nest'),
+            typeorm_1.TypeOrmModule.forRoot({
+                type: "postgres",
+                host: "ep-wandering-firefly-a2ymf77e.eu-central-1.aws.neon.tech",
+                port: 5432,
+                ssl: true,
+                username: "egorlesnicij86",
+                password: "VBqk7GPv8LIh",
+                synchronize: false,
+                autoLoadEntities: false,
+                database: "neondb"
+            }),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },
@@ -81,9 +98,10 @@ exports.AppModule = AppModule = __decorate([
                 { name: securityDevices_schema_1.SecurityDevices.name, schema: securityDevices_schema_1.SecurityDevicesSchema },
                 { name: requestUserInfo_schema_1.UserRequestInfo.name, schema: requestUserInfo_schema_1.UserRequestInfoSchema }
             ]),
+            superUsers_module_1.SuperUsersModule,
         ],
         controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController, securityDevices_controller_1.SecurityDevicesController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, requestUserInfo_repository_1.RequestUserInfoRepository, requestUserInfoService_1.RequestUserInfoService],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, requestUserInfo_repository_1.RequestUserInfoRepository, requestUserInfoService_1.RequestUserInfoService, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, tokenSql_repository_1.TokenSqlRepository, securityDevicesSql_repository_1.SecurityDevicesSqlRepository],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

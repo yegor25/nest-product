@@ -50,4 +50,13 @@ export type createSecurityDevicesDto = {
     isActive: boolean,
     userId: string,
 }
+export type securityDevicesSqlDbType = {
+    id: string,
+    ip: string,
+    title: string,
+    lastActiveDate: string,
+    deviceId: string,
+    isActive: boolean,
+    userId: string,
+}
 export const SecurityDevicesSchema = SchemaFactory.createForClass(SecurityDevices)

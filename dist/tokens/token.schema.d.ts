@@ -29,6 +29,11 @@ export declare class Tokens {
     token: string;
     userId: string;
 }
+export type tokenSqlDbType = {
+    id: string;
+    token: string;
+    userId: string;
+};
 export declare const TokenSchema: mongoose.Schema<Tokens, mongoose.Model<Tokens, any, any, any, mongoose.Document<unknown, any, Tokens> & Tokens & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Tokens, mongoose.Document<unknown, {}, mongoose.FlatRecord<Tokens>> & mongoose.FlatRecord<Tokens> & Required<{

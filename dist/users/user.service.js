@@ -12,13 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const user_repository_1 = require("./user.repository");
-const user_helper_1 = require("./user.helper");
 const crypto_service_1 = require("../common/crypto.service");
+const superUsers_service_1 = require("../super-users/superUsers.service");
+const userSql_repository_1 = require("./userSql.repository");
+const mail_manager_1 = require("../common/managers/mail-manager");
+const dataConfirmation_repository_1 = require("./dataConfirmation.repository");
+const uuid_1 = require("uuid");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, suService, userSqlRepository, confirmationDataRepository) {
         this.userRepository = userRepository;
+        this.suService = suService;
+        this.userSqlRepository = userSqlRepository;
+        this.confirmationDataRepository = confirmationDataRepository;
     }
-    async createUser(createUserDto, emailData) {
+    async createUser(createUserDto) {
         const hash = await crypto_service_1.cryptoService.genHash(createUserDto.password);
         const dtoUser = {
             passwordSalt: hash.salt,
@@ -26,38 +33,44 @@ let UserService = class UserService {
             login: createUserDto.login,
             email: createUserDto.email,
         };
-        if (emailData) {
-            const newUser = await this.userRepository.create(dtoUser, emailData);
-            return user_helper_1.userHelper.userViewMapper(newUser);
-        }
-        const newUser = await this.userRepository.create(dtoUser);
-        return user_helper_1.userHelper.userViewMapper(newUser);
+        const newUser = await this.userSqlRepository.registerUser(dtoUser);
+        const confirmData = await this.confirmationDataRepository.save((0, uuid_1.v4)(), newUser);
+        await mail_manager_1.mailManager.registerConfirmation(dtoUser.email, confirmData);
+        return;
     }
     async findUsers(params) {
-        return this.userRepository.findUsers(params);
+        return this.suService.findAll(params);
     }
     async findById(id) {
-        return this.userRepository.findById(id);
+        return this.userSqlRepository.findById(id);
     }
     async deleteUser(id) {
-        return this.userRepository.delete(id);
+        return this.suService.deleteUser(id);
     }
     async validateUser(loginOrEmail, pass) {
-        return this.userRepository.validateUser(loginOrEmail, pass);
+        return this.userSqlRepository.validate(loginOrEmail, pass);
     }
     async checkExistUser(email, login) {
         return this.userRepository.checkExistUser(email, login);
     }
     async checkCodeConfirmation(code) {
-        return this.userRepository.checkCodeConfirmation(code);
+        const user = await this.userSqlRepository.checkCodeConfirmation(code);
+        if (user.userId && !user.isActiveAccount && user.expirationDate >= new Date()) {
+            const activateUser = this.userSqlRepository.activateAccount(user.userId);
+            return true;
+        }
+        return false;
     }
     async validateResendingUser(email) {
-        return this.userRepository.validateResendingUser(email);
+        return this.userSqlRepository.validateResendingUser(email);
     }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
+    __metadata("design:paramtypes", [user_repository_1.UserRepository,
+        superUsers_service_1.SuperUsersService,
+        userSql_repository_1.UserSqlRepository,
+        dataConfirmation_repository_1.DataConfirmationRepository])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

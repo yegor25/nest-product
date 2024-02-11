@@ -17,11 +17,13 @@ const mail_manager_1 = require("../common/managers/mail-manager");
 const authHelper_1 = require("./authHelper");
 const user_repository_1 = require("../users/user.repository");
 const constants_1 = require("./constants");
+const dataConfirmation_repository_1 = require("../users/dataConfirmation.repository");
 let AuthService = class AuthService {
-    constructor(usersService, jwtService, userRepository) {
+    constructor(usersService, jwtService, userRepository, dataConfirmationRepository) {
         this.usersService = usersService;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.dataConfirmationRepository = dataConfirmationRepository;
     }
     async validateUser(loginOrEmail, pass) {
         const user = await this.usersService.validateUser(loginOrEmail, pass);
@@ -40,10 +42,7 @@ let AuthService = class AuthService {
         return data;
     }
     async registerUser(data) {
-        const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
-        await this.usersService.createUser(data, confirmationData);
-        await mail_manager_1.mailManager.registerConfirmation(data.email, confirmationData.code);
-        return;
+        return this.usersService.createUser(data);
     }
     async confirmUser(code) {
         const res = await this.usersService.checkCodeConfirmation(code);
@@ -52,7 +51,7 @@ let AuthService = class AuthService {
     async resendingEmail(email) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
         await mail_manager_1.mailManager.registerConfirmation(email, confirmationData.code);
-        await this.userRepository.changeConfirmationData(email, confirmationData);
+        await this.dataConfirmationRepository.changeCode(confirmationData, email);
         return;
     }
 };
@@ -61,6 +60,7 @@ exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_service_1.UserService,
         jwt_1.JwtService,
-        user_repository_1.UserRepository])
+        user_repository_1.UserRepository,
+        dataConfirmation_repository_1.DataConfirmationRepository])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

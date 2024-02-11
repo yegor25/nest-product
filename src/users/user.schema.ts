@@ -122,5 +122,22 @@ export type loginDtoType = {
   loginOrEmail: string,
   pass: string
 }
+export type userSqlDbType = {
+  id: string,
+  email: string,
+  login: string,
+  createdAt: string,
+  passwordSalt: string,
+  passwordHash: string,
+  isActiveAccount: boolean
+
+}
+
+export type confirmationDataType = {
+  id: string,
+  userId: string,
+  expirationDate: Date,
+  code: string
+}
 
 export const UserSchema = SchemaFactory.createForClass(User);

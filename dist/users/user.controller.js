@@ -27,12 +27,6 @@ let UserController = class UserController {
     async createUser(createUserDto) {
         return this.userService.createUser(createUserDto);
     }
-    getUserById(userId) {
-        return [
-            { id: 1, name: 'Sam' },
-            { id: 2, name: 'John' },
-        ].find((u) => u.id === +userId);
-    }
     async deleteUser(userId) {
         const deletedUser = await this.userService.deleteUser(userId);
         if (!deletedUser)
@@ -56,13 +50,6 @@ __decorate([
     __metadata("design:paramtypes", [user_schema_1.CreateUserDtoType]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "getUserById", null);
 __decorate([
     (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Delete)(':id'),

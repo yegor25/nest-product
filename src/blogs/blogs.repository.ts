@@ -56,7 +56,7 @@ export class BlogRepository {
         
     }
 
-    async deleteAll () {
+    async deleteAll ():Promise<any> {
         return this.blogModel.deleteMany({})
     }
 }

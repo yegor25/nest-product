@@ -102,7 +102,7 @@ async changeConfirmationData(email: string, data: EmailConfirmation):Promise<str
     if (!deleteUser) return false;
     return true;
   }
-  async deleteAll (){
+  async deleteAll ():Promise<any>{
     return this.userModel.deleteMany({})
   }
 }

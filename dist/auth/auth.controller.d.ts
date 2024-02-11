@@ -1,9 +1,10 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
-import { CreateUserDtoType, User } from "../users/user.schema";
+import { User } from "../users/user.schema";
 import { Response, Request } from "express";
 import { TokenService } from "../tokens/token.service";
 import { SecurityDevicesService } from "src/securityDevices/securityDevices.service";
+import { CreateSuDtoType } from "../super-users/su.schema";
 export declare class AuthController {
     protected authService: AuthService;
     protected userService: UserService;
@@ -20,7 +21,7 @@ export declare class AuthController {
     resendingEmail(body: {
         email: string;
     }): Promise<void>;
-    register(createUserDto: CreateUserDtoType): Promise<any>;
+    register(createUserDto: CreateSuDtoType): Promise<any>;
     registerConfirmation(body: {
         code: string;
     }): Promise<void>;

@@ -24,6 +24,7 @@ export class PostController {
 @UseGuards(BasicAuthGuard)
  @Post()
    async createPost(@Body() body:createdPostDtoType){
+    console.log("body", body)
     const data = await this.postService.create(body)
     return data
    }

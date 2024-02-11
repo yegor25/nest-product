@@ -12,20 +12,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenService = void 0;
 const common_1 = require("@nestjs/common");
 const token_repository_1 = require("./token.repository");
+const tokenSql_repository_1 = require("./tokenSql.repository");
 let TokenService = class TokenService {
-    constructor(tokenRepository) {
+    constructor(tokenRepository, tokenSqlRepository) {
         this.tokenRepository = tokenRepository;
+        this.tokenSqlRepository = tokenSqlRepository;
     }
     async save(userId, token) {
-        return this.tokenRepository.save(token, userId);
+        return this.tokenSqlRepository.save(token, userId);
     }
     async find(userId, token) {
-        return this.tokenRepository.findTokenByUserId(userId, token);
+        return this.tokenSqlRepository.findTokenByUserId(userId, token);
     }
 };
 exports.TokenService = TokenService;
 exports.TokenService = TokenService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [token_repository_1.TokenRepository])
+    __metadata("design:paramtypes", [token_repository_1.TokenRepository,
+        tokenSql_repository_1.TokenSqlRepository])
 ], TokenService);
 //# sourceMappingURL=token.service.js.map

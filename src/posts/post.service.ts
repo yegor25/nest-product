@@ -66,7 +66,7 @@ export class PostService {
         return this.postLikeService.addNewReaction(userId, postId,likeStatus,login)
     }   
 
-    async deleteAll (){
+    async deleteAll ():Promise<any>{
         return this.postRepository.deleteAll()
     }
 }

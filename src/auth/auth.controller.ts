@@ -8,6 +8,7 @@ import { JwtAuthGuard } from "./guards/jwt-auth-guard"
 import { TokenService } from "../tokens/token.service"
 import { SecurityDevices } from "../securityDevices/securityDevices.schema"
 import { SecurityDevicesService } from "src/securityDevices/securityDevices.service"
+import { CreateSuDtoType } from "../super-users/su.schema"
 
 
 @Controller('auth')
@@ -26,11 +27,6 @@ export class AuthController {
         const ip = req.ip
         const title = req.headers["user-agent"] || "Chrome 105"
         const session = await this.securityDevicesService.create({ ip, title, userId: req.user._id.toString() })
-
-        // const token = await jwtService.createAccesToken(user)
-        // const refresh = await jwtService.createRefreshToken(user, session.deviceId)
-        // res.cookie("refreshToken", refresh, { httpOnly: true, secure: true })
-        // res.status(200).send({ accessToken: token })
         const credentials = await this.authService.login(req.user._id.toString(),session.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
         res.status(200).send({ accessToken: credentials.accessToken })
@@ -53,15 +49,8 @@ export class AuthController {
 
     @HttpCode(204)
     @Post('registration')
-    async register(@Body() createUserDto: CreateUserDtoType) {
-        const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login)
-        if(existUser) {
-            if(existUser.email === createUserDto.email){
-                throw new BadRequestException([{field: "email", message: "already exist"}]);
-            } else {
-                throw new BadRequestException([{field: "login", message: "already exist"}]);
-            }
-        } 
+    async register(@Body() createUserDto: CreateSuDtoType) {
+       
         return this.authService.registerUser(createUserDto)
         
     }

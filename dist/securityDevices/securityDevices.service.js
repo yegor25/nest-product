@@ -13,42 +13,45 @@ exports.SecurityDevicesService = void 0;
 const common_1 = require("@nestjs/common");
 const securityDevices_repository_1 = require("./securityDevices.repository");
 const session_helper_1 = require("./session.helper");
+const securityDevicesSql_repository_1 = require("./securityDevicesSql.repository");
 let SecurityDevicesService = class SecurityDevicesService {
-    constructor(securityDevicesRepository) {
+    constructor(securityDevicesRepository, secutityDevicesSqlRepository) {
         this.securityDevicesRepository = securityDevicesRepository;
+        this.secutityDevicesSqlRepository = secutityDevicesSqlRepository;
     }
     async create(dto) {
         const data = session_helper_1.sessionsHelper.sessionMapperForDb(dto);
-        return this.securityDevicesRepository.create(data);
+        return this.secutityDevicesSqlRepository.create(data);
     }
     async getSession(deviceId) {
-        return this.securityDevicesRepository.getSession(deviceId);
+        return this.secutityDevicesSqlRepository.getSession(deviceId);
     }
     async getAllSessions(userId) {
-        return this.securityDevicesRepository.getAllSessions(userId);
+        return this.secutityDevicesSqlRepository.getAllSessions(userId);
     }
     async checkUserSession(deviceId) {
-        return this.securityDevicesRepository.checkUserSession(deviceId);
+        return this.secutityDevicesSqlRepository.checkUserSession(deviceId);
     }
     async checkSession(dto) {
-        return this.securityDevicesRepository.checkSession(dto);
+        return this.secutityDevicesSqlRepository.checkSession(dto);
     }
     async deleteDeviceSession(deviceId) {
-        return this.securityDevicesRepository.deleteDeviceSession(deviceId);
+        return this.secutityDevicesSqlRepository.deleteDeviceSession(deviceId);
     }
     async deactivateSession(deviceId) {
-        return this.securityDevicesRepository.deactivateSession(deviceId);
+        return this.secutityDevicesSqlRepository.deactivateSession(deviceId);
     }
     async changeActiveDate(deviceId) {
-        return this.securityDevicesRepository.changeActiveDate(deviceId);
+        return this.secutityDevicesSqlRepository.changeActiveDate(deviceId);
     }
     async deleteAllsessionBesideCurrent(deviceId, userId) {
-        return this.securityDevicesRepository.deleteAllsessionBesideCurrent(deviceId, userId);
+        return this.secutityDevicesSqlRepository.deleteAllsessionBesideCurrent(deviceId, userId);
     }
 };
 exports.SecurityDevicesService = SecurityDevicesService;
 exports.SecurityDevicesService = SecurityDevicesService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [securityDevices_repository_1.SecurityDevicesRepository])
+    __metadata("design:paramtypes", [securityDevices_repository_1.SecurityDevicesRepository,
+        securityDevicesSql_repository_1.SecurityDevicesSqlRepository])
 ], SecurityDevicesService);
 //# sourceMappingURL=securityDevices.service.js.map

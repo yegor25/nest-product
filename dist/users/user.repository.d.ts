@@ -36,5 +36,5 @@ export declare class UserRepository {
     changeConfirmationData(email: string, data: EmailConfirmation): Promise<string | null>;
     validateResendingUser(email: string): Promise<boolean>;
     delete(id: string): Promise<boolean>;
-    deleteAll(): Promise<import("mongodb").DeleteResult>;
+    deleteAll(): Promise<any>;
 }

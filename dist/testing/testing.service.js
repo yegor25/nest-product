@@ -13,17 +13,20 @@ exports.TestingService = void 0;
 const common_1 = require("@nestjs/common");
 const blogs_repository_1 = require("../blogs/blogs.repository");
 const post_repository_1 = require("../posts/post.repository");
+const superUsers_service_1 = require("../super-users/superUsers.service");
 const user_repository_1 = require("../users/user.repository");
 let TestingService = class TestingService {
-    constructor(userRepository, blogRepository, postRepository) {
+    constructor(userRepository, blogRepository, postRepository, suService) {
         this.userRepository = userRepository;
         this.blogRepository = blogRepository;
         this.postRepository = postRepository;
+        this.suService = suService;
     }
     async deleteAllData() {
         await this.userRepository.deleteAll();
         await this.blogRepository.deleteAll();
         await this.postRepository.deleteAll();
+        await this.suService.deleteAll();
         return;
     }
 };
@@ -32,6 +35,7 @@ exports.TestingService = TestingService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
         blogs_repository_1.BlogRepository,
-        post_repository_1.PostRepository])
+        post_repository_1.PostRepository,
+        superUsers_service_1.SuperUsersService])
 ], TestingService);
 //# sourceMappingURL=testing.service.js.map

@@ -8,5 +8,5 @@ export declare class BlogService {
     findById(id: string): Promise<blogItemsResponseType | null>;
     changeBlog(id: string, dto: createdDtoBlogType): Promise<boolean>;
     deleteBlogById(id: string): Promise<boolean>;
-    deleteAll(): Promise<import("mongodb").DeleteResult>;
+    deleteAll(): Promise<any>;
 }

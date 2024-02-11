@@ -16,5 +16,9 @@ export class Tokens {
     userId: string
 }
 
-
+export type tokenSqlDbType = {
+    id: string,
+    token: string,
+    userId: string
+}
 export const TokenSchema = SchemaFactory.createForClass(Tokens)

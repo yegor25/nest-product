@@ -17,6 +17,7 @@ let PostValidator = class PostValidator {
         this.blogService = blogService;
     }
     async validate(value) {
+        console.log("post", value, this.blogService);
         if (!value)
             return false;
         const blog = await this.blogService.findById(value);

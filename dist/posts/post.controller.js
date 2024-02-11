@@ -29,6 +29,7 @@ let PostController = class PostController {
         this.userService = userService;
     }
     async createPost(body) {
+        console.log("body", body);
         const data = await this.postService.create(body);
         return data;
     }

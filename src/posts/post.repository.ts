@@ -87,7 +87,7 @@ export class PostRepository {
     }
    
 
-    async deleteAll () {
+    async deleteAll ():Promise<any> {
         return this.postModel.deleteMany()
     }
 }

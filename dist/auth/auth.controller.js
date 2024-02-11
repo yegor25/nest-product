@@ -16,11 +16,11 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../users/user.service");
 const auth_service_1 = require("./auth.service");
-const user_schema_1 = require("../users/user.schema");
 const passport_1 = require("@nestjs/passport");
 const jwt_auth_guard_1 = require("./guards/jwt-auth-guard");
 const token_service_1 = require("../tokens/token.service");
 const securityDevices_service_1 = require("../securityDevices/securityDevices.service");
+const su_schema_1 = require("../super-users/su.schema");
 let AuthController = class AuthController {
     constructor(authService, userService, tokenService, securityDevicesService) {
         this.authService = authService;
@@ -45,15 +45,6 @@ let AuthController = class AuthController {
         return;
     }
     async register(createUserDto) {
-        const existUser = await this.userService.checkExistUser(createUserDto.email, createUserDto.login);
-        if (existUser) {
-            if (existUser.email === createUserDto.email) {
-                throw new common_1.BadRequestException([{ field: "email", message: "already exist" }]);
-            }
-            else {
-                throw new common_1.BadRequestException([{ field: "login", message: "already exist" }]);
-            }
-        }
         return this.authService.registerUser(createUserDto);
     }
     async registerConfirmation(body) {
@@ -112,7 +103,7 @@ __decorate([
     (0, common_1.Post)('registration'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_schema_1.CreateUserDtoType]),
+    __metadata("design:paramtypes", [su_schema_1.CreateSuDtoType]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([

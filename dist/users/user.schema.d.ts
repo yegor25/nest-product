@@ -88,6 +88,21 @@ export type loginDtoType = {
     loginOrEmail: string;
     pass: string;
 };
+export type userSqlDbType = {
+    id: string;
+    email: string;
+    login: string;
+    createdAt: string;
+    passwordSalt: string;
+    passwordHash: string;
+    isActiveAccount: boolean;
+};
+export type confirmationDataType = {
+    id: string;
+    userId: string;
+    expirationDate: Date;
+    code: string;
+};
 export declare const UserSchema: mongoose.Schema<User, mongoose.Model<User, any, any, any, mongoose.Document<unknown, any, User> & User & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, User, mongoose.Document<unknown, {}, mongoose.FlatRecord<User>> & mongoose.FlatRecord<User> & Required<{

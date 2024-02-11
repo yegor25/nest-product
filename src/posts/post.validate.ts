@@ -12,6 +12,7 @@ export class PostValidator implements ValidatorConstraintInterface {
     ){}
 
     async validate(value: string):  Promise<boolean> {
+        console.log("post", value,this.blogService)
         if(!value) return false
         const blog = await this.blogService.findById(value)
         return !!blog
