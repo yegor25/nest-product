@@ -68,8 +68,8 @@ import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesS
       ssl: true,
       username: "egorlesnicij86",
       password: "VBqk7GPv8LIh",
-      synchronize: false,
-      autoLoadEntities: false,
+      // synchronize: false,
+      // autoLoadEntities: false,
       database: "neondb"
     }),
     // MongooseModule.forRoot(
