@@ -2,7 +2,7 @@ import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '../users/user.repository';
 import { CreateSuDtoType } from '../super-users/su.schema';
-import { DataConfirmationRepository } from 'src/users/dataConfirmation.repository';
+import { DataConfirmationRepository } from '../users/dataConfirmation.repository';
 export declare class AuthService {
     private usersService;
     private jwtService;

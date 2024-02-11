@@ -1,9 +1,9 @@
 import { NestMiddleware } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { NextFunction, Request, Response } from "express";
-import { UserService } from "src/users/user.service";
-import { TokenService } from "src/tokens/token.service";
-import { SecurityDevicesRepository } from "src/securityDevices/securityDevices.repository";
+import { UserService } from "../../users/user.service";
+import { TokenService } from "../../tokens/token.service";
+import { SecurityDevicesRepository } from "../../securityDevices/securityDevices.repository";
 export declare class CheckRefreshToken implements NestMiddleware {
     jwtService: JwtService;
     private userService;

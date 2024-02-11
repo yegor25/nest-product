@@ -7,7 +7,7 @@ import {  Response, Request } from "express"
 import { JwtAuthGuard } from "./guards/jwt-auth-guard"
 import { TokenService } from "../tokens/token.service"
 import { SecurityDevices } from "../securityDevices/securityDevices.schema"
-import { SecurityDevicesService } from "src/securityDevices/securityDevices.service"
+import { SecurityDevicesService } from "../securityDevices/securityDevices.service"
 import { CreateSuDtoType } from "../super-users/su.schema"
 
 

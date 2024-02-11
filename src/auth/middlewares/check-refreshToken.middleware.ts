@@ -3,9 +3,9 @@ import { JwtService } from "@nestjs/jwt";
 import { verify } from "crypto";
 import { NextFunction, Request, Response } from "express";
 import { jwtConstants } from "../constants";
-import { UserService } from "src/users/user.service";
-import { TokenService } from "src/tokens/token.service";
-import { SecurityDevicesRepository } from "src/securityDevices/securityDevices.repository";
+import { UserService } from "../../users/user.service";
+import { TokenService } from "../../tokens/token.service";
+import { SecurityDevicesRepository } from "../../securityDevices/securityDevices.repository";
 
 
 

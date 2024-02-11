@@ -1,4 +1,4 @@
-import { SortDirection } from "src/users/user.schema";
+import { SortDirection } from "../users/user.schema";
 import { extendedLikesInfo, LikesPost, LikeStatus, postLikeType } from "../postLikes/like.schema";
 import { Post, dbPostsPaginatorType, paramsPostPaginatorType, postDtoResponseType } from "./post.schema";
 

@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service";
 import { User } from "../users/user.schema";
 import { Response, Request } from "express";
 import { TokenService } from "../tokens/token.service";
-import { SecurityDevicesService } from "src/securityDevices/securityDevices.service";
+import { SecurityDevicesService } from "../securityDevices/securityDevices.service";
 import { CreateSuDtoType } from "../super-users/su.schema";
 export declare class AuthController {
     protected authService: AuthService;

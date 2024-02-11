@@ -7,7 +7,7 @@ import { authHelper } from './authHelper';
 import { UserRepository } from '../users/user.repository';
 import { jwtConstants } from './constants';
 import { CreateSuDtoType } from '../super-users/su.schema';
-import { DataConfirmationRepository } from 'src/users/dataConfirmation.repository';
+import { DataConfirmationRepository } from '../users/dataConfirmation.repository';
 @Injectable()
 export class AuthService {
   constructor(

@@ -3,7 +3,7 @@ import { createdDtoBlogType, paramsBlogPaginatorType } from "./blog.schema";
 import { BlogService } from "./blog.service";
 import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/post.schema";
 import { PostService } from "../posts/post.service";
-import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
+import { BasicAuthGuard } from "../auth/guards/basic-auth.guard";
 
 
 

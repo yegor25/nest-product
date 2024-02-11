@@ -6,7 +6,7 @@ import { CreateUserDtoType, ResponseUserDtoType, paramsUserPaginatorType, Respon
 import { cryptoService } from '../common/crypto.service';
 import { SuperUsersService } from '../super-users/superUsers.service';
 import { UserSqlRepository } from './userSql.repository';
-import { mailManager } from 'src/common/managers/mail-manager';
+import { mailManager } from '../common/managers/mail-manager';
 import { DataConfirmationRepository } from './dataConfirmation.repository';
 import { v4 } from 'uuid';
 

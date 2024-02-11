@@ -7,7 +7,7 @@ import { UserService } from "../users/user.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
 import { User } from "../users/user.schema";
 import { LikeStatus } from "../postLikes/like.schema";
-import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
+import { BasicAuthGuard } from "../auth/guards/basic-auth.guard";
 import { Request } from "express";
 import mongoose from "mongoose";
 

@@ -1,7 +1,7 @@
-import { BlogRepository } from "src/blogs/blogs.repository";
-import { PostRepository } from "src/posts/post.repository";
-import { SuperUsersService } from "src/super-users/superUsers.service";
-import { UserRepository } from "src/users/user.repository";
+import { BlogRepository } from "../blogs/blogs.repository";
+import { PostRepository } from "../posts/post.repository";
+import { SuperUsersService } from "../super-users/superUsers.service";
+import { UserRepository } from "../users/user.repository";
 export declare class TestingService {
     protected userRepository: UserRepository;
     protected blogRepository: BlogRepository;
