@@ -84,6 +84,7 @@ exports.AppModule = AppModule = __decorate([
                 ssl: true,
                 username: "egorlesnicij86",
                 password: "VBqk7GPv8LIh",
+                synchronize: true,
                 database: "neondb"
             }),
             mongoose_1.MongooseModule.forFeature([
