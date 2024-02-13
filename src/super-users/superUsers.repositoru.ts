@@ -73,7 +73,7 @@ export class SuperUserRepository {
             where u."login" like '%${loginTerm}%' OR u."email" like '%${emailTerm}%';
         `
         const queryUserString = `
-            select u."id",u."login",u."email",u."createdAt"
+            select u."email",u."login",u."id",u."createdAt"
             from public."Users" u
             where u."login" like '%${loginTerm}%' OR u."email" like '%${emailTerm}%'
             order by u."${parametres.sortBy}" ${sortDirection}
