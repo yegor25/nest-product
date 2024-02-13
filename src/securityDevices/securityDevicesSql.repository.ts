@@ -29,7 +29,7 @@ export class SecurityDevicesSqlRepository  {
     async getAllSessions(userId: string):Promise<securityDevicesViewType[]>{
         const ses = await this.dataSource.query<securityDevicesViewType[]>(`
             select s."ip",s."title",s."lastActiveDate",s."deviceId" from public."SecurityDevices" s
-            where s."userId" = $1;
+            where s."userId" = $1 AND s."isActive" = 'true';
         `,[userId])
         return ses
     }
@@ -63,6 +63,7 @@ export class SecurityDevicesSqlRepository  {
             delete from public."SecurityDevices" s
             where s."deviceId" = $1
         `,[deviceId])
+        console.log("del", deletedItem)
         if(deletedItem[1] === 1) return true
         return false
     }
