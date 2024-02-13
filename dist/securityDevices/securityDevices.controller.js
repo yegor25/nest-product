@@ -21,7 +21,7 @@ let SecurityDevicesController = class SecurityDevicesController {
     }
     async getById(req) {
         const user = req.body.user;
-        const result = await this.securityDevicesService.getAllSessions(user._id.toString());
+        const result = await this.securityDevicesService.getAllSessions(user.id);
         if (!result)
             throw new common_1.NotFoundException();
         return result;
@@ -30,13 +30,13 @@ let SecurityDevicesController = class SecurityDevicesController {
         const session = await this.securityDevicesService.checkUserSession(deviceId);
         if (!session)
             throw new common_1.NotFoundException();
-        if (session.userId !== data.user._id.toString())
+        if (session.userId !== data.user.id)
             throw new common_1.ForbiddenException();
         await this.securityDevicesService.deleteDeviceSession(deviceId);
         return;
     }
     async deleteAllSessionsBesideCurrent(req) {
-        await this.securityDevicesService.deleteAllsessionBesideCurrent(req.body.deviceId, req.body.user._id.toString());
+        await this.securityDevicesService.deleteAllsessionBesideCurrent(req.body.deviceId, req.body.user.id);
         return;
     }
 };

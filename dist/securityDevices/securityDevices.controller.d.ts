@@ -1,17 +1,17 @@
 import { SecurityDevicesService } from "./securityDevices.service";
 import { Request } from "express";
-import { User } from "../users/user.schema";
+import { userSqlDbType } from "../users/user.schema";
 export declare class SecurityDevicesController {
     protected securityDevicesService: SecurityDevicesService;
     constructor(securityDevicesService: SecurityDevicesService);
     getById(req: Request<{}, {}, {
-        user: User;
+        user: userSqlDbType;
     }, {}>): Promise<import("./securityDevices.schema").securityDevicesViewType[]>;
     deleteDeviceById(deviceId: string, data: {
-        user: User;
+        user: userSqlDbType;
     }): Promise<void>;
     deleteAllSessionsBesideCurrent(req: Request<{}, {}, {
-        user: User;
+        user: userSqlDbType;
         deviceId: string;
     }, {}>): Promise<void>;
 }
