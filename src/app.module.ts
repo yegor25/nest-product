@@ -60,7 +60,7 @@ import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesS
       signOptions: {expiresIn: "10s"}
     }),
     
-    MongooseModule.forRoot('mongodb://localhost/nest'),
+    // MongooseModule.forRoot('mongodb://localhost/nest'),
     TypeOrmModule.forRoot({
       type: "postgres",
       host: "ep-wandering-firefly-a2ymf77e.eu-central-1.aws.neon.tech",
@@ -69,12 +69,12 @@ import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesS
       username: "egorlesnicij86",
       password: "VBqk7GPv8LIh",
       synchronize: false,
-      // autoLoadEntities: false,
+      autoLoadEntities: false,
       database: "neondb"
     }),
-    // MongooseModule.forRoot(
-    //   'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
-    // ),
+    MongooseModule.forRoot(
+      'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
+    ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       {name: Blog.name, schema: BlogSchema},

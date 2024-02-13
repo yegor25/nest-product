@@ -76,7 +76,6 @@ exports.AppModule = AppModule = __decorate([
                 secret: constants_1.jwtConstants.secret,
                 signOptions: { expiresIn: "10s" }
             }),
-            mongoose_1.MongooseModule.forRoot('mongodb://localhost/nest'),
             typeorm_1.TypeOrmModule.forRoot({
                 type: "postgres",
                 host: "ep-wandering-firefly-a2ymf77e.eu-central-1.aws.neon.tech",
@@ -85,8 +84,10 @@ exports.AppModule = AppModule = __decorate([
                 username: "egorlesnicij86",
                 password: "VBqk7GPv8LIh",
                 synchronize: false,
+                autoLoadEntities: false,
                 database: "neondb"
             }),
+            mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: blog_schema_1.Blog.name, schema: blog_schema_1.BlogSchema },
