@@ -31,8 +31,8 @@ let AuthController = class AuthController {
     async loginUser(req, res) {
         const ip = req.ip;
         const title = req.headers["user-agent"] || "Chrome 105";
-        const session = await this.securityDevicesService.create({ ip, title, userId: req.user._id.toString() });
-        const credentials = await this.authService.login(req.user._id.toString(), session.deviceId);
+        const session = await this.securityDevicesService.create({ ip, title, userId: req.user.id });
+        const credentials = await this.authService.login(req.user.id, session.deviceId);
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true });
         res.status(200).send({ accessToken: credentials.accessToken });
     }

@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common"
 import { UserService } from "../users/user.service"
 import { AuthService } from "./auth.service"
-import {  CreateUserDtoType, User, loginDtoType } from "../users/user.schema"
+import {  CreateUserDtoType, User, loginDtoType, userSqlDbType } from "../users/user.schema"
 import { AuthGuard } from "@nestjs/passport"
 import {  Response, Request } from "express"
 import { JwtAuthGuard } from "./guards/jwt-auth-guard"
@@ -23,11 +23,11 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(AuthGuard('local'))
     @Post('login')
-     async loginUser(@Req() req:{user:User,ip: string, headers: {"user-agent": string | any}}, @Res() res: Response) {
+     async loginUser(@Req() req:{user:userSqlDbType,ip: string, headers: {"user-agent": string | any}}, @Res() res: Response) {
         const ip = req.ip
         const title = req.headers["user-agent"] || "Chrome 105"
-        const session = await this.securityDevicesService.create({ ip, title, userId: req.user._id.toString() })
-        const credentials = await this.authService.login(req.user._id.toString(),session.deviceId)
+        const session = await this.securityDevicesService.create({ ip, title, userId: req.user.id })
+        const credentials = await this.authService.login(req.user.id,session.deviceId)
         res.cookie("refreshToken", credentials.refreshToken, { httpOnly: true, secure: true })
         res.status(200).send({ accessToken: credentials.accessToken })
     }

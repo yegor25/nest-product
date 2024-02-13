@@ -1,6 +1,6 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
-import { User } from "../users/user.schema";
+import { User, userSqlDbType } from "../users/user.schema";
 import { Response, Request } from "express";
 import { TokenService } from "../tokens/token.service";
 import { SecurityDevicesService } from "../securityDevices/securityDevices.service";
@@ -12,7 +12,7 @@ export declare class AuthController {
     protected securityDevicesService: SecurityDevicesService;
     constructor(authService: AuthService, userService: UserService, tokenService: TokenService, securityDevicesService: SecurityDevicesService);
     loginUser(req: {
-        user: User;
+        user: userSqlDbType;
         ip: string;
         headers: {
             "user-agent": string | any;
