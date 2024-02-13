@@ -62,7 +62,7 @@ export class UserService {
     // return this.userRepository.checkCodeConfirmation(code)
     const user = await this.userSqlRepository.checkCodeConfirmation(code)
     if(user.userId && !user.isActiveAccount && user.expirationDate >= new Date()){
-      const activateUser = this.userSqlRepository.activateAccount(user.userId)
+      const activateUser = await this.userSqlRepository.activateAccount(user.userId)
       return true
     }
     return false

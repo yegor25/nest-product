@@ -43,11 +43,12 @@ export class UserSqlRepository {
     async checkCodeConfirmation(code: string):Promise<{userId: string,expirationDate: Date,isActiveAccount: boolean}>{
         const user = await this.dataSource.query<{userId: string,expirationDate: Date,isActiveAccount: boolean}[]>(`
                 select c."userId",c."expirationDate",u."isActiveAccount"
-                from public."ConfirmationData" as c
+                from public."ConfirmationData" c
                 Left JOIN public."Users" u
-                ON c."userId" = u.id
+                ON c."userId" = u."id"
                 WHERE c."code" = $1;
         `,[code])
+        console.log("user", user)
         return user[0]
     }
 
