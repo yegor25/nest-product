@@ -4,7 +4,7 @@ import { userSqlDbType } from "../users/user.schema";
 export declare class SecurityDevicesController {
     protected securityDevicesService: SecurityDevicesService;
     constructor(securityDevicesService: SecurityDevicesService);
-    getById(req: Request<{}, {}, {
+    getAllActiveSessions(req: Request<{}, {}, {
         user: userSqlDbType;
     }, {}>): Promise<import("./securityDevices.schema").securityDevicesViewType[]>;
     deleteDeviceById(deviceId: string, data: {

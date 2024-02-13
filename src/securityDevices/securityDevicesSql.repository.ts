@@ -29,7 +29,7 @@ export class SecurityDevicesSqlRepository  {
     async getAllSessions(userId: string):Promise<securityDevicesViewType[]>{
         const ses = await this.dataSource.query<securityDevicesViewType[]>(`
             select s."ip",s."title",s."lastActiveDate",s."deviceId" from public."SecurityDevices" s
-            where s."deviceId" = $1;
+            where s."userId" = $1;
         `,[userId])
         return ses
     }

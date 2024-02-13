@@ -19,7 +19,7 @@ let SecurityDevicesController = class SecurityDevicesController {
     constructor(securityDevicesService) {
         this.securityDevicesService = securityDevicesService;
     }
-    async getById(req) {
+    async getAllActiveSessions(req) {
         const user = req.body.user;
         const result = await this.securityDevicesService.getAllSessions(user.id);
         if (!result)
@@ -47,7 +47,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], SecurityDevicesController.prototype, "getById", null);
+], SecurityDevicesController.prototype, "getAllActiveSessions", null);
 __decorate([
     (0, common_1.HttpCode)(204),
     (0, common_1.Delete)('devices/:deviceId'),

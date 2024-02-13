@@ -12,7 +12,7 @@ export class SecurityDevicesController {
     ){}
 
     @Get('devices')
-    async getById(@Req() req:Request<{},{},{user:userSqlDbType},{}>){
+    async getAllActiveSessions(@Req() req:Request<{},{},{user:userSqlDbType},{}>){
         const user = req.body.user
         const result = await this.securityDevicesService.getAllSessions(user.id)
         if (!result)  throw new NotFoundException();
