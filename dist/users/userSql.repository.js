@@ -63,7 +63,6 @@ let UserSqlRepository = class UserSqlRepository {
                 ON c."userId" = u."id"
                 WHERE c."code" = $1;
         `, [code]);
-        console.log("user", user);
         return user[0];
     }
     async activateAccount(userId) {
@@ -77,7 +76,7 @@ let UserSqlRepository = class UserSqlRepository {
     }
     async validateResendingUser(email) {
         const user = await this.dataSource.query(`
-        select u."isActiveAccount" from public."Users"
+        select u."isActiveAccount" from public."Users" u
         where u."email" = $1;
         `, [email]);
         if (user[0] && !user[0].isActiveAccount)

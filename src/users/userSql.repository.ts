@@ -48,7 +48,6 @@ export class UserSqlRepository {
                 ON c."userId" = u."id"
                 WHERE c."code" = $1;
         `,[code])
-        console.log("user", user)
         return user[0]
     }
 
@@ -63,7 +62,7 @@ export class UserSqlRepository {
     }
     async validateResendingUser(email: string):Promise<boolean>{
         const user = await this.dataSource.query<{isActiveAccount: boolean}[]>(`
-        select u."isActiveAccount" from public."Users"
+        select u."isActiveAccount" from public."Users" u
         where u."email" = $1;
         `,[email])
         if(user[0] && !user[0].isActiveAccount) return true
