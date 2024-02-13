@@ -14,7 +14,7 @@ export class TestingService {
         protected suService: SuperUsersService
         ){}
     async deleteAllData(){
-        await this.userRepository.deleteAll()
+        // await this.userRepository.deleteAll()
         await this.blogRepository.deleteAll()
         await this.postRepository.deleteAll()
         await this.suService.deleteAll()
