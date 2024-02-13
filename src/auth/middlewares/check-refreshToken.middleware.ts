@@ -6,6 +6,7 @@ import { jwtConstants } from "../constants";
 import { UserService } from "../../users/user.service";
 import { TokenService } from "../../tokens/token.service";
 import { SecurityDevicesRepository } from "../../securityDevices/securityDevices.repository";
+import { SecurityDevicesSqlRepository } from "../../securityDevices/securityDevicesSql.repository";
 
 
 
@@ -15,7 +16,8 @@ export class CheckRefreshToken implements NestMiddleware {
         public jwtService: JwtService,
         private userService:UserService,
         protected tokenService:TokenService,
-        protected securityDevicesRepository: SecurityDevicesRepository
+        protected securityDevicesRepository: SecurityDevicesRepository,
+        protected securityDevicesSqlRepository: SecurityDevicesSqlRepository
     ){}
 
     async use(req:Request, res:Response, next: NextFunction){
@@ -25,6 +27,7 @@ export class CheckRefreshToken implements NestMiddleware {
             res.sendStatus(401)
             return
         }
+        
         try {
             const data = await this.jwtService.verify(token,{secret: jwtConstants.refreshSecret})
             if(data){
@@ -38,7 +41,8 @@ export class CheckRefreshToken implements NestMiddleware {
                     res.sendStatus(401)
                     return
                 }
-                const isActiveDevice = await this.securityDevicesRepository.checkActiveSession(data.deviceId)
+                const isActiveDevice = await this.securityDevicesSqlRepository.checkActiveSession(data.deviceId)
+                console.log("isActive", isActiveDevice)
                 if(!isActiveDevice) {
                     res.sendStatus(401)
                     return

@@ -16,12 +16,14 @@ const constants_1 = require("../constants");
 const user_service_1 = require("../../users/user.service");
 const token_service_1 = require("../../tokens/token.service");
 const securityDevices_repository_1 = require("../../securityDevices/securityDevices.repository");
+const securityDevicesSql_repository_1 = require("../../securityDevices/securityDevicesSql.repository");
 let CheckRefreshToken = class CheckRefreshToken {
-    constructor(jwtService, userService, tokenService, securityDevicesRepository) {
+    constructor(jwtService, userService, tokenService, securityDevicesRepository, securityDevicesSqlRepository) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.tokenService = tokenService;
         this.securityDevicesRepository = securityDevicesRepository;
+        this.securityDevicesSqlRepository = securityDevicesSqlRepository;
     }
     async use(req, res, next) {
         const token = req.cookies.refreshToken;
@@ -42,7 +44,8 @@ let CheckRefreshToken = class CheckRefreshToken {
                     res.sendStatus(401);
                     return;
                 }
-                const isActiveDevice = await this.securityDevicesRepository.checkActiveSession(data.deviceId);
+                const isActiveDevice = await this.securityDevicesSqlRepository.checkActiveSession(data.deviceId);
+                console.log("isActive", isActiveDevice);
                 if (!isActiveDevice) {
                     res.sendStatus(401);
                     return;
@@ -68,6 +71,7 @@ exports.CheckRefreshToken = CheckRefreshToken = __decorate([
     __metadata("design:paramtypes", [jwt_1.JwtService,
         user_service_1.UserService,
         token_service_1.TokenService,
-        securityDevices_repository_1.SecurityDevicesRepository])
+        securityDevices_repository_1.SecurityDevicesRepository,
+        securityDevicesSql_repository_1.SecurityDevicesSqlRepository])
 ], CheckRefreshToken);
 //# sourceMappingURL=check-refreshToken.middleware.js.map
