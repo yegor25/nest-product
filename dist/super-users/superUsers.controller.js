@@ -24,11 +24,6 @@ let SuperUserController = class SuperUserController {
         this.superUsersService = superUsersService;
         this.dataSorce = dataSorce;
     }
-    async getAllUsers() {
-        return this.dataSorce.query(`
-    SELECT * from public."Users";
-        `);
-    }
     async createUser(createUserDto) {
         return this.superUsersService.create(createUserDto);
     }
@@ -43,12 +38,6 @@ let SuperUserController = class SuperUserController {
     }
 };
 exports.SuperUserController = SuperUserController;
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], SuperUserController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Post)("users"),

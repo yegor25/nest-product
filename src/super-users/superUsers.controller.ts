@@ -13,12 +13,7 @@ export class SuperUserController {
     @InjectDataSource() protected dataSorce: DataSource
     ) {}
 
-  @Get()
-  async getAllUsers() {
-    return this.dataSorce.query(`
-    SELECT * from public."Users";
-        `);
-  }
+  
 
   @UseGuards(BasicAuthGuard)
   @Post("users")

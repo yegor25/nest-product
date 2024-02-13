@@ -6,7 +6,6 @@ export declare class SuperUserController {
     protected superUsersService: SuperUsersService;
     protected dataSorce: DataSource;
     constructor(superUsersService: SuperUsersService, dataSorce: DataSource);
-    getAllUsers(): Promise<any>;
     createUser(createUserDto: CreateSuDtoType): Promise<import("../users/user.schema").ResponseUserDtoType>;
     deleteUser(userId: string): Promise<void>;
     getUsers(query: paramsUserPaginatorType): Promise<import("../users/user.schema").ResponseAllUserDto>;
