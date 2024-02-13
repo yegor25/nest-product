@@ -55,7 +55,7 @@ let UserService = class UserService {
     }
     async checkCodeConfirmation(code) {
         const user = await this.userSqlRepository.checkCodeConfirmation(code);
-        if (user.userId && !user.isActiveAccount && user.expirationDate >= new Date()) {
+        if (user && user.userId && !user.isActiveAccount && user.expirationDate >= new Date()) {
             const activateUser = await this.userSqlRepository.activateAccount(user.userId);
             return true;
         }
