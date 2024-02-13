@@ -75,7 +75,7 @@ export class SuperUserRepository {
         const queryUserString = `
             select u."email",u."login",u."id",u."createdAt"
             from public."Users" u
-            where u."login" ilike '%${loginTerm}%' OR u."email" ilike '%${emailTerm}%'
+            where  u."login"  ilike  '%${loginTerm}%' OR u."email" ilike '%${emailTerm}%'
             order by u."${parametres.sortBy}" ${sortDirection}
             limit ${+parametres.pageSize} offset ${skipCount}
             ;
