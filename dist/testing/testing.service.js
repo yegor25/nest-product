@@ -23,8 +23,6 @@ let TestingService = class TestingService {
         this.suService = suService;
     }
     async deleteAllData() {
-        await this.blogRepository.deleteAll();
-        await this.postRepository.deleteAll();
         await this.suService.deleteAll();
         return;
     }
