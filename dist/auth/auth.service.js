@@ -48,10 +48,10 @@ let AuthService = class AuthService {
         const res = await this.usersService.checkCodeConfirmation(code);
         return res;
     }
-    async resendingEmail(email) {
+    async resendingEmail(email, userId) {
         const confirmationData = authHelper_1.authHelper.confiramtionDataMapper();
         await mail_manager_1.mailManager.registerConfirmation(email, confirmationData.code);
-        await this.dataConfirmationRepository.changeCode(confirmationData, email);
+        await this.dataConfirmationRepository.changeCode(confirmationData, userId);
         return;
     }
 };

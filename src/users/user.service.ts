@@ -70,7 +70,7 @@ export class UserService {
 // async changeConfirmationData(email: string, data: EmailConfirmation):Promise<string | null>{
 //   return this.userRepository.changeConfirmationData(email, data)
 // }
-async validateResendingUser(email: string):Promise<boolean>{
+async validateResendingUser(email: string):Promise<string | null>{
   return this.userSqlRepository.validateResendingUser(email)
 }
 }

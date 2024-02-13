@@ -20,15 +20,15 @@ export class DataConfirmationRepository {
         `)
         return data[0].code
     }
-    async changeCode(confirmationData: EmailConfirmation,email: string):Promise<string>{
+    async changeCode(confirmationData: EmailConfirmation,userId: string):Promise<string>{
         const {code,expirationDate} = confirmationData
         const newData = await this.dataSource.query<{code: string}[]>(`
         update public."ConfirmationData" as c
         set "code" = $1,
         "expirationDate" = $3
-        where c."email" = $2
+        where c."userId" = $2
         returning code;
-        `,[code,email, expirationDate])
+        `,[code,userId, expirationDate])
         return newData[0].code
     }
 }

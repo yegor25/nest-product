@@ -76,12 +76,13 @@ let UserSqlRepository = class UserSqlRepository {
     }
     async validateResendingUser(email) {
         const user = await this.dataSource.query(`
-        select u."isActiveAccount" from public."Users" u
+        select u."isActiveAccount",u."id" from public."Users" u
         where u."email" = $1;
         `, [email]);
+        console.log("user", user);
         if (user[0] && !user[0].isActiveAccount)
-            return true;
-        return false;
+            return user[0].id;
+        return null;
     }
 };
 exports.UserSqlRepository = UserSqlRepository;

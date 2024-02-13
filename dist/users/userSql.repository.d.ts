@@ -12,5 +12,5 @@ export declare class UserSqlRepository {
         isActiveAccount: boolean;
     }>;
     activateAccount(userId: string): Promise<userSqlDbType>;
-    validateResendingUser(email: string): Promise<boolean>;
+    validateResendingUser(email: string): Promise<string | null>;
 }

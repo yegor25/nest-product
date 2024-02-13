@@ -43,12 +43,12 @@ async confirmUser(code: string):Promise<boolean>{
     const res = await this.usersService.checkCodeConfirmation(code)
     return res
 }
-async resendingEmail(email: string){
+async resendingEmail(email: string, userId: string){
     const confirmationData = authHelper.confiramtionDataMapper()
     // const modified = await this.usersService.changeConfirmationData(email, confirmationData)
     // if(!modified) return null
     await mailManager.registerConfirmation(email,confirmationData.code)
-    await this.dataConfirmationRepository.changeCode(confirmationData,email)
+    await this.dataConfirmationRepository.changeCode(confirmationData,userId)
     return
 }
 }

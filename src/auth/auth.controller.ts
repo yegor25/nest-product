@@ -40,7 +40,7 @@ export class AuthController {
         if(!validData) {
             throw new BadRequestException([{field: "email", message: "invalid data"}]);
         } 
-            await this.authService.resendingEmail(body.email)
+            await this.authService.resendingEmail(body.email, validData)
             return
     
     

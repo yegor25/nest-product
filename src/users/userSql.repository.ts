@@ -60,13 +60,14 @@ export class UserSqlRepository {
         `,[userId])
         return activeUser[0]
     }
-    async validateResendingUser(email: string):Promise<boolean>{
-        const user = await this.dataSource.query<{isActiveAccount: boolean}[]>(`
-        select u."isActiveAccount" from public."Users" u
+    async validateResendingUser(email: string):Promise<string | null>{
+        const user = await this.dataSource.query<{isActiveAccount: boolean, id: string}[]>(`
+        select u."isActiveAccount",u."id" from public."Users" u
         where u."email" = $1;
         `,[email])
-        if(user[0] && !user[0].isActiveAccount) return true
-        return false
+        console.log("user", user)
+        if(user[0] && !user[0].isActiveAccount) return user[0].id
+        return null
        }
     
 }

@@ -16,5 +16,5 @@ export declare class UserService {
     validateUser(loginOrEmail: string, pass: string): Promise<userSqlDbType | null>;
     checkExistUser(email: string, login: string): Promise<User | null>;
     checkCodeConfirmation(code: string): Promise<boolean>;
-    validateResendingUser(email: string): Promise<boolean>;
+    validateResendingUser(email: string): Promise<string | null>;
 }

@@ -31,15 +31,15 @@ let DataConfirmationRepository = class DataConfirmationRepository {
         `);
         return data[0].code;
     }
-    async changeCode(confirmationData, email) {
+    async changeCode(confirmationData, userId) {
         const { code, expirationDate } = confirmationData;
         const newData = await this.dataSource.query(`
         update public."ConfirmationData" as c
         set "code" = $1,
         "expirationDate" = $3
-        where c."email" = $2
+        where c."userId" = $2
         returning code;
-        `, [code, email, expirationDate]);
+        `, [code, userId, expirationDate]);
         return newData[0].code;
     }
 };
