@@ -66,7 +66,7 @@ export class SuperUserRepository {
         const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
         const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : ''
         const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : ''
-        const sortDirection = params.sortDirection ? params.sortDirection : SortDirection.asc
+        const sortDirection = params.sortDirection ? params.sortDirection : SortDirection.desc
         const queryTotalCountString = `
             select count(*)
             from public."Users" u
@@ -81,7 +81,6 @@ export class SuperUserRepository {
             ;
         `
         const totalCount = await this.dataSourse.query<{count: string}[]>(queryTotalCountString)
-        console.log("total", totalCount)
         const users = await this.dataSourse.query(queryUserString)
         const result:ResponseAllUserDto = {
             pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),

@@ -76,7 +76,7 @@ let SuperUserRepository = class SuperUserRepository {
         const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
         const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : '';
         const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : '';
-        const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.asc;
+        const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.desc;
         const queryTotalCountString = `
             select count(*)
             from public."Users" u
@@ -91,7 +91,6 @@ let SuperUserRepository = class SuperUserRepository {
             ;
         `;
         const totalCount = await this.dataSourse.query(queryTotalCountString);
-        console.log("total", totalCount);
         const users = await this.dataSourse.query(queryUserString);
         const result = {
             pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
