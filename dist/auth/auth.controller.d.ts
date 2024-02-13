@@ -1,6 +1,6 @@
 import { UserService } from "../users/user.service";
 import { AuthService } from "./auth.service";
-import { User, userSqlDbType } from "../users/user.schema";
+import { userSqlDbType } from "../users/user.schema";
 import { Response, Request } from "express";
 import { TokenService } from "../tokens/token.service";
 import { SecurityDevicesService } from "../securityDevices/securityDevices.service";
@@ -36,11 +36,11 @@ export declare class AuthController {
         userId: string;
     }>;
     logout(req: Request<{}, {}, {
-        user: User;
+        user: userSqlDbType;
         deviceId: string;
     }, {}>, res: Response): Promise<void>;
     refreshToken(req: Request<{}, {}, {
-        user: User;
+        user: userSqlDbType;
         deviceId: string;
     }, {}>, res: Response): Promise<void>;
 }

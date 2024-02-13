@@ -63,14 +63,14 @@ let AuthController = class AuthController {
     }
     async logout(req, res) {
         const token = req.cookies.refreshToken;
-        const userId = req.body.user._id.toString();
+        const userId = req.body.user.id;
         await this.tokenService.save(userId, token);
         await this.securityDevicesService.deactivateSession(req.body.deviceId);
         res.clearCookie("refreshToken");
         res.sendStatus(204);
     }
     async refreshToken(req, res) {
-        const userId = req.body.user._id.toString();
+        const userId = req.body.user.id;
         const credentials = await this.authService.login(userId, req.body.deviceId);
         const token = req.cookies.refreshToken;
         await this.tokenService.save(userId, token);
