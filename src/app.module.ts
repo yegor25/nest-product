@@ -51,6 +51,7 @@ import { UserSqlRepository } from './users/userSql.repository';
 import { DataConfirmationRepository } from './users/dataConfirmation.repository';
 import { TokenSqlRepository } from './tokens/tokenSql.repository';
 import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesSql.repository';
+import { SuperAdminBlogsModule } from './sa-blogs/sa.blogs.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesS
       {name: UserRequestInfo.name, schema:UserRequestInfoSchema}
     ]),
     SuperUsersModule,
+    SuperAdminBlogsModule
   ],
   
   controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController,SecurityDevicesController],

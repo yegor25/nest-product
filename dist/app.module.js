@@ -60,6 +60,7 @@ const userSql_repository_1 = require("./users/userSql.repository");
 const dataConfirmation_repository_1 = require("./users/dataConfirmation.repository");
 const tokenSql_repository_1 = require("./tokens/tokenSql.repository");
 const securityDevicesSql_repository_1 = require("./securityDevices/securityDevicesSql.repository");
+const sa_blogs_module_1 = require("./sa-blogs/sa.blogs.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -99,6 +100,7 @@ exports.AppModule = AppModule = __decorate([
                 { name: requestUserInfo_schema_1.UserRequestInfo.name, schema: requestUserInfo_schema_1.UserRequestInfoSchema }
             ]),
             superUsers_module_1.SuperUsersModule,
+            sa_blogs_module_1.SuperAdminBlogsModule
         ],
         controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController, securityDevices_controller_1.SecurityDevicesController],
         providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, requestUserInfo_repository_1.RequestUserInfoRepository, requestUserInfoService_1.RequestUserInfoService, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, tokenSql_repository_1.TokenSqlRepository, securityDevicesSql_repository_1.SecurityDevicesSqlRepository],
