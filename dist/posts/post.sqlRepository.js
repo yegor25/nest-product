@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const postHelper_1 = require("./postHelper");
 const user_schema_1 = require("../users/user.schema");
+const like_schema_1 = require("../postLikes/like.schema");
 let PostSqlRepository = class PostSqlRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
@@ -30,7 +31,8 @@ let PostSqlRepository = class PostSqlRepository {
             values($1,$2,$3,$4,$5,'${new Date().toISOString()}')
             returning * ;
         `, [title, shortDescription, content, blogId, blogName]);
-        return newPost;
+        console.log("new", newPost);
+        return newPost[0];
     }
     async create(dto, blogName) {
         const { title, content, shortDescription, blogId } = dto;
@@ -77,6 +79,47 @@ let PostSqlRepository = class PostSqlRepository {
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
         };
+    }
+    async findById(postId, userId) {
+        const myId = userId ? userId : '';
+        const post = await this.dataSource.query(`
+    select * ,
+        --(
+          --  select row_to_json(row) from (
+            --    select count(*) as "likesCount"
+              --  from public."PostLikes" l
+                --where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
+            --) as row
+           
+        --) as "extendedLikesInfo",
+        (
+            select count(*) as "likesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
+        ),
+        (
+            select count(*) as "dislikesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
+        ),
+       (
+        select l."status" 
+        from public."PostLikes" l
+        where l."postId" = $1 and l."userId"::text = $2
+       ) as "myStatus",
+       
+        array(
+        select row_to_json(row) from (
+        select l."addedAt", l."userId", l."login"
+        from public."PostLikes" l
+        where p."id" = l."postId"
+        )  as row ) as "newestLikes"
+        from public."Posts" p
+        where p."id" = $1; 
+    `, [postId, myId]);
+        if (post[0])
+            return post[0];
+        return null;
     }
 };
 exports.PostSqlRepository = PostSqlRepository;

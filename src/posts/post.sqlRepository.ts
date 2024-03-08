@@ -7,10 +7,12 @@ import {
   paramsPostPaginatorType,
   postDtoResponseType,
   postSqlDbType,
+  postSqlQueryType,
   viewAllPostsType,
 } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { SortDirection } from "../users/user.schema";
+import { LikeStatus } from "src/postLikes/like.schema";
 
 @Injectable()
 export class PostSqlRepository {
@@ -30,7 +32,8 @@ export class PostSqlRepository {
         `,
       [title, shortDescription, content, blogId, blogName]
     );
-    return newPost;
+    console.log("new", newPost);
+    return newPost[0];
   }
   async create(
     dto: createdPostDtoType,
@@ -88,5 +91,45 @@ export class PostSqlRepository {
       page: +parametres.pageNumber,
       pageSize: +parametres.pageSize,
     };
+  }
+  async findById(postId: string, userId?: string): Promise<postSqlQueryType | null> {
+    const myId = userId ? userId : ''
+    const post = await this.dataSource.query<postSqlQueryType[]>(`
+    select * ,
+        --(
+          --  select row_to_json(row) from (
+            --    select count(*) as "likesCount"
+              --  from public."PostLikes" l
+                --where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+            --) as row
+           
+        --) as "extendedLikesInfo",
+        (
+            select count(*) as "likesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        ),
+        (
+            select count(*) as "dislikesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        ),
+       (
+        select l."status" 
+        from public."PostLikes" l
+        where l."postId" = $1 and l."userId"::text = $2
+       ) as "myStatus",
+       
+        array(
+        select row_to_json(row) from (
+        select l."addedAt", l."userId", l."login"
+        from public."PostLikes" l
+        where p."id" = l."postId"
+        )  as row ) as "newestLikes"
+        from public."Posts" p
+        where p."id" = $1; 
+    `,[postId, myId]);
+    if(post[0]) return post[0]
+    return null
   }
 }

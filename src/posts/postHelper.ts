@@ -1,6 +1,6 @@
 import { SortDirection } from "../users/user.schema";
 import { extendedLikesInfo, LikesPost, LikeStatus, postLikeType } from "../postLikes/like.schema";
-import { Post, dbPostsPaginatorType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType } from "./post.schema";
+import { Post, dbPostsPaginatorType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType, postSqlQueryType } from "./post.schema";
 
 
 
@@ -70,4 +70,22 @@ export const postHelper = {
         }
         return res
     },
+    postViewMapperFromSql(post: postSqlQueryType):postDtoResponseType {
+        const res:postDtoResponseType = {
+            id: post.id,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt,
+            extendedLikesInfo: {
+                likesCount: +post.likesCount,
+                dislikesCount: +post.dislikesCount,
+                myStatus: post.myStatus ? post.myStatus : LikeStatus.None,
+                newestLikes: post.newestLikes
+            }
+        }
+        return res 
+    }
 }

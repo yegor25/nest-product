@@ -40,7 +40,6 @@ let PostService = class PostService {
         const newPost = await this.postSqlRepository.createForBlog(dto, blogId, blog.name);
         const resultDto = postHelper_1.postHelper.postViewMapperDefault(newPost);
         return resultDto;
-        return null;
     }
     async changePost(dto, postId) {
         const blog = await this.blogService.findById(dto.blogId);
@@ -52,11 +51,10 @@ let PostService = class PostService {
         return this.postRepository.deletePost(id);
     }
     async findPostById(id, userId) {
-        const post = await this.postRepository.findPostById(id);
+        const post = await this.postSqlRepository.findById(id, userId);
         if (!post)
             return null;
-        const likes = await this.postLikeService.getByPostId(id);
-        return postHelper_1.postHelper.postViewMapper(post, likes, userId);
+        return postHelper_1.postHelper.postViewMapperFromSql(post);
     }
     async findPosts(params, userId) {
         const likes = await this.postLikeService.getAll();

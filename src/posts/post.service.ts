@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PostRepository } from "./post.repository";
-import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, viewAllPostsType } from "./post.schema";
+import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType, viewAllPostsType } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { BlogService } from "../blogs/blog.service";
 import { PostLikeService } from "../postLikes/postLike.service";
@@ -32,7 +32,6 @@ export class PostService {
         const newPost = await this.postSqlRepository.createForBlog(dto, blogId, blog.name)
         const resultDto = postHelper.postViewMapperDefault(newPost)
         return resultDto
-        return null
     }
     async changePost(dto: createdPostDtoType, postId: string):Promise<boolean>{
         const blog = await this.blogService.findById(dto.blogId)
@@ -44,11 +43,11 @@ export class PostService {
         return this.postRepository.deletePost(id)
     }
     async findPostById(id: string, userId?: string):Promise<postDtoResponseType | null>{
-        const post = await this.postRepository.findPostById(id)
+        const post = await this.postSqlRepository.findById(id, userId)
         if(!post) return null
-        const likes = await this.postLikeService.getByPostId(id)
-        return postHelper.postViewMapper(post,likes, userId)
-
+        // const likes = await this.postLikeService.getByPostId(id)
+        // return postHelper.postViewMapper(post,likes, userId)
+        return  postHelper.postViewMapperFromSql(post)
     }
 
     async findPosts(params: paramsPostPaginatorType, userId?: string):Promise<viewAllPostsType>{

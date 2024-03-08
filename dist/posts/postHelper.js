@@ -70,5 +70,23 @@ exports.postHelper = {
         };
         return res;
     },
+    postViewMapperFromSql(post) {
+        const res = {
+            id: post.id,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt,
+            extendedLikesInfo: {
+                likesCount: +post.likesCount,
+                dislikesCount: +post.dislikesCount,
+                myStatus: post.myStatus ? post.myStatus : like_schema_1.LikeStatus.None,
+                newestLikes: post.newestLikes
+            }
+        };
+        return res;
+    }
 };
 //# sourceMappingURL=postHelper.js.map

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import mongoose, { HydratedDocument } from "mongoose"
 import { PaginatorType, SortDirection } from "../users/user.schema";
-import {  LikeStatus, extendedLikesInfo } from "../postLikes/like.schema";
+import {  LikeStatus, extendedLikesInfo, postLikeType } from "../postLikes/like.schema";
 import { Transform } from "class-transformer";
 import { IsMongoId, IsNotEmpty, IsString, MaxLength, Validate, isString } from "class-validator";
 import { BadRequestException } from "@nestjs/common";
@@ -141,4 +141,18 @@ export const PostSchema = SchemaFactory.createForClass(Post)
 
 PostSchema.methods = {
     getDefaultLikes: Post.prototype.getDefaultLikes
+}
+
+export type postSqlQueryType = {
+    id: string,
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogName: string,
+    createdAt: string,
+    blogId: string,
+    likesCount: string,
+    dislikesCount: string,
+    myStatus: null | LikeStatus,
+    newestLikes: postLikeType[]
 }

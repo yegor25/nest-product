@@ -24,7 +24,7 @@ import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/pos
 export class SuperAdminBlogsController {
   constructor(
     protected suBlogsService: SuperAdminBlogService,
-    // protected postService: PostService
+    protected postService: PostService
     ) {}
 
   @UseGuards(BasicAuthGuard)
@@ -70,10 +70,9 @@ export class SuperAdminBlogsController {
   @UseGuards(BasicAuthGuard)
   @Post(':blogId/posts')
   async createPost(@Param('blogId') blogId: string, @Body() body: createdPosForBlogtDtoType){
-      // const post = await this.postService.createForBlog(body,blogId)
-      // if(!post) throw new NotFoundException();
-      // return post
-      return null
+      const post = await this.postService.createForBlog(body,blogId)
+      if(!post) throw new NotFoundException();
+      return post
   }
   @UseGuards(BasicAuthGuard)
   @Get(':blogId/posts')

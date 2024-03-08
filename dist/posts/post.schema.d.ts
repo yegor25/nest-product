@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { HydratedDocument } from "mongoose";
 import { PaginatorType, SortDirection } from "../users/user.schema";
-import { extendedLikesInfo } from "../postLikes/like.schema";
+import { LikeStatus, extendedLikesInfo, postLikeType } from "../postLikes/like.schema";
 export type PostDocument = HydratedDocument<Post>;
 export declare class Post {
     _id: mongoose.Types.ObjectId;
@@ -91,3 +91,16 @@ export declare const PostSchema: mongoose.Schema<Post, mongoose.Model<Post, any,
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Post, mongoose.Document<unknown, {}, mongoose.FlatRecord<Post>> & mongoose.FlatRecord<Post> & Required<{
     _id: mongoose.Types.ObjectId;
 }>>;
+export type postSqlQueryType = {
+    id: string;
+    title: string;
+    shortDescription: string;
+    content: string;
+    blogName: string;
+    createdAt: string;
+    blogId: string;
+    likesCount: string;
+    dislikesCount: string;
+    myStatus: null | LikeStatus;
+    newestLikes: postLikeType[];
+};

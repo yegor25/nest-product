@@ -17,10 +17,12 @@ const common_1 = require("@nestjs/common");
 const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
 const blog_schema_1 = require("../blogs/blog.schema");
 const sa_blogs_service_1 = require("./sa.blogs.service");
+const post_service_1 = require("../posts/post.service");
 const post_schema_1 = require("../posts/post.schema");
 let SuperAdminBlogsController = class SuperAdminBlogsController {
-    constructor(suBlogsService) {
+    constructor(suBlogsService, postService) {
         this.suBlogsService = suBlogsService;
+        this.postService = postService;
     }
     async createBlog(body) {
         return this.suBlogsService.create(body);
@@ -47,7 +49,10 @@ let SuperAdminBlogsController = class SuperAdminBlogsController {
         return;
     }
     async createPost(blogId, body) {
-        return null;
+        const post = await this.postService.createForBlog(body, blogId);
+        if (!post)
+            throw new common_1.NotFoundException();
+        return post;
     }
     async findPostsByBlogId(blogId, params) {
     }
@@ -115,6 +120,7 @@ __decorate([
 ], SuperAdminBlogsController.prototype, "findPostsByBlogId", null);
 exports.SuperAdminBlogsController = SuperAdminBlogsController = __decorate([
     (0, common_1.Controller)("sa/blogs"),
-    __metadata("design:paramtypes", [sa_blogs_service_1.SuperAdminBlogService])
+    __metadata("design:paramtypes", [sa_blogs_service_1.SuperAdminBlogService,
+        post_service_1.PostService])
 ], SuperAdminBlogsController);
 //# sourceMappingURL=sa.blogs.controller.js.map
