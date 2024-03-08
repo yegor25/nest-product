@@ -2,12 +2,16 @@ import { Injectable } from "@nestjs/common";
 import { BlogRepository } from "./blogs.repository";
 import { blogItemsResponseType, createdDtoBlogType, paramsBlogPaginatorType, responseDtoBlogType } from "./blog.schema";
 import { blogHelper } from "./blog.helper";
+import { SuperAdminBlogsRepository } from "../sa-blogs/sa.blogs.repository";
 
 
 
 @Injectable()
 export class BlogService {
-    constructor(protected blogRepository: BlogRepository){}
+    constructor(
+        protected blogRepository: BlogRepository,
+        protected blogsSqlRepository: SuperAdminBlogsRepository
+        ){}
 
     async create(dto: createdDtoBlogType):Promise<blogItemsResponseType>{
         const blog = await this.blogRepository.create(dto)
@@ -18,9 +22,9 @@ export class BlogService {
         return blogs
     }
     async findById(id: string):Promise<blogItemsResponseType | null> {
-        const blog = await this.blogRepository.findById(id)
+        const blog = await this.blogsSqlRepository.findById(id)
         if(!blog) return null
-        return blogHelper.getViewBlog(blog)
+        return blog
     }
     async changeBlog(id: string, dto: createdDtoBlogType):Promise<boolean>{
         const blog = await this.blogRepository.changeBlog(id, dto)

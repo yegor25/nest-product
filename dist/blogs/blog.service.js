@@ -13,9 +13,11 @@ exports.BlogService = void 0;
 const common_1 = require("@nestjs/common");
 const blogs_repository_1 = require("./blogs.repository");
 const blog_helper_1 = require("./blog.helper");
+const sa_blogs_repository_1 = require("../sa-blogs/sa.blogs.repository");
 let BlogService = class BlogService {
-    constructor(blogRepository) {
+    constructor(blogRepository, blogsSqlRepository) {
         this.blogRepository = blogRepository;
+        this.blogsSqlRepository = blogsSqlRepository;
     }
     async create(dto) {
         const blog = await this.blogRepository.create(dto);
@@ -26,10 +28,10 @@ let BlogService = class BlogService {
         return blogs;
     }
     async findById(id) {
-        const blog = await this.blogRepository.findById(id);
+        const blog = await this.blogsSqlRepository.findById(id);
         if (!blog)
             return null;
-        return blog_helper_1.blogHelper.getViewBlog(blog);
+        return blog;
     }
     async changeBlog(id, dto) {
         const blog = await this.blogRepository.changeBlog(id, dto);
@@ -47,6 +49,7 @@ let BlogService = class BlogService {
 exports.BlogService = BlogService;
 exports.BlogService = BlogService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [blogs_repository_1.BlogRepository])
+    __metadata("design:paramtypes", [blogs_repository_1.BlogRepository,
+        sa_blogs_repository_1.SuperAdminBlogsRepository])
 ], BlogService);
 //# sourceMappingURL=blog.service.js.map
