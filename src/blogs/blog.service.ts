@@ -18,7 +18,8 @@ export class BlogService {
         return blogHelper.getViewBlog(blog)
     }
     async findBlogs(params: paramsBlogPaginatorType):Promise<responseDtoBlogType>{
-        const blogs = await this.blogRepository.findBlogs(params)
+        // const blogs = await this.blogRepository.findBlogs(params)
+        const blogs = await this.blogsSqlRepository.findBlogs(params)
         return blogs
     }
     async findById(id: string):Promise<blogItemsResponseType | null> {

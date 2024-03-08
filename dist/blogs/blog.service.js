@@ -24,7 +24,7 @@ let BlogService = class BlogService {
         return blog_helper_1.blogHelper.getViewBlog(blog);
     }
     async findBlogs(params) {
-        const blogs = await this.blogRepository.findBlogs(params);
+        const blogs = await this.blogsSqlRepository.findBlogs(params);
         return blogs;
     }
     async findById(id) {
