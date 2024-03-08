@@ -17,10 +17,15 @@ import {
   paramsBlogPaginatorType,
 } from "../blogs/blog.schema";
 import { SuperAdminBlogService } from "./sa.blogs.service";
+import { PostService } from "../posts/post.service";
+import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/post.schema";
 
 @Controller("sa/blogs")
 export class SuperAdminBlogsController {
-  constructor(protected suBlogsService: SuperAdminBlogService) {}
+  constructor(
+    protected suBlogsService: SuperAdminBlogService,
+    // protected postService: PostService
+    ) {}
 
   @UseGuards(BasicAuthGuard)
   @Post()
@@ -28,6 +33,7 @@ export class SuperAdminBlogsController {
     return this.suBlogsService.create(body);
   }
 
+  @Get()
   async findBlogs(@Query() params: paramsBlogPaginatorType) {
     return this.suBlogsService.findBlogs(params);
   }
@@ -58,5 +64,21 @@ export class SuperAdminBlogsController {
     const deletedBlog = await this.suBlogsService.deleteBlogById(blogId);
     if (!deletedBlog) throw new NotFoundException();
     return;
+  }
+
+  @UseGuards(BasicAuthGuard)
+  @Post(':blogId/posts')
+  async createPost(@Param('blogId') blogId: string, @Body() body: createdPosForBlogtDtoType){
+      // const post = await this.postService.createForBlog(body,blogId)
+      // if(!post) throw new NotFoundException();
+      // return post
+      return null
+  }
+  @UseGuards(BasicAuthGuard)
+  @Get(':blogId/posts')
+  async findPostsByBlogId(@Param('blogId') blogId: string, @Query() params: paramsPostPaginatorType & {userId: string}){
+      // const post = await this.postService.findPostsForBlog(params,blogId)
+      // if(!post) throw new NotFoundException();
+      // return post
   }
 }

@@ -1,17 +1,17 @@
 import { SortDirection } from "../users/user.schema";
 import { extendedLikesInfo, LikesPost, LikeStatus, postLikeType } from "../postLikes/like.schema";
-import { Post, dbPostsPaginatorType, paramsPostPaginatorType, postDtoResponseType } from "./post.schema";
+import { Post, dbPostsPaginatorType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType } from "./post.schema";
 
 
 
 export const postHelper = {
-    postViewMapperDefault(post: Post):postDtoResponseType{
+    postViewMapperDefault(post: postSqlDbType):postDtoResponseType{
         let likesCount = 0
         let dislikesCount = 0
         let myStatus:LikeStatus = LikeStatus.None
         
         const res:postDtoResponseType = {
-            id: post._id.toString(),
+            id: post.id,
             blogId: post.blogId,
             shortDescription: post.shortDescription,
             title: post.title,

@@ -18,7 +18,7 @@ exports.SuperAdminBlogsModule = SuperAdminBlogsModule = __decorate([
     (0, common_1.Module)({
         controllers: [sa_blogs_controller_1.SuperAdminBlogsController],
         providers: [sa_blogs_service_1.SuperAdminBlogService, sa_blogs_repository_1.SuperAdminBlogsRepository],
-        exports: []
+        exports: [sa_blogs_service_1.SuperAdminBlogService]
     })
 ], SuperAdminBlogsModule);
 //# sourceMappingURL=sa.blogs.module.js.map

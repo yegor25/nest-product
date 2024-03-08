@@ -22,7 +22,13 @@ export type postLikeType = {
 }
 export type LikePostDocument = HydratedDocument<LikesPost>
 
-
+export type postSqlDbType = {
+    status:LikeStatus ,
+    userId: string ,
+    addedAt: Date,
+    login: string ,
+    postId: string 
+}
 
 
 @Schema()

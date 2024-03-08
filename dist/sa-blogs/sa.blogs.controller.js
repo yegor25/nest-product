@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const basic_auth_guard_1 = require("../auth/guards/basic-auth.guard");
 const blog_schema_1 = require("../blogs/blog.schema");
 const sa_blogs_service_1 = require("./sa.blogs.service");
+const post_schema_1 = require("../posts/post.schema");
 let SuperAdminBlogsController = class SuperAdminBlogsController {
     constructor(suBlogsService) {
         this.suBlogsService = suBlogsService;
@@ -45,6 +46,11 @@ let SuperAdminBlogsController = class SuperAdminBlogsController {
             throw new common_1.NotFoundException();
         return;
     }
+    async createPost(blogId, body) {
+        return null;
+    }
+    async findPostsByBlogId(blogId, params) {
+    }
 };
 exports.SuperAdminBlogsController = SuperAdminBlogsController;
 __decorate([
@@ -56,6 +62,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperAdminBlogsController.prototype, "createBlog", null);
 __decorate([
+    (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -87,6 +94,24 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SuperAdminBlogsController.prototype, "deleteBlog", null);
+__decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
+    (0, common_1.Post)(':blogId/posts'),
+    __param(0, (0, common_1.Param)('blogId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, post_schema_1.createdPosForBlogtDtoType]),
+    __metadata("design:returntype", Promise)
+], SuperAdminBlogsController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
+    (0, common_1.Get)(':blogId/posts'),
+    __param(0, (0, common_1.Param)('blogId')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], SuperAdminBlogsController.prototype, "findPostsByBlogId", null);
 exports.SuperAdminBlogsController = SuperAdminBlogsController = __decorate([
     (0, common_1.Controller)("sa/blogs"),
     __metadata("design:paramtypes", [sa_blogs_service_1.SuperAdminBlogService])

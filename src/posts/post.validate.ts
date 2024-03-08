@@ -2,6 +2,7 @@ import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface 
 import { BlogService } from "../blogs/blog.service";
 import { BlogRepository } from "../blogs/blogs.repository";
 import { Injectable } from "@nestjs/common";
+import { SuperAdminBlogService } from "src/sa-blogs/sa.blogs.service";
 
 
 
@@ -9,12 +10,12 @@ import { Injectable } from "@nestjs/common";
 export class PostValidator implements ValidatorConstraintInterface {
     constructor(
         protected blogService:BlogService,
+        protected saBlogService: SuperAdminBlogService
     ){}
 
     async validate(value: string):  Promise<boolean> {
-        console.log("post", value,this.blogService)
         if(!value) return false
-        const blog = await this.blogService.findById(value)
+        const blog = await this.saBlogService.findById(value)
         return !!blog
      }
 

@@ -3,11 +3,15 @@ import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType,
 import { BlogService } from "../blogs/blog.service";
 import { PostLikeService } from "../postLikes/postLike.service";
 import { LikeStatus } from "../postLikes/like.schema";
+import { SuperAdminBlogService } from "../sa-blogs/sa.blogs.service";
+import { PostSqlRepository } from "./post.sqlRepository";
 export declare class PostService {
-    protected postRepository: PostRepository;
     protected blogService: BlogService;
     protected postLikeService: PostLikeService;
-    constructor(postRepository: PostRepository, blogService: BlogService, postLikeService: PostLikeService);
+    protected saBlogService: SuperAdminBlogService;
+    protected postSqlRepository: PostSqlRepository;
+    protected postRepository: PostRepository;
+    constructor(blogService: BlogService, postLikeService: PostLikeService, saBlogService: SuperAdminBlogService, postSqlRepository: PostSqlRepository, postRepository: PostRepository);
     create(dto: createdPostDtoType): Promise<postDtoResponseType | null>;
     createForBlog(dto: createdPosForBlogtDtoType, blogId: string): Promise<postDtoResponseType | null>;
     changePost(dto: createdPostDtoType, postId: string): Promise<boolean>;

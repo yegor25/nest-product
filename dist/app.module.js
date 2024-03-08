@@ -55,12 +55,20 @@ const requestUserInfo_repository_1 = require("./requestUserInfo/requestUserInfo.
 const requestUserInfoService_1 = require("./requestUserInfo/requestUserInfoService");
 const rateLimiting_middleware_1 = require("./requestUserInfo/middleware/rateLimiting.middleware");
 const typeorm_1 = require("@nestjs/typeorm");
-const superUsers_module_1 = require("./super-users/superUsers.module");
 const userSql_repository_1 = require("./users/userSql.repository");
 const dataConfirmation_repository_1 = require("./users/dataConfirmation.repository");
 const tokenSql_repository_1 = require("./tokens/tokenSql.repository");
 const securityDevicesSql_repository_1 = require("./securityDevices/securityDevicesSql.repository");
-const sa_blogs_module_1 = require("./sa-blogs/sa.blogs.module");
+const post_sqlRepository_1 = require("./posts/post.sqlRepository");
+const postLike_sqlRepository_1 = require("./postLikes/postLike.sqlRepository");
+const sa_blogs_controller_1 = require("./sa-blogs/sa.blogs.controller");
+const sa_blogs_repository_1 = require("./sa-blogs/sa.blogs.repository");
+const sa_blogs_service_1 = require("./sa-blogs/sa.blogs.service");
+const superUsers_controller_1 = require("./super-users/superUsers.controller");
+const superUsers_repositoru_1 = require("./super-users/superUsers.repositoru");
+const superUsers_service_1 = require("./super-users/superUsers.service");
+const su_validate_email_1 = require("./super-users/validators/su.validate-email");
+const su_validate_login_1 = require("./super-users/validators/su.validate-login");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -99,11 +107,9 @@ exports.AppModule = AppModule = __decorate([
                 { name: securityDevices_schema_1.SecurityDevices.name, schema: securityDevices_schema_1.SecurityDevicesSchema },
                 { name: requestUserInfo_schema_1.UserRequestInfo.name, schema: requestUserInfo_schema_1.UserRequestInfoSchema }
             ]),
-            superUsers_module_1.SuperUsersModule,
-            sa_blogs_module_1.SuperAdminBlogsModule
         ],
-        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, blogs_controller_1.BlogController, post_controller_1.PostController, user_controller_1.UserController, auth_controller_1.AuthController, comments_controller_1.CommentController, securityDevices_controller_1.SecurityDevicesController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, blog_service_1.BlogService, blogs_repository_1.BlogRepository, post_repository_1.PostRepository, post_service_1.PostService, user_service_1.UserService, user_repository_1.UserRepository, auth_service_1.AuthService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, comments_service_1.CommentService, comments_repository_1.CommentsRepository, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, post_validate_1.PostValidator, token_service_1.TokenService, token_repository_1.TokenRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, requestUserInfo_repository_1.RequestUserInfoRepository, requestUserInfoService_1.RequestUserInfoService, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, tokenSql_repository_1.TokenSqlRepository, securityDevicesSql_repository_1.SecurityDevicesSqlRepository],
+        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, user_controller_1.UserController, blogs_controller_1.BlogController, post_controller_1.PostController, comments_controller_1.CommentController, sa_blogs_controller_1.SuperAdminBlogsController, securityDevices_controller_1.SecurityDevicesController, superUsers_controller_1.SuperUserController, user_controller_1.UserController, auth_controller_1.AuthController],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, post_validate_1.PostValidator, blogs_repository_1.BlogRepository, blog_service_1.BlogService, post_service_1.PostService, post_service_1.PostService, post_sqlRepository_1.PostSqlRepository, post_repository_1.PostRepository, blog_service_1.BlogService, postLike_service_1.PostLikeService, comments_repository_1.CommentsRepository, comments_service_1.CommentService, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, postLike_sqlRepository_1.PostLikeSqlRepository, requestUserInfoService_1.RequestUserInfoService, requestUserInfo_repository_1.RequestUserInfoRepository, sa_blogs_service_1.SuperAdminBlogService, sa_blogs_repository_1.SuperAdminBlogsRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, securityDevicesSql_repository_1.SecurityDevicesSqlRepository, superUsers_service_1.SuperUsersService, superUsers_repositoru_1.SuperUserRepository, su_validate_email_1.SuValidatorEmail, su_validate_login_1.SuValidatorLogin, token_service_1.TokenService, tokenSql_repository_1.TokenSqlRepository, token_repository_1.TokenRepository, user_service_1.UserService, user_repository_1.UserRepository, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, auth_service_1.AuthService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

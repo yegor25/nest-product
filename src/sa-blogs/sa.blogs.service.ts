@@ -4,12 +4,15 @@ import { Injectable } from "@nestjs/common";
 import { SuperAdminBlogsRepository } from "./sa.blogs.repository";
 import { createdDtoBlogType, paramsBlogPaginatorType } from "../blogs/blog.schema";
 import { blogSqlDbType, responseDtoSqlBlogType } from "./sa.blogs.types";
+import { PostService } from "src/posts/post.service";
 
 
 
 @Injectable()
 export class SuperAdminBlogService {
-    constructor(protected suBlogsRepository: SuperAdminBlogsRepository){}
+    constructor(
+        protected suBlogsRepository: SuperAdminBlogsRepository,
+        ){}
 
     async create(dto: createdDtoBlogType):Promise<blogSqlDbType>{
         return this.suBlogsRepository.create(dto)

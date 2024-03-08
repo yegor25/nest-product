@@ -59,7 +59,15 @@ export type postDtoResponseType = {
     extendedLikesInfo: extendedLikesInfo,
 }
 
-
+export type postSqlDbType = {
+    id: string,
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string,
+    blogName: string,
+    createdAt: string,
+}
 
 export class createdPostDtoType  {
 
@@ -76,11 +84,11 @@ export class createdPostDtoType  {
     @MaxLength(1000)
     content: string
     @IsNotEmpty()
-    @IsMongoId()
     @IsString()
     @Validate(PostValidator)
     blogId: string
 }
+
 export class createdPosForBlogtDtoType  {
     @Transform(({value}) => value.trim())
     @IsNotEmpty()

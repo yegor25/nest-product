@@ -46,12 +46,21 @@ import { RequestUserInfoRepository } from './requestUserInfo/requestUserInfo.rep
 import { RequestUserInfoService } from './requestUserInfo/requestUserInfoService';
 import { RateLimiting } from './requestUserInfo/middleware/rateLimiting.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SuperUsersModule } from './super-users/superUsers.module';
 import { UserSqlRepository } from './users/userSql.repository';
 import { DataConfirmationRepository } from './users/dataConfirmation.repository';
 import { TokenSqlRepository } from './tokens/tokenSql.repository';
 import { SecurityDevicesSqlRepository } from './securityDevices/securityDevicesSql.repository';
-import { SuperAdminBlogsModule } from './sa-blogs/sa.blogs.module';
+import { PostSqlRepository } from './posts/post.sqlRepository';
+import { PostLikeSqlRepository } from './postLikes/postLike.sqlRepository';
+import { SuperAdminBlogsController } from './sa-blogs/sa.blogs.controller';
+import { SuperAdminBlogsRepository } from './sa-blogs/sa.blogs.repository';
+import { SuperAdminBlogService } from './sa-blogs/sa.blogs.service';
+import { SuperUserController } from './super-users/superUsers.controller';
+import { SuperUserRepository } from './super-users/superUsers.repositoru';
+import { SuperUsersService } from './super-users/superUsers.service';
+import { SuValidatorEmail } from './super-users/validators/su.validate-email';
+import { SuValidatorLogin } from './super-users/validators/su.validate-login';
+
 
 @Module({
   imports: [
@@ -86,12 +95,12 @@ import { SuperAdminBlogsModule } from './sa-blogs/sa.blogs.module';
       {name:SecurityDevices.name, schema:SecurityDevicesSchema},
       {name: UserRequestInfo.name, schema:UserRequestInfoSchema}
     ]),
-    SuperUsersModule,
-    SuperAdminBlogsModule
+   
   ],
   
-  controllers: [AppController, TestingController, BlogController, PostController, UserController, AuthController, CommentController,SecurityDevicesController],
-  providers: [AppService,  TestingService, BlogService, BlogRepository, PostRepository, PostService, UserService,UserRepository, AuthService, LocalStrategy, BasicStrategy,JwtStrategy,CommentService, CommentsRepository, PostLikeRepository, PostLikeService, PostValidator, TokenService, TokenRepository,SecurityDevicesRepository,SecurityDevicesService, RequestUserInfoRepository, RequestUserInfoService, UserSqlRepository, DataConfirmationRepository, TokenSqlRepository,SecurityDevicesSqlRepository],
+  
+  controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController],
+  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository, UserSqlRepository, DataConfirmationRepository,AuthService],
 
 })
 export class AppModule implements NestModule{

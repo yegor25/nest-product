@@ -5,30 +5,34 @@ import { postHelper } from "./postHelper";
 import { BlogService } from "../blogs/blog.service";
 import { PostLikeService } from "../postLikes/postLike.service";
 import { LikeStatus } from "../postLikes/like.schema";
+import { SuperAdminBlogService } from "../sa-blogs/sa.blogs.service";
+import { PostSqlRepository } from "./post.sqlRepository";
 
 
 @Injectable()
 export class PostService {
     constructor(
-        protected postRepository: PostRepository,
         protected blogService: BlogService,
-        protected postLikeService: PostLikeService
+        protected postLikeService: PostLikeService,
+        protected saBlogService: SuperAdminBlogService,
+        protected postSqlRepository: PostSqlRepository,
+        protected postRepository: PostRepository
         ){}
 
     async create(dto: createdPostDtoType):Promise<postDtoResponseType | null>{
         const blog = await this.blogService.findById(dto.blogId)
         if(!blog) return null
-        const newPost = await this.postRepository.create(dto, blog?.name as string)
+        const newPost = await this.postSqlRepository.create(dto, blog?.name as string)
         const resultDto = postHelper.postViewMapperDefault(newPost)
         return resultDto
     }
     async createForBlog(dto: createdPosForBlogtDtoType, blogId: string):Promise<postDtoResponseType | null>{
-        const blog = await this.blogService.findById(blogId)
+        const blog = await this.saBlogService.findById(blogId)
         if(!blog) return null
-        const newPost = await this.postRepository.createForBlog(dto, blogId, blog.name)
-        const likes = newPost.getDefaultLikes()
+        const newPost = await this.postSqlRepository.createForBlog(dto, blogId, blog.name)
         const resultDto = postHelper.postViewMapperDefault(newPost)
         return resultDto
+        return null
     }
     async changePost(dto: createdPostDtoType, postId: string):Promise<boolean>{
         const blog = await this.blogService.findById(dto.blogId)
@@ -55,8 +59,8 @@ export class PostService {
     async findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string):Promise<viewAllPostsType | null>{
         const blog = await this.blogService.findById(blogId)
         if(!blog) return null
-        const likes = await this.postLikeService.getAll()
-        const posts = await this.postRepository.findPostsForBlog(params,blogId,likes, userId)
+        // const posts = await this.postRepository.findPostsForBlog(params,blogId,likes, userId)
+        const posts = await this.postSqlRepository.findPostsForBlog(params, blogId, userId)
         return posts
     }
 
