@@ -38,6 +38,9 @@ let SuperAdminBlogService = class SuperAdminBlogService {
     async deleteBlogById(id) {
         return this.suBlogsRepository.deleteBlogById(id);
     }
+    async deleteAll() {
+        return this.suBlogsRepository.deleteAll();
+    }
 };
 exports.SuperAdminBlogService = SuperAdminBlogService;
 exports.SuperAdminBlogService = SuperAdminBlogService = __decorate([

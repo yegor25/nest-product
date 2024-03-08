@@ -9,4 +9,5 @@ export declare class SuperAdminBlogsRepository {
     findBlogs(params: paramsBlogPaginatorType): Promise<responseDtoSqlBlogType>;
     changeBlog(id: string, dto: createdDtoBlogType): Promise<boolean>;
     deleteBlogById(blogId: string): Promise<boolean>;
+    deleteAll(): Promise<any>;
 }

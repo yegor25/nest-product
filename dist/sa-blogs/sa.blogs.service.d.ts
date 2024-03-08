@@ -9,4 +9,5 @@ export declare class SuperAdminBlogService {
     findById(id: string): Promise<blogSqlDbType | null>;
     changeBlog(id: string, dto: createdDtoBlogType): Promise<boolean>;
     deleteBlogById(id: string): Promise<boolean>;
+    deleteAll(): Promise<any>;
 }

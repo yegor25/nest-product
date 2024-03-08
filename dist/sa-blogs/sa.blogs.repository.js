@@ -45,7 +45,10 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
         const parametres = blog_helper_1.blogHelper.blogParamsMapper(params);
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
         const term = params.searchNameTerm ? params.searchNameTerm : "";
-        const sortDirection = params.sortDirection ? params.sortDirection : blog_schema_1.SortDirection.desc;
+        console.log("term", term);
+        const sortDirection = params.sortDirection
+            ? params.sortDirection
+            : blog_schema_1.SortDirection.desc;
         const blogQuery = `
             select b."id", b."name", b."description", b."websiteUrl", b."createdAt", b."isMembership" from public."Blogs" b
             where b."name"  ilike '%${term}%'
@@ -55,8 +58,8 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
         `;
         const totalCountQuery = `
             select count(*)
-            from public."Blogs"
-            where b."name"  ilike '%${term}%;
+            from public."Blogs" b
+            where b."name"  ilike '%${term}%';
         `;
         const blogs = await this.dataSource.query(blogQuery);
         const totalCount = await this.dataSource.query(totalCountQuery);
@@ -65,7 +68,7 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
             totalCount: +totalCount[0].count,
-            items: blogs
+            items: blogs,
         };
         return res;
     }
@@ -91,6 +94,11 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
         if (deleted[1] === 1)
             return true;
         return false;
+    }
+    async deleteAll() {
+        return this.dataSource.query(`
+    Truncate public."Blogs" Cascade;
+        `);
     }
 };
 exports.SuperAdminBlogsRepository = SuperAdminBlogsRepository;

@@ -4,7 +4,6 @@ import { Injectable } from "@nestjs/common";
 import { SuperAdminBlogsRepository } from "./sa.blogs.repository";
 import { createdDtoBlogType, paramsBlogPaginatorType } from "../blogs/blog.schema";
 import { blogSqlDbType, responseDtoSqlBlogType } from "./sa.blogs.types";
-import { PostService } from "src/posts/post.service";
 
 
 
@@ -34,7 +33,7 @@ export class SuperAdminBlogService {
     async deleteBlogById(id: string):Promise<boolean>{
         return this.suBlogsRepository.deleteBlogById(id)
     }
-    // async deleteAll () {
-    //     return this.blogRepository.deleteAll()
-    // }
+    async deleteAll () {
+        return this.suBlogsRepository.deleteAll()
+    }
 }
