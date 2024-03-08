@@ -16,4 +16,5 @@ export declare class SuperAdminBlogsController {
         userId: string;
     }): Promise<void>;
     changePost(blogId: string, postId: string, body: updatedPostDtoType): Promise<void>;
+    deletePost(blogId: string, postId: string): Promise<void>;
 }

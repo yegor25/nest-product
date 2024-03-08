@@ -62,6 +62,12 @@ let SuperAdminBlogsController = class SuperAdminBlogsController {
             throw new common_1.NotFoundException();
         return;
     }
+    async deletePost(blogId, postId) {
+        const newPost = await this.postService.deleteByBlogId(postId, blogId);
+        if (!newPost)
+            throw new common_1.NotFoundException();
+        return;
+    }
 };
 exports.SuperAdminBlogsController = SuperAdminBlogsController;
 __decorate([
@@ -135,6 +141,16 @@ __decorate([
     __metadata("design:paramtypes", [String, String, post_schema_1.updatedPostDtoType]),
     __metadata("design:returntype", Promise)
 ], SuperAdminBlogsController.prototype, "changePost", null);
+__decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
+    (0, common_1.Delete)(":blogId/posts/:postId"),
+    (0, common_1.HttpCode)(204),
+    __param(0, (0, common_1.Param)('blogId')),
+    __param(1, (0, common_1.Param)('postId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], SuperAdminBlogsController.prototype, "deletePost", null);
 exports.SuperAdminBlogsController = SuperAdminBlogsController = __decorate([
     (0, common_1.Controller)("sa/blogs"),
     __metadata("design:paramtypes", [sa_blogs_service_1.SuperAdminBlogService,

@@ -77,6 +77,9 @@ let PostService = class PostService {
     async changeByBlogId(blogId, postId, dto) {
         return this.postSqlRepository.changeByBlogId(blogId, postId, dto);
     }
+    async deleteByBlogId(postId, blogId) {
+        return this.postSqlRepository.deleteByBlogId(postId, blogId);
+    }
     async deleteAll() {
         return this.postRepository.deleteAll();
     }

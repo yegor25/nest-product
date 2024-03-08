@@ -145,4 +145,12 @@ export class PostSqlRepository {
     if (changing[0].length) return true;
     return false;
   }
+  async deleteByBlogId(postId: string, blogId: string):Promise<boolean>{
+    const deleted = await this.dataSource.query(`
+    Delete from public."Posts" p
+    where p."id" = $1 and p."blogId" = $2
+    `,[postId, blogId])
+    if (deleted[1] === 1) return true;
+    return false;
+  }
 }

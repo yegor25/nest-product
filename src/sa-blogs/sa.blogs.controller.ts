@@ -103,4 +103,14 @@ export class SuperAdminBlogsController {
     if(!newPost) throw new NotFoundException();
     return
   }
+  @UseGuards(BasicAuthGuard)
+  @Delete(":blogId/posts/:postId")
+  @HttpCode(204)
+  async deletePost(
+    @Param('blogId') blogId: string, @Param('postId') postId: string
+  ) {
+    const newPost = await this.postService.deleteByBlogId(postId, blogId)
+    if(!newPost) throw new NotFoundException();
+    return
+  }
 }

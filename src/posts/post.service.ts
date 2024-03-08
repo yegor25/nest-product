@@ -71,6 +71,9 @@ export class PostService {
     async changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType):Promise<boolean>{
         return this.postSqlRepository.changeByBlogId(blogId,postId,dto)
     }
+    async deleteByBlogId(postId: string, blogId: string):Promise<boolean>{
+        return this.postSqlRepository.deleteByBlogId(postId, blogId)
+    }
 
     async deleteAll ():Promise<any>{
         return this.postRepository.deleteAll()

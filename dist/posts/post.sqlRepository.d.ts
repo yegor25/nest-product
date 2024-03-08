@@ -8,4 +8,5 @@ export declare class PostSqlRepository {
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType>;
     findById(postId: string, userId?: string): Promise<postSqlQueryType | null>;
     changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType): Promise<boolean>;
+    deleteByBlogId(postId: string, blogId: string): Promise<boolean>;
 }

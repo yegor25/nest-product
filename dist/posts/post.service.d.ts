@@ -21,5 +21,6 @@ export declare class PostService {
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType | null>;
     changeLikeStatus(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<boolean | void>;
     changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType): Promise<boolean>;
+    deleteByBlogId(postId: string, blogId: string): Promise<boolean>;
     deleteAll(): Promise<any>;
 }

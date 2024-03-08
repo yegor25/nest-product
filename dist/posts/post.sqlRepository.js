@@ -134,6 +134,15 @@ let PostSqlRepository = class PostSqlRepository {
             return true;
         return false;
     }
+    async deleteByBlogId(postId, blogId) {
+        const deleted = await this.dataSource.query(`
+    Delete from public."Posts" p
+    where p."id" = $1 and p."blogId" = $2
+    `, [postId, blogId]);
+        if (deleted[1] === 1)
+            return true;
+        return false;
+    }
 };
 exports.PostSqlRepository = PostSqlRepository;
 exports.PostSqlRepository = PostSqlRepository = __decorate([
