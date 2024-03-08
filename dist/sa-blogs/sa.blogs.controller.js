@@ -62,6 +62,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperAdminBlogsController.prototype, "createBlog", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),

@@ -33,6 +33,7 @@ export class SuperAdminBlogsController {
     return this.suBlogsService.create(body);
   }
 
+  @UseGuards(BasicAuthGuard)
   @Get()
   async findBlogs(@Query() params: paramsBlogPaginatorType) {
     return this.suBlogsService.findBlogs(params);
