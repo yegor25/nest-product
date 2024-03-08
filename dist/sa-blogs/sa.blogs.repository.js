@@ -30,7 +30,7 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
             values($1,$2,$3,'${new Date().toISOString()}','false')
             returning *;
         `, [name, description, websiteUrl]);
-        return newBlog;
+        return newBlog[0];
     }
     async findById(id) {
         const blog = await this.dataSource.query(`
