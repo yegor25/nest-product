@@ -27,6 +27,7 @@ export class SuperAdminBlogService {
     }
     async changeBlog(id: string, dto: createdDtoBlogType):Promise<boolean>{
         const blog = await this.suBlogsRepository.changeBlog(id, dto)
+        console.log("blog", blog)
         if(!blog) return false
         return true
     }

@@ -30,6 +30,7 @@ let SuperAdminBlogService = class SuperAdminBlogService {
     }
     async changeBlog(id, dto) {
         const blog = await this.suBlogsRepository.changeBlog(id, dto);
+        console.log("blog", blog);
         if (!blog)
             return false;
         return true;
