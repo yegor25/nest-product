@@ -121,6 +121,19 @@ let PostSqlRepository = class PostSqlRepository {
             return post[0];
         return null;
     }
+    async changeByBlogId(blogId, postId, dto) {
+        const { shortDescription, title, content } = dto;
+        const changing = await this.dataSource.query(`
+        update public."Posts" p
+        set "shortDescription" = $1, "title" = $2, "content" = $3
+        where p."id" = $4 and p."blogId" = $5
+        returning *
+        ; 
+    `, [shortDescription, title, content, postId, blogId]);
+        if (changing[0].length)
+            return true;
+        return false;
+    }
 };
 exports.PostSqlRepository = PostSqlRepository;
 exports.PostSqlRepository = PostSqlRepository = __decorate([

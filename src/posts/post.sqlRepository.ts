@@ -8,6 +8,7 @@ import {
   postDtoResponseType,
   postSqlDbType,
   postSqlQueryType,
+  updatedPostDtoType,
   viewAllPostsType,
 } from "./post.schema";
 import { postHelper } from "./postHelper";
@@ -131,5 +132,17 @@ export class PostSqlRepository {
     `,[postId, myId]);
     if(post[0]) return post[0]
     return null
+  }
+  async changeByBlogId(blogId: string, postId: string, dto:updatedPostDtoType):Promise<boolean>{
+    const {shortDescription, title,content} = dto
+    const changing = await this.dataSource.query(`
+        update public."Posts" p
+        set "shortDescription" = $1, "title" = $2, "content" = $3
+        where p."id" = $4 and p."blogId" = $5
+        returning *
+        ; 
+    `,[shortDescription,title,content,postId, blogId])
+    if (changing[0].length) return true;
+    return false;
   }
 }

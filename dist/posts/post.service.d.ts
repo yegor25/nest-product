@@ -1,5 +1,5 @@
 import { PostRepository } from "./post.repository";
-import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, viewAllPostsType } from "./post.schema";
+import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, updatedPostDtoType, viewAllPostsType } from "./post.schema";
 import { BlogService } from "../blogs/blog.service";
 import { PostLikeService } from "../postLikes/postLike.service";
 import { LikeStatus } from "../postLikes/like.schema";
@@ -20,5 +20,6 @@ export declare class PostService {
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType | null>;
     changeLikeStatus(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<boolean | void>;
+    changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType): Promise<boolean>;
     deleteAll(): Promise<any>;
 }

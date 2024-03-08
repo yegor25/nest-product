@@ -1,7 +1,7 @@
 import { createdDtoBlogType, paramsBlogPaginatorType } from "../blogs/blog.schema";
 import { SuperAdminBlogService } from "./sa.blogs.service";
 import { PostService } from "../posts/post.service";
-import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/post.schema";
+import { createdPosForBlogtDtoType, paramsPostPaginatorType, updatedPostDtoType } from "../posts/post.schema";
 export declare class SuperAdminBlogsController {
     protected suBlogsService: SuperAdminBlogService;
     protected postService: PostService;
@@ -15,4 +15,5 @@ export declare class SuperAdminBlogsController {
     findPostsByBlogId(blogId: string, params: paramsPostPaginatorType & {
         userId: string;
     }): Promise<void>;
+    changePost(blogId: string, postId: string, body: updatedPostDtoType): Promise<void>;
 }

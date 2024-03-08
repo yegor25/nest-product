@@ -88,6 +88,22 @@ export class createdPostDtoType  {
     @Validate(PostValidator)
     blogId: string
 }
+export class updatedPostDtoType  {
+
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(30)
+    title: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(100)
+    shortDescription: string
+    @Transform(({value}) => value.trim())
+    @IsNotEmpty()
+    @MaxLength(1000)
+    content: string
+    
+}
 
 export class createdPosForBlogtDtoType  {
     @Transform(({value}) => value.trim())

@@ -74,6 +74,9 @@ let PostService = class PostService {
             return this.postLikeService.changeExistReaction(userId, postId, likeStatus);
         return this.postLikeService.addNewReaction(userId, postId, likeStatus, login);
     }
+    async changeByBlogId(blogId, postId, dto) {
+        return this.postSqlRepository.changeByBlogId(blogId, postId, dto);
+    }
     async deleteAll() {
         return this.postRepository.deleteAll();
     }

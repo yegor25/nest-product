@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PostRepository } from "./post.repository";
-import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType, viewAllPostsType } from "./post.schema";
+import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postDtoResponseType, postSqlDbType, updatedPostDtoType, viewAllPostsType } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { BlogService } from "../blogs/blog.service";
 import { PostLikeService } from "../postLikes/postLike.service";
@@ -68,6 +68,9 @@ export class PostService {
         if(existReaction) return this.postLikeService.changeExistReaction(userId, postId, likeStatus)
         return this.postLikeService.addNewReaction(userId, postId,likeStatus,login)
     }   
+    async changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType):Promise<boolean>{
+        return this.postSqlRepository.changeByBlogId(blogId,postId,dto)
+    }
 
     async deleteAll ():Promise<any>{
         return this.postRepository.deleteAll()

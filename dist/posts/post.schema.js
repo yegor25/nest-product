@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostSchema = exports.postDtoTypeForBlog = exports.createdPosForBlogtDtoType = exports.createdPostDtoType = exports.Post = void 0;
+exports.PostSchema = exports.postDtoTypeForBlog = exports.createdPosForBlogtDtoType = exports.updatedPostDtoType = exports.createdPostDtoType = exports.Post = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const like_schema_1 = require("../postLikes/like.schema");
 const class_transformer_1 = require("class-transformer");
@@ -82,6 +82,27 @@ __decorate([
     (0, class_validator_1.Validate)(post_validate_1.PostValidator),
     __metadata("design:type", String)
 ], createdPostDtoType.prototype, "blogId", void 0);
+class updatedPostDtoType {
+}
+exports.updatedPostDtoType = updatedPostDtoType;
+__decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(30),
+    __metadata("design:type", String)
+], updatedPostDtoType.prototype, "title", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(100),
+    __metadata("design:type", String)
+], updatedPostDtoType.prototype, "shortDescription", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value.trim()),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(1000),
+    __metadata("design:type", String)
+], updatedPostDtoType.prototype, "content", void 0);
 class createdPosForBlogtDtoType {
 }
 exports.createdPosForBlogtDtoType = createdPosForBlogtDtoType;

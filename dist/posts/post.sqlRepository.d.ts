@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postSqlDbType, postSqlQueryType, viewAllPostsType } from "./post.schema";
+import { createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postSqlDbType, postSqlQueryType, updatedPostDtoType, viewAllPostsType } from "./post.schema";
 export declare class PostSqlRepository {
     protected dataSource: DataSource;
     constructor(dataSource: DataSource);
@@ -7,4 +7,5 @@ export declare class PostSqlRepository {
     create(dto: createdPostDtoType, blogName: string): Promise<postSqlDbType>;
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType>;
     findById(postId: string, userId?: string): Promise<postSqlQueryType | null>;
+    changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType): Promise<boolean>;
 }

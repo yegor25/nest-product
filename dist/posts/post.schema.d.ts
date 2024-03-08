@@ -61,6 +61,11 @@ export declare class createdPostDtoType {
     content: string;
     blogId: string;
 }
+export declare class updatedPostDtoType {
+    title: string;
+    shortDescription: string;
+    content: string;
+}
 export declare class createdPosForBlogtDtoType {
     title: string;
     shortDescription: string;

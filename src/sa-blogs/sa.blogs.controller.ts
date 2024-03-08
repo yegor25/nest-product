@@ -18,14 +18,19 @@ import {
 } from "../blogs/blog.schema";
 import { SuperAdminBlogService } from "./sa.blogs.service";
 import { PostService } from "../posts/post.service";
-import { createdPosForBlogtDtoType, paramsPostPaginatorType } from "../posts/post.schema";
+import {
+  createdPosForBlogtDtoType,
+  createdPostDtoType,
+  paramsPostPaginatorType,
+  updatedPostDtoType,
+} from "../posts/post.schema";
 
 @Controller("sa/blogs")
 export class SuperAdminBlogsController {
   constructor(
     protected suBlogsService: SuperAdminBlogService,
     protected postService: PostService
-    ) {}
+  ) {}
 
   @UseGuards(BasicAuthGuard)
   @Post()
@@ -68,17 +73,34 @@ export class SuperAdminBlogsController {
   }
 
   @UseGuards(BasicAuthGuard)
-  @Post(':blogId/posts')
-  async createPost(@Param('blogId') blogId: string, @Body() body: createdPosForBlogtDtoType){
-      const post = await this.postService.createForBlog(body,blogId)
-      if(!post) throw new NotFoundException();
-      return post
+  @Post(":blogId/posts")
+  async createPost(
+    @Param("blogId") blogId: string,
+    @Body() body: createdPosForBlogtDtoType
+  ) {
+    const post = await this.postService.createForBlog(body, blogId);
+    if (!post) throw new NotFoundException();
+    return post;
   }
   @UseGuards(BasicAuthGuard)
-  @Get(':blogId/posts')
-  async findPostsByBlogId(@Param('blogId') blogId: string, @Query() params: paramsPostPaginatorType & {userId: string}){
-      // const post = await this.postService.findPostsForBlog(params,blogId)
-      // if(!post) throw new NotFoundException();
-      // return post
+  @Get(":blogId/posts")
+  async findPostsByBlogId(
+    @Param("blogId") blogId: string,
+    @Query() params: paramsPostPaginatorType & { userId: string }
+  ) {
+    // const post = await this.postService.findPostsForBlog(params,blogId)
+    // if(!post) throw new NotFoundException();
+    // return post
+  }
+
+  @UseGuards(BasicAuthGuard)
+  @Put(":blogId/posts/:postId")
+  @HttpCode(204)
+  async changePost(
+    @Param('blogId') blogId: string, @Param('postId') postId: string, @Body() body: updatedPostDtoType
+  ) {
+    const newPost = await this.postService.changeByBlogId(blogId,postId,body)
+    if(!newPost) throw new NotFoundException();
+    return
   }
 }
