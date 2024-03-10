@@ -81,7 +81,7 @@ let PostSqlRepository = class PostSqlRepository {
         };
     }
     async findById(postId, userId) {
-        const myId = userId ? userId : '';
+        const myId = userId ? userId : "";
         const post = await this.dataSource.query(`
     select * ,
         --(
@@ -146,7 +146,9 @@ let PostSqlRepository = class PostSqlRepository {
     async findPosts(params, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
-        const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.desc;
+        const sortDirection = params.sortDirection
+            ? params.sortDirection
+            : user_schema_1.SortDirection.desc;
         const query = `
     select * ,
 
@@ -176,17 +178,73 @@ let PostSqlRepository = class PostSqlRepository {
     order by p."${parametres.sortBy}" ${sortDirection}
     limit ${+parametres.pageSize} offset ${skipCount}
     `;
-        const posts = await this.dataSource.query(query, [userId]);
+        const posts = await this.dataSource.query(query, [
+            userId,
+        ]);
         const totalCount = await this.dataSource.query(`
         select count(*)
         from public."Posts";
     `);
         console.log("totta", totalCount);
         return {
-            pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
+            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: parametres.pageSize,
-            totalCount: +(totalCount[0].count),
+            totalCount: +totalCount[0].count,
+            items: posts,
+        };
+    }
+    async findPostsForBlogId(params, blogId, userId) {
+        const parametres = postHelper_1.postHelper.postParamsMapper(params);
+        const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const sortDirection = params.sortDirection
+            ? params.sortDirection
+            : user_schema_1.SortDirection.desc;
+        const query = `
+    select * ,
+
+    (
+        select count(*) as "likesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
+    ),
+    (
+        select count(*) as "dislikesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
+    ),
+   (
+    select l."status" 
+    from public."PostLikes" l
+    where l."userId"::text = $1
+   ) as "myStatus",
+   
+    array(
+    select row_to_json(row) from (
+    select l."addedAt", l."userId", l."login"
+    from public."PostLikes" l
+    where p."id" = l."postId"
+    )  as row ) as "newestLikes"
+    from public."Posts" p
+    where p."blogId" = $2
+    order by p."${parametres.sortBy}" ${sortDirection}
+    limit ${+parametres.pageSize} offset ${skipCount}
+    `;
+        const posts = await this.dataSource.query(query, [
+            userId,
+            blogId
+        ]);
+        const totalCount = await this.dataSource.query(`
+        select count(*)
+        from public."Posts";
+        where p."blogId" = $1
+    `, [blogId]);
+        console.log("totta", totalCount);
+        return {
+            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: parametres.pageSize,
+            totalCount: +totalCount[0].count,
             items: posts,
         };
     }

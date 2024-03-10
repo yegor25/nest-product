@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import {
-    allPostSqlViewType,
+  allPostSqlViewType,
   createdPosForBlogtDtoType,
   createdPostDtoType,
   paramsPostPaginatorType,
@@ -94,9 +94,13 @@ export class PostSqlRepository {
       pageSize: +parametres.pageSize,
     };
   }
-  async findById(postId: string, userId?: string): Promise<postSqlQueryType | null> {
-    const myId = userId ? userId : ''
-    const post = await this.dataSource.query<postSqlQueryType[]>(`
+  async findById(
+    postId: string,
+    userId?: string
+  ): Promise<postSqlQueryType | null> {
+    const myId = userId ? userId : "";
+    const post = await this.dataSource.query<postSqlQueryType[]>(
+      `
     select * ,
         --(
           --  select row_to_json(row) from (
@@ -130,34 +134,51 @@ export class PostSqlRepository {
         )  as row ) as "newestLikes"
         from public."Posts" p
         where p."id" = $1; 
-    `,[postId, myId]);
-    if(post[0]) return post[0]
-    return null
+    `,
+      [postId, myId]
+    );
+    if (post[0]) return post[0];
+    return null;
   }
-  async changeByBlogId(blogId: string, postId: string, dto:updatedPostDtoType):Promise<boolean>{
-    const {shortDescription, title,content} = dto
-    const changing = await this.dataSource.query(`
+  async changeByBlogId(
+    blogId: string,
+    postId: string,
+    dto: updatedPostDtoType
+  ): Promise<boolean> {
+    const { shortDescription, title, content } = dto;
+    const changing = await this.dataSource.query(
+      `
         update public."Posts" p
         set "shortDescription" = $1, "title" = $2, "content" = $3
         where p."id" = $4 and p."blogId" = $5
         returning *
         ; 
-    `,[shortDescription,title,content,postId, blogId])
+    `,
+      [shortDescription, title, content, postId, blogId]
+    );
     if (changing[0].length) return true;
     return false;
   }
-  async deleteByBlogId(postId: string, blogId: string):Promise<boolean>{
-    const deleted = await this.dataSource.query(`
+  async deleteByBlogId(postId: string, blogId: string): Promise<boolean> {
+    const deleted = await this.dataSource.query(
+      `
     Delete from public."Posts" p
     where p."id" = $1 and p."blogId" = $2
-    `,[postId, blogId])
+    `,
+      [postId, blogId]
+    );
     if (deleted[1] === 1) return true;
     return false;
   }
-  async findPosts(params: paramsPostPaginatorType, userId?: string):Promise<allPostSqlViewType>{
-    const parametres = postHelper.postParamsMapper(params)
+  async findPosts(
+    params: paramsPostPaginatorType,
+    userId?: string
+  ): Promise<allPostSqlViewType> {
+    const parametres = postHelper.postParamsMapper(params);
     const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
-    const sortDirection = params.sortDirection ? params.sortDirection : SortDirection.desc
+    const sortDirection = params.sortDirection
+      ? params.sortDirection
+      : SortDirection.desc;
     const query = `
     select * ,
 
@@ -186,19 +207,79 @@ export class PostSqlRepository {
     from public."Posts" p
     order by p."${parametres.sortBy}" ${sortDirection}
     limit ${+parametres.pageSize} offset ${skipCount}
-    `
-    const posts = await this.dataSource.query<postSqlQueryType[]>(query,[userId])
-    const totalCount = await this.dataSource.query<{count: string}[]>(`
+    `;
+    const posts = await this.dataSource.query<postSqlQueryType[]>(query, [
+      userId,
+    ]);
+    const totalCount = await this.dataSource.query<{ count: string }[]>(`
         select count(*)
         from public."Posts";
-    `)
-    console.log("totta", totalCount)
+    `);
+    console.log("totta", totalCount);
     return {
-        pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
-        page: +parametres.pageNumber,
-        pageSize: parametres.pageSize,
-        totalCount: +(totalCount[0].count),
-        items: posts,
-    }
+      pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+      page: +parametres.pageNumber,
+      pageSize: parametres.pageSize,
+      totalCount: +totalCount[0].count,
+      items: posts,
+    };
+  }
+  async findPostsForBlogId(
+    params: paramsPostPaginatorType,
+    blogId: string,
+    userId?: string
+  ): Promise<allPostSqlViewType> {
+    const parametres = postHelper.postParamsMapper(params);
+    const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+    const sortDirection = params.sortDirection
+      ? params.sortDirection
+      : SortDirection.desc;
+    const query = `
+    select * ,
+
+    (
+        select count(*) as "likesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+    ),
+    (
+        select count(*) as "dislikesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+    ),
+   (
+    select l."status" 
+    from public."PostLikes" l
+    where l."userId"::text = $1
+   ) as "myStatus",
+   
+    array(
+    select row_to_json(row) from (
+    select l."addedAt", l."userId", l."login"
+    from public."PostLikes" l
+    where p."id" = l."postId"
+    )  as row ) as "newestLikes"
+    from public."Posts" p
+    where p."blogId" = $2
+    order by p."${parametres.sortBy}" ${sortDirection}
+    limit ${+parametres.pageSize} offset ${skipCount}
+    `;
+    const posts = await this.dataSource.query<postSqlQueryType[]>(query, [
+      userId,
+      blogId
+    ]);
+    const totalCount = await this.dataSource.query<{ count: string }[]>(`
+        select count(*)
+        from public."Posts";
+        where p."blogId" = $1
+    `,[blogId]);
+    console.log("totta", totalCount);
+    return {
+      pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+      page: +parametres.pageNumber,
+      pageSize: parametres.pageSize,
+      totalCount: +totalCount[0].count,
+      items: posts,
+    };
   }
 }

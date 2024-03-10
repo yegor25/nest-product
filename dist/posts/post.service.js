@@ -64,8 +64,11 @@ let PostService = class PostService {
         const blog = await this.blogService.findById(blogId);
         if (!blog)
             return null;
-        const posts = await this.postSqlRepository.findPostsForBlog(params, blogId, userId);
-        return posts;
+        const posts = await this.postSqlRepository.findPostsForBlogId(params, blogId, userId);
+        return {
+            ...posts,
+            items: posts.items.map(el => postHelper_1.postHelper.postViewMapperFromSql(el))
+        };
     }
     async changeLikeStatus(userId, postId, likeStatus, login) {
         const existReaction = await this.postLikeService.checkReaction(userId, postId);
