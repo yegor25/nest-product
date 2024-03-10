@@ -194,11 +194,11 @@ export class PostSqlRepository {
     `)
     console.log("totta", totalCount)
     return {
+        pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
         page: parametres.pageNumber,
         pageSize: parametres.pageSize,
-        pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
+        totalCount: +(totalCount[0].count),
         items: posts,
-        totalCount: +(totalCount[0].count)
     }
   }
 }
