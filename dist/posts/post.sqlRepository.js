@@ -236,7 +236,7 @@ let PostSqlRepository = class PostSqlRepository {
         ]);
         const totalCount = await this.dataSource.query(`
         select count(*)
-        from public."Posts";
+        from public."Posts" p
         where p."blogId" = $1
     `, [blogId]);
         console.log("totta", totalCount);
