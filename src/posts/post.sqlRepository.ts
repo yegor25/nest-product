@@ -174,7 +174,7 @@ export class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-     l."userId"::text = $1
+    where l."userId"::text = $1
    ) as "myStatus",
    
     array(
@@ -188,16 +188,17 @@ export class PostSqlRepository {
     limit ${+parametres.pageSize} offset ${skipCount}
     `
     const posts = await this.dataSource.query<postSqlQueryType[]>(query,[userId])
-    const totalCount = await this.dataSource.query<string>(`
+    const totalCount = await this.dataSource.query<{count: string}[]>(`
         select count(*)
         from public."Posts";
     `)
+    console.log("totta", totalCount)
     return {
         page: parametres.pageNumber,
         pageSize: parametres.pageSize,
-        pagesCount: Math.ceil(+totalCount / +parametres.pageSize),
+        pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
         items: posts,
-        totalCount: +totalCount
+        totalCount: +(totalCount[0].count)
     }
   }
 }

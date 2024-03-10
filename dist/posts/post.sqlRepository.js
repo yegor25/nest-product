@@ -163,7 +163,7 @@ let PostSqlRepository = class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-     l."userId"::text = $1
+    where l."userId"::text = $1
    ) as "myStatus",
    
     array(
@@ -181,12 +181,13 @@ let PostSqlRepository = class PostSqlRepository {
         select count(*)
         from public."Posts";
     `);
+        console.log("totta", totalCount);
         return {
             page: parametres.pageNumber,
             pageSize: parametres.pageSize,
-            pagesCount: Math.ceil(+totalCount / +parametres.pageSize),
+            pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
             items: posts,
-            totalCount: +totalCount
+            totalCount: +(totalCount[0].count)
         };
     }
 };
