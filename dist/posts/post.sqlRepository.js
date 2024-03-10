@@ -143,6 +143,52 @@ let PostSqlRepository = class PostSqlRepository {
             return true;
         return false;
     }
+    async findPosts(params, userId) {
+        const parametres = postHelper_1.postHelper.postParamsMapper(params);
+        const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.desc;
+        const query = `
+    select * ,
+
+    (
+        select count(*) as "likesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
+    ),
+    (
+        select count(*) as "dislikesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
+    ),
+   (
+    select l."status" 
+    from public."PostLikes" l
+     l."userId"::text = $1
+   ) as "myStatus",
+   
+    array(
+    select row_to_json(row) from (
+    select l."addedAt", l."userId", l."login"
+    from public."PostLikes" l
+    where p."id" = l."postId"
+    )  as row ) as "newestLikes"
+    from public."Posts" p
+    order by p."${parametres.sortBy}" ${sortDirection}
+    limit ${+parametres.pageSize} offset ${skipCount}
+    `;
+        const posts = await this.dataSource.query(query, [userId]);
+        const totalCount = await this.dataSource.query(`
+        select count(*)
+        from public."Posts";
+    `);
+        return {
+            page: parametres.pageNumber,
+            pageSize: parametres.pageSize,
+            pagesCount: Math.ceil(+totalCount / +parametres.pageSize),
+            items: posts,
+            totalCount: +totalCount
+        };
+    }
 };
 exports.PostSqlRepository = PostSqlRepository;
 exports.PostSqlRepository = PostSqlRepository = __decorate([

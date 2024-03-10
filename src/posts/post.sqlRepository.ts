@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import {
+    allPostSqlViewType,
   createdPosForBlogtDtoType,
   createdPostDtoType,
   paramsPostPaginatorType,
@@ -13,7 +14,7 @@ import {
 } from "./post.schema";
 import { postHelper } from "./postHelper";
 import { SortDirection } from "../users/user.schema";
-import { LikeStatus } from "src/postLikes/like.schema";
+import { LikeStatus } from "../postLikes/like.schema";
 
 @Injectable()
 export class PostSqlRepository {
@@ -152,5 +153,51 @@ export class PostSqlRepository {
     `,[postId, blogId])
     if (deleted[1] === 1) return true;
     return false;
+  }
+  async findPosts(params: paramsPostPaginatorType, userId?: string):Promise<allPostSqlViewType>{
+    const parametres = postHelper.postParamsMapper(params)
+    const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+    const sortDirection = params.sortDirection ? params.sortDirection : SortDirection.desc
+    const query = `
+    select * ,
+
+    (
+        select count(*) as "likesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+    ),
+    (
+        select count(*) as "dislikesCount"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+    ),
+   (
+    select l."status" 
+    from public."PostLikes" l
+     l."userId"::text = $1
+   ) as "myStatus",
+   
+    array(
+    select row_to_json(row) from (
+    select l."addedAt", l."userId", l."login"
+    from public."PostLikes" l
+    where p."id" = l."postId"
+    )  as row ) as "newestLikes"
+    from public."Posts" p
+    order by p."${parametres.sortBy}" ${sortDirection}
+    limit ${+parametres.pageSize} offset ${skipCount}
+    `
+    const posts = await this.dataSource.query<postSqlQueryType[]>(query,[userId])
+    const totalCount = await this.dataSource.query<string>(`
+        select count(*)
+        from public."Posts";
+    `)
+    return {
+        page: parametres.pageNumber,
+        pageSize: parametres.pageSize,
+        pagesCount: Math.ceil(+totalCount / +parametres.pageSize),
+        items: posts,
+        totalCount: +totalCount
+    }
   }
 }

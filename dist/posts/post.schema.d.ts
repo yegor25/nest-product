@@ -79,6 +79,9 @@ export declare class postDtoTypeForBlog {
 export type viewAllPostsType = PaginatorType & {
     items: postDtoResponseType[];
 };
+export type allPostSqlViewType = PaginatorType & {
+    items: postSqlQueryType[];
+};
 export type paramsPostPaginatorType = {
     sortBy: keyof Post;
     sortDirection: SortDirection;

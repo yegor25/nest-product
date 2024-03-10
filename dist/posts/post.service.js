@@ -57,9 +57,8 @@ let PostService = class PostService {
         return postHelper_1.postHelper.postViewMapperFromSql(post);
     }
     async findPosts(params, userId) {
-        const likes = await this.postLikeService.getAll();
-        const post = await this.postRepository.findPosts(params, likes, userId);
-        return post;
+        const posts = await this.postSqlRepository.findPosts(params, userId);
+        return { ...posts, items: posts.items.map(el => postHelper_1.postHelper.postViewMapperFromSql(el)) };
     }
     async findPostsForBlog(params, blogId, userId) {
         const blog = await this.blogService.findById(blogId);

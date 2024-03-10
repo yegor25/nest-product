@@ -81,7 +81,6 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
         returning *
         ;
         `, [id, name, websiteUrl, description]);
-        console.log("chanhe", changing[0]);
         if (changing[0].length)
             return true;
         return false;

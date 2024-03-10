@@ -51,9 +51,9 @@ export class PostService {
     }
 
     async findPosts(params: paramsPostPaginatorType, userId?: string):Promise<viewAllPostsType>{
-        const likes = await this.postLikeService.getAll()
-        const post = await this.postRepository.findPosts(params, likes, userId)
-        return post
+        // const likes = await this.postLikeService.getAll()
+        const posts = await this.postSqlRepository.findPosts(params, userId)
+        return {...posts, items: posts.items.map(el => postHelper.postViewMapperFromSql(el))}
     }
     async findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string):Promise<viewAllPostsType | null>{
         const blog = await this.blogService.findById(blogId)
