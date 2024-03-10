@@ -184,7 +184,7 @@ let PostSqlRepository = class PostSqlRepository {
         console.log("totta", totalCount);
         return {
             pagesCount: Math.ceil(+(totalCount[0].count) / +parametres.pageSize),
-            page: parametres.pageNumber,
+            page: +parametres.pageNumber,
             pageSize: parametres.pageSize,
             totalCount: +(totalCount[0].count),
             items: posts,
