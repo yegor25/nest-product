@@ -131,9 +131,12 @@ export class PostSqlRepository {
         select l."addedAt", l."userId", l."login"
         from public."PostLikes" l
         where p."id" = l."postId"
+        order by l."addedAt" desc
+        limit 3 offset 0
         )  as row ) as "newestLikes"
         from public."Posts" p
-        where p."id" = $1; 
+        where p."id" = $1
+        ; 
     `,
       [postId, myId]
     );
@@ -203,6 +206,8 @@ export class PostSqlRepository {
     select l."addedAt", l."userId", l."login"
     from public."PostLikes" l
     where p."id" = l."postId"
+    order by l."addedAt" desc
+    limit 3 offset 0
     )  as row ) as "newestLikes"
     from public."Posts" p
     order by p."${parametres.sortBy}" ${sortDirection}
@@ -266,13 +271,16 @@ export class PostSqlRepository {
     `;
     const posts = await this.dataSource.query<postSqlQueryType[]>(query, [
       userId,
-      blogId
+      blogId,
     ]);
-    const totalCount = await this.dataSource.query<{ count: string }[]>(`
+    const totalCount = await this.dataSource.query<{ count: string }[]>(
+      `
         select count(*)
         from public."Posts" p
         where p."blogId" = $1
-    `,[blogId]);
+    `,
+      [blogId]
+    );
     console.log("totta", totalCount);
     return {
       pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),

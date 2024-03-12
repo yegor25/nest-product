@@ -113,9 +113,12 @@ let PostSqlRepository = class PostSqlRepository {
         select l."addedAt", l."userId", l."login"
         from public."PostLikes" l
         where p."id" = l."postId"
+        order by l."addedAt" desc
+        limit 3 offset 0
         )  as row ) as "newestLikes"
         from public."Posts" p
-        where p."id" = $1; 
+        where p."id" = $1
+        ; 
     `, [postId, myId]);
         if (post[0])
             return post[0];
@@ -173,6 +176,8 @@ let PostSqlRepository = class PostSqlRepository {
     select l."addedAt", l."userId", l."login"
     from public."PostLikes" l
     where p."id" = l."postId"
+    order by l."addedAt" desc
+    limit 3 offset 0
     )  as row ) as "newestLikes"
     from public."Posts" p
     order by p."${parametres.sortBy}" ${sortDirection}
@@ -232,7 +237,7 @@ let PostSqlRepository = class PostSqlRepository {
     `;
         const posts = await this.dataSource.query(query, [
             userId,
-            blogId
+            blogId,
         ]);
         const totalCount = await this.dataSource.query(`
         select count(*)
