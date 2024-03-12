@@ -10,7 +10,7 @@ export class PostLikeSqlRepository {
         const newReaction = await this.dataSource.query(`
             insert into public."PostLikes"
             ("userId","postId","login","status","addedAt")
-            values($1,$2,$3,$4,"addedAt" = '${new Date().toISOString().split("T")[0]}');
+            values($1,$2,$3,$4,'${new Date().toISOString().split("T")[0]}');
         `,[userId,postId,login,likeStatus])
         return
   }
