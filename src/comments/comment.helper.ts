@@ -44,8 +44,8 @@ class CommentHelper {
                 userLogin: comment.userLogin
             },
             likesInfo: {
-                likesCount: comment.likesCount,
-                dislikesCount: comment.dislikesCount,
+                likesCount: +comment.likesCount,
+                dislikesCount: +comment.dislikesCount,
                 myStatus: comment.myStatus ? comment.myStatus : LikeStatus.None
             }
         }

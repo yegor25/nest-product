@@ -101,9 +101,9 @@ export type CommentSqlQueryDbType = {
     content: string,
     userId: string,
     userLogin: string,
-    likesCount: number,
+    likesCount: string,
     createdAt: string
-    dislikesCount: number,
+    dislikesCount: string,
     myStatus: LikeStatus | null
 }
 export type paramsCommentsPaginatorType = {
