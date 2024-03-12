@@ -57,10 +57,10 @@ export class CommentService {
         return this.commentsRepository.findCommentsByPostId(postId, params,userId)
     }
     async deleteComment(id: string, userId: string): Promise<boolean> {
-        return this.commentsRepository.deleteComments(id, userId)
+        return this.commentSqlRepository.deleteById(id, userId)
     }
     async updateComment(id: string, userId: string, content: string): Promise<boolean> {
-        return this.commentsRepository.updateComment(id, userId, content)
+        return this.commentSqlRepository.updateComment(id, userId, content)
     }
     // async deleteAllComments():Promise<boolean>{
     //     return this.commentsRepository.deleteAll()

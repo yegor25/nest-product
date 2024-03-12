@@ -60,6 +60,27 @@ let CommentsSqlRepository = class CommentsSqlRepository {
             return null;
         return comment[0];
     }
+    async deleteById(id, userId) {
+        const deleted = await this.dataSource.query(`
+            delete from public."Comments" c
+            where c."id" = $1 and c."userId" = $2
+            ;
+        `, [id, userId]);
+        if (deleted[1] === 1)
+            return true;
+        return false;
+    }
+    async updateComment(id, userId, content) {
+        const modified = await this.dataSource.query(`
+                update public."Comments" c
+                set "content" = $1
+                where c."id" = $2 and c."userId" = $3;
+
+            `, [content, id, userId]);
+        if (modified[0].length)
+            return true;
+        return false;
+    }
 };
 exports.CommentsSqlRepository = CommentsSqlRepository;
 exports.CommentsSqlRepository = CommentsSqlRepository = __decorate([

@@ -59,10 +59,10 @@ let CommentService = class CommentService {
         return this.commentsRepository.findCommentsByPostId(postId, params, userId);
     }
     async deleteComment(id, userId) {
-        return this.commentsRepository.deleteComments(id, userId);
+        return this.commentSqlRepository.deleteById(id, userId);
     }
     async updateComment(id, userId, content) {
-        return this.commentsRepository.updateComment(id, userId, content);
+        return this.commentSqlRepository.updateComment(id, userId, content);
     }
     async updateLikeStatus(likeStatus, userId, commentId) {
         const newStatus = await this.commentsRepository.changeExistLikeStatus(likeStatus, commentId, userId);
