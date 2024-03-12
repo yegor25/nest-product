@@ -48,7 +48,6 @@ export class CommentsSqlRepository {
             ;
         `,[commentId, userId])
         if(!comment[0]) return null
-        console.log("comment", comment)
         return comment[0]
     }
 }
