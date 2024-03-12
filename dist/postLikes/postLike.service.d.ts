@@ -25,15 +25,15 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { PostLikeRepository } from "./postLike.repository";
 import { LikeStatus } from "./like.schema";
+import { PostLikeSqlRepository } from "./postLike.sqlRepository";
 export declare class PostLikeService {
     private postLikeRepository;
-    constructor(postLikeRepository: PostLikeRepository);
+    protected postLikeSqlRepository: PostLikeSqlRepository;
+    constructor(postLikeRepository: PostLikeRepository, postLikeSqlRepository: PostLikeSqlRepository);
     checkReaction(userId: string, postId: string): Promise<boolean>;
-    changeExistReaction(userId: string, postId: string, likeStatus: LikeStatus): Promise<boolean>;
+    changeExistReaction(userId: string, postId: string, likeStatus: LikeStatus): Promise<any>;
     addNewReaction(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<void>;
-    getByPostId(postId: string): Promise<(import("mongoose").Document<unknown, {}, import("./like.schema").LikesPost> & import("./like.schema").LikesPost & Required<{
-        _id: import("mongoose").Types.ObjectId;
-    }>)[]>;
+    getByPostId(postId: string): Promise<any>;
     getAll(): Promise<(import("mongoose").Document<unknown, {}, import("./like.schema").LikesPost> & import("./like.schema").LikesPost & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>)[]>;

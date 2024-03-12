@@ -33,5 +33,5 @@ export declare class PostController {
             userId: string;
             login: string;
         };
-    }): Promise<boolean | void>;
+    }): Promise<any>;
 }

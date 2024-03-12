@@ -12,21 +12,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostLikeService = void 0;
 const common_1 = require("@nestjs/common");
 const postLike_repository_1 = require("./postLike.repository");
+const postLike_sqlRepository_1 = require("./postLike.sqlRepository");
 let PostLikeService = class PostLikeService {
-    constructor(postLikeRepository) {
+    constructor(postLikeRepository, postLikeSqlRepository) {
         this.postLikeRepository = postLikeRepository;
+        this.postLikeSqlRepository = postLikeSqlRepository;
     }
     async checkReaction(userId, postId) {
-        return this.postLikeRepository.checkReaction(userId, postId);
+        return this.postLikeSqlRepository.checkReaction(userId, postId);
     }
     async changeExistReaction(userId, postId, likeStatus) {
-        return this.postLikeRepository.changeExistReaction(userId, postId, likeStatus);
+        return this.postLikeSqlRepository.changeExistReaction(userId, postId, likeStatus);
     }
     async addNewReaction(userId, postId, likeStatus, login) {
-        return this.postLikeRepository.addNewReaction(userId, postId, likeStatus, login);
+        return this.postLikeSqlRepository.create(userId, postId, likeStatus, login);
     }
     async getByPostId(postId) {
-        return this.postLikeRepository.getByPostId(postId);
+        return this.postLikeSqlRepository.getByPostId(postId);
     }
     async getAll() {
         return this.postLikeRepository.getAll();
@@ -35,6 +37,7 @@ let PostLikeService = class PostLikeService {
 exports.PostLikeService = PostLikeService;
 exports.PostLikeService = PostLikeService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [postLike_repository_1.PostLikeRepository])
+    __metadata("design:paramtypes", [postLike_repository_1.PostLikeRepository,
+        postLike_sqlRepository_1.PostLikeSqlRepository])
 ], PostLikeService);
 //# sourceMappingURL=postLike.service.js.map

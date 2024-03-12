@@ -27,7 +27,8 @@ export type postSqlDbType = {
     userId: string ,
     addedAt: Date,
     login: string ,
-    postId: string 
+    postId: string,
+    
 }
 
 
