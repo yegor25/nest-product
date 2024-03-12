@@ -77,7 +77,8 @@ let CommentsSqlRepository = class CommentsSqlRepository {
                 where c."id" = $2 and c."userId" = $3;
 
             `, [content, id, userId]);
-        if (modified[0].length)
+        console.log("mod", modified);
+        if (modified[1] === 1)
             return true;
         return false;
     }

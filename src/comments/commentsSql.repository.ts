@@ -81,7 +81,8 @@ export class CommentsSqlRepository {
             `,
       [content, id, userId]
     );
-    if (modified[0].length) return true;
+    console.log("mod", modified)
+    if (modified[1] === 1) return true;
     return false;
   }
 }
