@@ -60,6 +60,7 @@ import { SuperUserRepository } from './super-users/superUsers.repositoru';
 import { SuperUsersService } from './super-users/superUsers.service';
 import { SuValidatorEmail } from './super-users/validators/su.validate-email';
 import { SuValidatorLogin } from './super-users/validators/su.validate-login';
+import { CommentsSqlRepository } from './comments/commentsSql.repository';
 
 
 @Module({
@@ -67,7 +68,7 @@ import { SuValidatorLogin } from './super-users/validators/su.validate-login';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: "10s"}
+      signOptions: {expiresIn: "5m"}
     }),
     
     // MongooseModule.forRoot('mongodb://localhost/nest'),
@@ -100,7 +101,7 @@ import { SuValidatorLogin } from './super-users/validators/su.validate-login';
   
   
   controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController],
-  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository, UserSqlRepository, DataConfirmationRepository,AuthService],
+  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository, UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository],
 
 })
 export class AppModule implements NestModule{

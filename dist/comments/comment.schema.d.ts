@@ -59,6 +59,23 @@ export type CommentViewModelType = {
     createdAt: string;
     likesInfo: likeInfo;
 };
+export type CommentSqlDbType = {
+    id: string;
+    content: string;
+    postId: string;
+    userId: string;
+    createdAt: string;
+};
+export type CommentSqlQueryDbType = {
+    id: string;
+    content: string;
+    userId: string;
+    userLogin: string;
+    likesCount: number;
+    createdAt: string;
+    dislikesCount: number;
+    myStatus: LikeStatus | null;
+};
 export type paramsCommentsPaginatorType = {
     sortBy: keyof Comments;
     sortDirection: SortDirection;

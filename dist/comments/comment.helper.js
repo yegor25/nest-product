@@ -33,6 +33,22 @@ class CommentHelper {
         };
         return res;
     }
+    commentsMapperFromSql(comment) {
+        return {
+            id: comment.id,
+            content: comment.content,
+            createdAt: comment.createdAt,
+            commentatorInfo: {
+                userId: comment.userId,
+                userLogin: comment.userLogin
+            },
+            likesInfo: {
+                likesCount: comment.likesCount,
+                dislikesCount: comment.dislikesCount,
+                myStatus: comment.myStatus ? comment.myStatus : like_schema_1.LikeStatus.None
+            }
+        };
+    }
 }
 exports.commentHelper = new CommentHelper();
 //# sourceMappingURL=comment.helper.js.map

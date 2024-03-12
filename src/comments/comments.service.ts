@@ -1,18 +1,20 @@
 import { UserService } from "../users/user.service"
 import { PostService } from "../posts/post.service"
 import { User } from "../users/user.schema"
-import { CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema"
+import { CommentSqlDbType, CommentViewModelType, Comments, CreatedCommentDto, commentForDbDtoType, paramsCommentsPaginatorType, viewAllCommentsType } from "./comment.schema"
 import { CommentsRepository } from "./comments.repository"
 import { Injectable } from "@nestjs/common"
 import { LikeStatus } from "../postLikes/like.schema"
 import { commentHelper } from "./comment.helper"
+import { CommentsSqlRepository } from "./commentsSql.repository"
 
 @Injectable()
 export class CommentService {
     constructor(
         private commentsRepository: CommentsRepository,
         protected postService: PostService,
-        private userService: UserService
+        private userService: UserService,
+        protected commentSqlRepository: CommentsSqlRepository
     ){}
     async createComment(postId: string, data: CreatedCommentDto, userId: string): Promise<CommentViewModelType | null> {
         const post = await this.postService.findPostById(postId)
@@ -21,20 +23,35 @@ export class CommentService {
         }
         const user = await this.userService.findById(userId)
         if(!user) return null
-        const newComment: commentForDbDtoType = {
-            content: data.content,
-            postId,
+        // const newComment: CommentSqlDbType = {
+        //     content: data.content,
+        //     postId,
+        //     commentatorInfo: {
+        //         userId: userId,
+        //         userLogin: user.login
+        //     }
+        // }
+        const newComment = await  this.commentSqlRepository.createComment(post.id,data.content,user.id)
+        return {
+            id: newComment.id,
+            content: newComment.content,
+            createdAt: newComment.createdAt,
             commentatorInfo: {
-                userId: userId,
+                userId: user.id,
                 userLogin: user.login
+            },
+            likesInfo: {
+                likesCount: 0,
+                dislikesCount: 0,
+                myStatus: LikeStatus.None
             }
         }
-        return  this.commentsRepository.createComment(newComment)
     }
     async findById(id: string, userId?: string):Promise<CommentViewModelType | null>{
-        const query = await this.commentsRepository.findById(id)
+        const query = await this.commentSqlRepository.findById(id, userId)
+        console.log("q", query)
         if(!query) return null
-        return commentHelper.commentsMapper(query,userId)
+        return commentHelper.commentsMapperFromSql(query)
     }
     async findCommentsByPostId(postId: string,params: paramsCommentsPaginatorType ,userId?: string):Promise<viewAllCommentsType>{
         return this.commentsRepository.findCommentsByPostId(postId, params,userId)

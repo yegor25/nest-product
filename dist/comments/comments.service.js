@@ -14,12 +14,15 @@ const user_service_1 = require("../users/user.service");
 const post_service_1 = require("../posts/post.service");
 const comments_repository_1 = require("./comments.repository");
 const common_1 = require("@nestjs/common");
+const like_schema_1 = require("../postLikes/like.schema");
 const comment_helper_1 = require("./comment.helper");
+const commentsSql_repository_1 = require("./commentsSql.repository");
 let CommentService = class CommentService {
-    constructor(commentsRepository, postService, userService) {
+    constructor(commentsRepository, postService, userService, commentSqlRepository) {
         this.commentsRepository = commentsRepository;
         this.postService = postService;
         this.userService = userService;
+        this.commentSqlRepository = commentSqlRepository;
     }
     async createComment(postId, data, userId) {
         const post = await this.postService.findPostById(postId);
@@ -29,21 +32,28 @@ let CommentService = class CommentService {
         const user = await this.userService.findById(userId);
         if (!user)
             return null;
-        const newComment = {
-            content: data.content,
-            postId,
+        const newComment = await this.commentSqlRepository.createComment(post.id, data.content, user.id);
+        return {
+            id: newComment.id,
+            content: newComment.content,
+            createdAt: newComment.createdAt,
             commentatorInfo: {
-                userId: userId,
+                userId: user.id,
                 userLogin: user.login
+            },
+            likesInfo: {
+                likesCount: 0,
+                dislikesCount: 0,
+                myStatus: like_schema_1.LikeStatus.None
             }
         };
-        return this.commentsRepository.createComment(newComment);
     }
     async findById(id, userId) {
-        const query = await this.commentsRepository.findById(id);
+        const query = await this.commentSqlRepository.findById(id, userId);
+        console.log("q", query);
         if (!query)
             return null;
-        return comment_helper_1.commentHelper.commentsMapper(query, userId);
+        return comment_helper_1.commentHelper.commentsMapperFromSql(query);
     }
     async findCommentsByPostId(postId, params, userId) {
         return this.commentsRepository.findCommentsByPostId(postId, params, userId);
@@ -66,6 +76,7 @@ exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [comments_repository_1.CommentsRepository,
         post_service_1.PostService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        commentsSql_repository_1.CommentsSqlRepository])
 ], CommentService);
 //# sourceMappingURL=comments.service.js.map

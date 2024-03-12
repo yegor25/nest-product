@@ -1,5 +1,5 @@
 import { LikeStatus } from "../postLikes/like.schema";
-import { CommentViewModelType, Comments, dbCommentsPaginatorType, paramsCommentsPaginatorType } from "./comment.schema";
+import { CommentSqlQueryDbType, CommentViewModelType, Comments, dbCommentsPaginatorType, paramsCommentsPaginatorType } from "./comment.schema";
 import { SortDirection } from "../blogs/blog.schema";
 
 
@@ -33,6 +33,22 @@ class CommentHelper {
             sortBy: params.sortBy ? params.sortBy : "createdAt"
         }
         return res
+    }
+    commentsMapperFromSql(comment: CommentSqlQueryDbType):CommentViewModelType {
+        return {
+            id: comment.id,
+            content: comment.content,
+            createdAt: comment.createdAt,
+            commentatorInfo: {
+                userId: comment.userId,
+                userLogin: comment.userLogin
+            },
+            likesInfo: {
+                likesCount: comment.likesCount,
+                dislikesCount: comment.dislikesCount,
+                myStatus: comment.myStatus ? comment.myStatus : LikeStatus.None
+            }
+        }
     }
     
 
