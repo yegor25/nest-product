@@ -2,7 +2,7 @@ import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface 
 import { BlogService } from "../blogs/blog.service";
 import { BlogRepository } from "../blogs/blogs.repository";
 import { Injectable } from "@nestjs/common";
-import { SuperAdminBlogService } from "src/sa-blogs/sa.blogs.service";
+import { SuperAdminBlogService } from "../sa-blogs/sa.blogs.service";
 
 
 
