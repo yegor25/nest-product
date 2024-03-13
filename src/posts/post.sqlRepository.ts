@@ -79,7 +79,7 @@ export class PostSqlRepository {
        (
         select l."status" 
         from public."PostLikes" l
-        where l."postId" = $1 and l."userId"::text = $2
+        where l."postId" = p."id" and l."userId"::text = $2
        ) as "myStatus",
         array(
         select row_to_json(row) from (
