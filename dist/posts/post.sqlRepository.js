@@ -67,14 +67,7 @@ let PostSqlRepository = class PostSqlRepository {
         from public."PostLikes" l
         where l."postId" = p."id" and l."userId"::text = $2
        ) as "myStatus",
-        array(
-        select row_to_json(row) from (
-        select l."addedAt", l."userId", l."login"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-        order by l."addedAt" desc
-        limit 3 offset 0
-        )  as row ) as "newestLikes"
+        
         from public."Posts" p
         where p."blogId" = $1;
         order by p."${parametres.sortBy}" ${sortDirection}
@@ -83,7 +76,7 @@ let PostSqlRepository = class PostSqlRepository {
         const totalCountQuery = `
        select count(*)
        from public."Posts" p
-       where p."id" = $1 
+       where p."blogId" = $1 
     `;
         const totalCount = await this.dataSource.query(totalCountQuery, [blogId]);
         const posts = await this.dataSource.query(query, [
