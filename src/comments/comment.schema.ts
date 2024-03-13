@@ -122,6 +122,10 @@ export type viewAllCommentsType = PaginatorType & {
     items: CommentViewModelType[]
 }
 
+export type viewAllComentsSqlType = PaginatorType & {
+    items: CommentSqlQueryDbType[]
+}
+
 export type likeInfo = {
     likesCount: number;
     dislikesCount: number;

@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const like_schema_1 = require("../postLikes/like.schema");
+const comment_helper_1 = require("./comment.helper");
+const user_schema_1 = require("../users/user.schema");
 let CommentsSqlRepository = class CommentsSqlRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
@@ -81,6 +83,50 @@ let CommentsSqlRepository = class CommentsSqlRepository {
         if (modified[1] === 1)
             return true;
         return false;
+    }
+    async findCommentsByPostId(postId, params, userId) {
+        const parametres = comment_helper_1.commentHelper.commentsParamsMapper(params);
+        const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+        const sortDirection = params.sortDirection
+            ? params.sortDirection
+            : user_schema_1.SortDirection.desc;
+        const comments = await this.dataSource.query(`
+              select c."id",c."content",c."createdAt", u."login" as "userLogin", u."id" as "userId",
+              (
+                  select count(*) as "likesCount"
+                  from public."CommentsLikes" cl
+                  where cl."commentId" = $1 and cl."status" = '${like_schema_1.LikeStatus.Like}'
+              ),
+              (
+                  select count(*) as "dislikesCount"
+                  from public."CommentsLikes" cl
+                  where cl."commentId" = $1 and cl."status" = '${like_schema_1.LikeStatus.Dislike}'
+              ),
+              (
+                  select cl."status" 
+                  from public."CommentsLikes" cl
+                  where cl."commentId" = $1 and cl."userId"::text = $2
+                 ) as "myStatus"
+              from public."Comments" c
+              left join public."Users" u
+              on u."id" = c."userId"
+              where c."postId" = $1
+              order by c."${parametres.sortBy}" ${sortDirection}
+              limit ${+parametres.pageSize} offset ${skipCount}
+              ;
+          `, [postId, userId]);
+        const totalCount = await this.dataSource.query(`
+                select count(*)
+                from public."Comments" c
+                where c."postId" = $1
+      `, [postId]);
+        return {
+            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: parametres.pageSize,
+            totalCount: +totalCount[0].count,
+            items: comments
+        };
     }
 };
 exports.CommentsSqlRepository = CommentsSqlRepository;

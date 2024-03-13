@@ -54,7 +54,11 @@ export class CommentService {
         return commentHelper.commentsMapperFromSql(query)
     }
     async findCommentsByPostId(postId: string,params: paramsCommentsPaginatorType ,userId?: string):Promise<viewAllCommentsType>{
-        return this.commentsRepository.findCommentsByPostId(postId, params,userId)
+        const comments = await this.commentSqlRepository.findCommentsByPostId(postId, params,userId)
+        return {
+            ...comments,
+            items: comments.items.map(el => commentHelper.commentsMapperFromSql(el))
+        }
     }
     async deleteComment(id: string, userId: string): Promise<boolean> {
         return this.commentSqlRepository.deleteById(id, userId)

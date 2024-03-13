@@ -56,7 +56,11 @@ let CommentService = class CommentService {
         return comment_helper_1.commentHelper.commentsMapperFromSql(query);
     }
     async findCommentsByPostId(postId, params, userId) {
-        return this.commentsRepository.findCommentsByPostId(postId, params, userId);
+        const comments = await this.commentSqlRepository.findCommentsByPostId(postId, params, userId);
+        return {
+            ...comments,
+            items: comments.items.map(el => comment_helper_1.commentHelper.commentsMapperFromSql(el))
+        };
     }
     async deleteComment(id, userId) {
         return this.commentSqlRepository.deleteById(id, userId);
