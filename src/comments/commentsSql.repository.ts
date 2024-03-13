@@ -120,7 +120,7 @@ export class CommentsSqlRepository {
               (
                   select cl."status" 
                   from public."CommentsLikes" cl
-                  where cl."commentId" = $1 and cl."userId"::text = $2
+                  where cl."commentId" = c."id" and cl."userId"::text = $2
                  ) as "myStatus"
               from public."Comments" c
               left join public."Users" u
@@ -153,7 +153,7 @@ export class CommentsSqlRepository {
     const modified = await this.dataSource.query(`
       update public."CommentsLikes" c
       set "status" = $1
-      where c."userId" = $2 and c."commentId" = $2;
+      where c."userId" = $2 and c."commentId" = $3;
     `,[likesStatus,userId, commentId])
     if (modified[1] === 1) return true;
     return false;
