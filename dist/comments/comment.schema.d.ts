@@ -99,6 +99,13 @@ export type likeInfo = {
     dislikesCount: number;
     myStatus: LikeStatus;
 };
+export type commentLikeSqlDbType = {
+    id: string;
+    commentId: string;
+    createdAt: string;
+    status: LikeStatus;
+    userId: string;
+};
 export declare const CommentsSchema: mongoose.Schema<Comments, mongoose.Model<Comments, any, any, any, mongoose.Document<unknown, any, Comments> & Comments & Required<{
     _id: mongoose.Types.ObjectId;
 }>, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Comments, mongoose.Document<unknown, {}, mongoose.FlatRecord<Comments>> & mongoose.FlatRecord<Comments> & Required<{

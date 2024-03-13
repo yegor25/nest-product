@@ -4,6 +4,7 @@ import { DataSource } from "typeorm";
 import {
   CommentSqlDbType,
   CommentSqlQueryDbType,
+  commentLikeSqlDbType,
   paramsCommentsPaginatorType,
   viewAllComentsSqlType,
   viewAllCommentsType,
@@ -147,5 +148,30 @@ export class CommentsSqlRepository {
       totalCount: +totalCount[0].count,
       items: comments
     };
+  }
+  async changeExistLikeStatus(likesStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
+    const modified = await this.dataSource.query(`
+      update public."CommentsLikes" c
+      set "status" = $1
+      where c."userId" = $2 and c."commentId" = $2;
+    `,[likesStatus,userId, commentId])
+    if (modified[1] === 1) return true;
+    return false;
+  }
+  async checkExistReaction(userId: string, commentId: string):Promise<boolean>{
+    const reaction = await this.dataSource.query<commentLikeSqlDbType[]>(`
+        select * from public."CommentsLikes" c
+        where c."userId" = $1 and c."commentId" = $2;
+    `,[userId, commentId])
+    if(reaction[0]) return true
+    return false
+
+  }
+  async changeLikeStatus(userId: string, commentId: string,status: LikeStatus){
+    return this.dataSource.query(`
+        insert into public."CommentsLikes"
+        ("commentId","createdAt", "status","userId")
+        values($1,'${new Date().toISOString()}',$2,$3);
+    `,[commentId,status, userId])
   }
 }

@@ -132,6 +132,14 @@ export type likeInfo = {
     myStatus: LikeStatus
 }
 
+export type commentLikeSqlDbType = {
+    id: string,
+    commentId: string,
+    createdAt: string,
+    status: LikeStatus,
+    userId: string
+}
+
 
 export const CommentsSchema = SchemaFactory.createForClass(Comments)
 
