@@ -208,7 +208,7 @@ export class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1 and l."status" = '${LikeStatus.Like}' and l."postId" = p."id"
+    where l."userId"::text = $1  and l."postId" = p."id"
    ) as "myStatus",
    
     array(
@@ -265,7 +265,7 @@ export class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1 and l."status" = '${LikeStatus.Like}' and l."postId" = p."id"
+    where l."userId"::text = $1  and l."postId" = p."id"
    ) as "myStatus",
    
     array(

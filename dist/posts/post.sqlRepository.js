@@ -178,7 +178,7 @@ let PostSqlRepository = class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1 and l."status" = '${like_schema_1.LikeStatus.Like}' and l."postId" = p."id"
+    where l."userId"::text = $1  and l."postId" = p."id"
    ) as "myStatus",
    
     array(
@@ -231,7 +231,7 @@ let PostSqlRepository = class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1 and l."status" = '${like_schema_1.LikeStatus.Like}' and l."postId" = p."id"
+    where l."userId"::text = $1  and l."postId" = p."id"
    ) as "myStatus",
    
     array(
