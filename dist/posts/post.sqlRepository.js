@@ -67,7 +67,14 @@ let PostSqlRepository = class PostSqlRepository {
         from public."PostLikes" l
         where l."postId" = p."id" and l."userId"::text = $2
        ) as "myStatus",
-        
+        array(
+        select row_to_json(row) from (
+        select l."addedAt", l."userId", l."login"
+        from public."PostLikes" l
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
+        order by l."addedAt" desc
+        limit 3 offset 0
+        )  as row ) as "newestLikes"
         from public."Posts" p
         where p."blogId" = $1;
         order by p."${parametres.sortBy}" ${sortDirection}
@@ -156,7 +163,7 @@ let PostSqlRepository = class PostSqlRepository {
             ? params.sortDirection
             : user_schema_1.SortDirection.desc;
         const query = `
-    select * ,
+    select p.* ,
 
     (
         select count(*) as "likesCount"
@@ -171,7 +178,7 @@ let PostSqlRepository = class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1
+    where l."userId"::text = $1 and l."status" = '${like_schema_1.LikeStatus.Like}' and l."postId" = p."id"
    ) as "myStatus",
    
     array(
@@ -209,7 +216,7 @@ let PostSqlRepository = class PostSqlRepository {
             ? params.sortDirection
             : user_schema_1.SortDirection.desc;
         const query = `
-    select * ,
+    select p.*,
 
     (
         select count(*) as "likesCount"
@@ -224,7 +231,7 @@ let PostSqlRepository = class PostSqlRepository {
    (
     select l."status" 
     from public."PostLikes" l
-    where l."userId"::text = $1
+    where l."userId"::text = $1 and l."status" = '${like_schema_1.LikeStatus.Like}' and l."postId" = p."id"
    ) as "myStatus",
    
     array(
