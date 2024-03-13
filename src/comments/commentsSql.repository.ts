@@ -110,12 +110,12 @@ export class CommentsSqlRepository {
               (
                   select count(*) as "likesCount"
                   from public."CommentsLikes" cl
-                  where cl."commentId" = $1 and cl."status" = '${LikeStatus.Like}'
+                  where cl."commentId" = c."id" and cl."status" = '${LikeStatus.Like}'
               ),
               (
                   select count(*) as "dislikesCount"
                   from public."CommentsLikes" cl
-                  where cl."commentId" = $1 and cl."status" = '${LikeStatus.Dislike}'
+                  where cl."commentId" = c."id" and cl."status" = '${LikeStatus.Dislike}'
               ),
               (
                   select cl."status" 

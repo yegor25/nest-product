@@ -95,12 +95,12 @@ let CommentsSqlRepository = class CommentsSqlRepository {
               (
                   select count(*) as "likesCount"
                   from public."CommentsLikes" cl
-                  where cl."commentId" = $1 and cl."status" = '${like_schema_1.LikeStatus.Like}'
+                  where cl."commentId" = c."id" and cl."status" = '${like_schema_1.LikeStatus.Like}'
               ),
               (
                   select count(*) as "dislikesCount"
                   from public."CommentsLikes" cl
-                  where cl."commentId" = $1 and cl."status" = '${like_schema_1.LikeStatus.Dislike}'
+                  where cl."commentId" = c."id" and cl."status" = '${like_schema_1.LikeStatus.Dislike}'
               ),
               (
                   select cl."status" 
