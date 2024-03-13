@@ -56,7 +56,7 @@ let PostSqlRepository = class PostSqlRepository {
         select row_to_json(row) from (
         select l."addedAt", l."userId", l."login"
         from public."PostLikes" l
-        where p."id" = l."postId"
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
         order by l."addedAt" desc
         limit 3 offset 0
         )  as row ) as "newestLikes"
@@ -114,7 +114,7 @@ let PostSqlRepository = class PostSqlRepository {
         select row_to_json(row) from (
         select l."addedAt", l."userId", l."login"
         from public."PostLikes" l
-        where p."id" = l."postId"
+        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
         order by l."addedAt" desc
         limit 3 offset 0
         )  as row ) as "newestLikes"
@@ -177,7 +177,7 @@ let PostSqlRepository = class PostSqlRepository {
     select row_to_json(row) from (
     select l."addedAt", l."userId", l."login"
     from public."PostLikes" l
-    where p."id" = l."postId"
+    where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
     order by l."addedAt" desc
     limit 3 offset 0
     )  as row ) as "newestLikes"
@@ -230,7 +230,7 @@ let PostSqlRepository = class PostSqlRepository {
     select row_to_json(row) from (
     select l."addedAt", l."userId", l."login"
     from public."PostLikes" l
-    where p."id" = l."postId"
+    where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
     order by l."addedAt" desc
     limit 3 offset 0
     )  as row ) as "newestLikes"
