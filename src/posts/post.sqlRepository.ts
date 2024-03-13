@@ -65,7 +65,22 @@ export class PostSqlRepository {
     const skipCount =
       (+parametres.pageNumber - 1) * Number(parametres.pageSize);
     const query = `
-        select * ,
+        select p.* ,
+        (
+            select count(*) as "likesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        ),
+        (
+            select count(*) as "dislikesCount"
+            from public."PostLikes" l
+            where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        ),
+       (
+        select l."status" 
+        from public."PostLikes" l
+        where l."postId" = $1 and l."userId"::text = $2
+       ) as "myStatus",
         array(
         select row_to_json(row) from (
         select l."addedAt", l."userId", l."login"
@@ -104,14 +119,7 @@ export class PostSqlRepository {
     const post = await this.dataSource.query<postSqlQueryType[]>(
       `
     select * ,
-        --(
-          --  select row_to_json(row) from (
-            --    select count(*) as "likesCount"
-              --  from public."PostLikes" l
-                --where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
-            --) as row
-           
-        --) as "extendedLikesInfo",
+       
         (
             select count(*) as "likesCount"
             from public."PostLikes" l
