@@ -72,7 +72,7 @@ export class CommentService {
     async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
         const exist = await this.commentSqlRepository.checkExistReaction(userId,commentId)
         if(exist) {
-            await this.commentSqlRepository.changeExistLikeStatus(likeStatus, commentId,userId)
+            await this.commentSqlRepository.changeExistLikeStatus(likeStatus,userId,commentId)
             return true
         } else {
             await this.commentSqlRepository.changeLikeStatus(userId, commentId, likeStatus)
