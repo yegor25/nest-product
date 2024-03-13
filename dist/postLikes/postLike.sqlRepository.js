@@ -24,7 +24,7 @@ let PostLikeSqlRepository = class PostLikeSqlRepository {
         const newReaction = await this.dataSource.query(`
             insert into public."PostLikes"
             ("userId","postId","login","status","addedAt")
-            values($1,$2,$3,$4,'${new Date().toISOString().split("T")[0]}');
+            values($1,$2,$3,$4,'${new Date().toISOString()}');
         `, [userId, postId, login, likeStatus]);
         return;
     }
@@ -46,7 +46,7 @@ let PostLikeSqlRepository = class PostLikeSqlRepository {
     async changeExistReaction(userId, postId, likeStatus) {
         return this.dataSource.query(`
         update public."PostLikes" p
-        set "status" = $1, "addedAt" = '${new Date().toISOString().split("T")[0]}'
+        set "status" = $1, "addedAt" = '${new Date().toISOString()}'
         where p."postId" = $2 AND p."userId" = $3;
     `, [likeStatus, postId, userId]);
     }

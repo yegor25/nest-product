@@ -71,6 +71,8 @@ export class PostSqlRepository {
         select l."addedAt", l."userId", l."login"
         from public."PostLikes" l
         where p."id" = l."postId"
+        order by l."addedAt" desc
+        limit 3 offset 0
         )  as row ) as "newestLikes"
         from public."Posts" p
         where p."blogId" = $1;
@@ -263,6 +265,8 @@ export class PostSqlRepository {
     select l."addedAt", l."userId", l."login"
     from public."PostLikes" l
     where p."id" = l."postId"
+    order by l."addedAt" desc
+    limit 3 offset 0
     )  as row ) as "newestLikes"
     from public."Posts" p
     where p."blogId" = $2
