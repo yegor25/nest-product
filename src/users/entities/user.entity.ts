@@ -26,10 +26,10 @@ export class Users {
     @Column({default: false})
     isActiveAccount: boolean;
 
-    @OneToOne(() => ConfirmationData, c => c.user)
+    @OneToOne(() => ConfirmationData, c => c.user, {onDelete: "CASCADE"})
     confirmationData: ConfirmationData
 
-    @OneToMany(() => SecurityDevices, s => s.user)
+    @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "CASCADE"})
     securityDevices: SecurityDevices[]
 
 
