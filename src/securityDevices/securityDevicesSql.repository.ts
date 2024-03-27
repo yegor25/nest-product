@@ -153,7 +153,7 @@ export class SecurityDevicesSqlRepository {
       .createQueryBuilder()
       .update(SecurityDevices)
       .set({ lastActiveDate: new Date().toISOString() })
-      .where("device = :id", { id: deviceId })
+      .where("deviceId = :id", { id: deviceId })
       .execute();
     return true;
   }

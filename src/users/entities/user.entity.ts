@@ -1,6 +1,7 @@
 import { Column, Entity, Generated, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
+import { Tokens } from "../../tokens/token.entity";
 
 
 @Entity()
@@ -32,8 +33,8 @@ export class Users {
     @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "RESTRICT"})
     securityDevices: SecurityDevices[]
 
-
-    
+    @OneToMany(() => Tokens, t => t.user)
+    tokens: Tokens[]
 }
 
 

@@ -111,7 +111,7 @@ let SecurityDevicesSqlRepository = class SecurityDevicesSqlRepository {
             .createQueryBuilder()
             .update(securityDevices_entity_1.SecurityDevices)
             .set({ lastActiveDate: new Date().toISOString() })
-            .where("device = :id", { id: deviceId })
+            .where("deviceId = :id", { id: deviceId })
             .execute();
         return true;
     }
