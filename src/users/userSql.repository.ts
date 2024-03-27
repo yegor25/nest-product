@@ -120,8 +120,9 @@ export class UserSqlRepository {
         // `,[email])
         const user = await this.usersRepository
         .createQueryBuilder("u")
-        .select(["u.isActiveAccount,u.id"])
-        console.log("user", user)
+        .select(`"id",u."isActiveAccount"`)
+        .where("u.email = :email",{email})
+        .execute()
         if(user[0] && !user[0].isActiveAccount) return user[0].id
         return null
        }
