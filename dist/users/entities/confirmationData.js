@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", Date)
 ], ConfirmationData.prototype, "expirationDate", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => user_entity_1.Users, u => u.confirmationData),
+    (0, typeorm_1.OneToOne)(() => user_entity_1.Users, u => u.confirmationData, { onDelete: "RESTRICT" }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", user_entity_1.Users)
 ], ConfirmationData.prototype, "user", void 0);

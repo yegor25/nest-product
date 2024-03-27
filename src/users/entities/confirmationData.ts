@@ -17,7 +17,7 @@ export class ConfirmationData {
 
    
 
-    @OneToOne( () => Users, u => u.confirmationData)
+    @OneToOne( () => Users, u => u.confirmationData, {onDelete: "RESTRICT"})
     @JoinColumn()
     user: Users
 }

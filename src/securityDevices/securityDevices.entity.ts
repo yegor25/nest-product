@@ -22,7 +22,7 @@ export class SecurityDevices {
     @Column()
     isActive: boolean
 
-    @ManyToOne(() => Users, u => u.securityDevices)
+    @ManyToOne(() => Users, u => u.securityDevices, {onDelete:"CASCADE"})
     @JoinColumn()
     user: Users
     
