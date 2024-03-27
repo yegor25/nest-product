@@ -91,7 +91,7 @@ let SuperUserRepository = class SuperUserRepository {
         const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : "";
         const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : "";
         const sortDirection = params.sortDirection
-            ? params.sortDirection
+            ? params.sortDirection.toUpperCase()
             : user_schema_1.SortDirection.desc;
         const queryTotalCountString = `
             select count(*)

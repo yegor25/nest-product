@@ -123,7 +123,7 @@ export class SuperUserRepository {
     const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : "";
     const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : "";
     const sortDirection = params.sortDirection
-      ? params.sortDirection
+      ? params.sortDirection.toUpperCase()
       : SortDirection.desc;
     const queryTotalCountString = `
             select count(*)
@@ -160,7 +160,7 @@ export class SuperUserRepository {
       })
       .orderBy(
         `u.${parametres.sortBy}`,
-        `${sortDirection}`
+        `${sortDirection as SortDirection}`
       )
       .take(+parametres.pageSize)
       .skip(skipCount)
