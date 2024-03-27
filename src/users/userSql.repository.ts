@@ -80,11 +80,20 @@ export class UserSqlRepository {
         //         WHERE c."code" = $1;
         // `,[code])
         const user = await this.usersRepository
-        .createQueryBuilder("u")
-        .select(["u.isActiveAccount"])
-        .leftJoinAndSelect(ConfirmationData,"c")
+        .createQueryBuilder("users")
+        .leftJoinAndSelect("users.confirmationData","c")
+        .where("c.code = :code",{code})
         .getOne()
+
+        // .createQueryBuilder("u")
+        // .select(`u."isActiveAccount"`)
+        // .where("code = :code",{code})
+        // .leftJoinAndSelect("u.confirmationData","c")
+        // .getOne()
+        
+        console.log("users", user)
         if(!user) return null
+        // return null
         return {userId: user.id, expirationDate: user.confirmationData.expirationDate, isActiveAccount: user.isActiveAccount}
     }
 
@@ -96,12 +105,13 @@ export class UserSqlRepository {
         // returning *;
         // `,[userId])
         const activeUser = await this.usersRepository
-        .createQueryBuilder("u")
+        .createQueryBuilder()
         .update(Users)
         .set({isActiveAccount: true})
-        .where("u.id = :id",{id: userId})
+        .where("id = :id",{id: userId})
+        .returning("*")
         .execute()
-        return activeUser[0]
+        return activeUser.raw[0]
     }
     async validateResendingUser(email: string):Promise<string | null>{
         // const user = await this.dataSource.query<{isActiveAccount: boolean, id: string}[]>(`

@@ -21,7 +21,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_entity_1 = require("./entities/user.entity");
-const confirmationData_1 = require("./entities/confirmationData");
 let UserSqlRepository = class UserSqlRepository {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
@@ -66,22 +65,24 @@ let UserSqlRepository = class UserSqlRepository {
     }
     async checkCodeConfirmation(code) {
         const user = await this.usersRepository
-            .createQueryBuilder("u")
-            .select(["u.isActiveAccount"])
-            .leftJoinAndSelect(confirmationData_1.ConfirmationData, "c")
+            .createQueryBuilder("users")
+            .leftJoinAndSelect("users.confirmationData", "c")
+            .where("c.code = :code", { code })
             .getOne();
+        console.log("users", user);
         if (!user)
             return null;
         return { userId: user.id, expirationDate: user.confirmationData.expirationDate, isActiveAccount: user.isActiveAccount };
     }
     async activateAccount(userId) {
         const activeUser = await this.usersRepository
-            .createQueryBuilder("u")
+            .createQueryBuilder()
             .update(user_entity_1.Users)
             .set({ isActiveAccount: true })
-            .where("u.id = :id", { id: userId })
+            .where("id = :id", { id: userId })
+            .returning("*")
             .execute();
-        return activeUser[0];
+        return activeUser.raw[0];
     }
     async validateResendingUser(email) {
         const user = await this.usersRepository
