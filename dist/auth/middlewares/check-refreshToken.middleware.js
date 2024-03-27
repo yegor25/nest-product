@@ -45,7 +45,6 @@ let CheckRefreshToken = class CheckRefreshToken {
                     return;
                 }
                 const isActiveDevice = await this.securityDevicesSqlRepository.checkActiveSession(data.deviceId);
-                console.log("isActive", isActiveDevice);
                 if (!isActiveDevice) {
                     res.sendStatus(401);
                     return;

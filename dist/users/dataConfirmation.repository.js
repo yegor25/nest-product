@@ -17,36 +17,38 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const date_fns_1 = require("date-fns");
+const confirmationData_1 = require("./entities/confirmationData");
 let DataConfirmationRepository = class DataConfirmationRepository {
-    constructor(dataSource) {
+    constructor(dataSource, confDataRepo) {
         this.dataSource = dataSource;
+        this.confDataRepo = confDataRepo;
     }
     async save(code, userId) {
-        const data = await this.dataSource.query(`
-            insert into public."ConfirmationData"
-            ("userId","code","expirationDate")
-            values('${userId}','${code}','${(0, date_fns_1.addDays)(new Date(), 3).toISOString().split("T")[0]}')
-            returning code
-            ;
-        `);
-        return data[0].code;
+        const data = await this.confDataRepo.createQueryBuilder()
+            .insert()
+            .into(confirmationData_1.ConfirmationData)
+            .values({ userId, code, expirationDate: (0, date_fns_1.addDays)(new Date(), 3).toISOString() })
+            .returning("code")
+            .execute();
+        return data.raw[0].code;
     }
     async changeCode(confirmationData, userId) {
         const { code, expirationDate } = confirmationData;
-        const newData = await this.dataSource.query(`
-        update public."ConfirmationData" as c
-        set "code" = $1,
-        "expirationDate" = $3
-        where c."userId" = $2
-        returning code;
-        `, [code, userId, expirationDate]);
-        return newData[0].code;
+        const data = await this.confDataRepo.createQueryBuilder()
+            .update(confirmationData_1.ConfirmationData)
+            .set({ code, expirationDate })
+            .where("userId = :userId", { userId })
+            .returning("code")
+            .execute();
+        return data.raw[0].code;
     }
 };
 exports.DataConfirmationRepository = DataConfirmationRepository;
 exports.DataConfirmationRepository = DataConfirmationRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(confirmationData_1.ConfirmationData)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], DataConfirmationRepository);
 //# sourceMappingURL=dataConfirmation.repository.js.map

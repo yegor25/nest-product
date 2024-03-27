@@ -16,40 +16,55 @@ exports.SecurityDevicesSqlRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const securityDevices_entity_1 = require("./securityDevices.entity");
 let SecurityDevicesSqlRepository = class SecurityDevicesSqlRepository {
-    constructor(dataSource) {
+    constructor(dataSource, secDevRepository) {
         this.dataSource = dataSource;
+        this.secDevRepository = secDevRepository;
     }
     async create(dto) {
         const { ip, title, lastActiveDate, deviceId, isActive, userId } = dto;
-        const newSes = await this.dataSource.query(`
-            insert into public."SecurityDevices"
-            ("ip","title","lastActiveDate","deviceId","isActive","userId")
-            values($1,$2,$3,$4,$5,$6)
-            returning*;
-        `, [ip, title, lastActiveDate, deviceId, isActive, userId]);
-        return newSes[0];
+        const newSes = await this.secDevRepository
+            .createQueryBuilder()
+            .insert()
+            .into(securityDevices_entity_1.SecurityDevices)
+            .values({ ip, title, lastActiveDate, deviceId, isActive, userId })
+            .returning([
+            "ip",
+            "title",
+            "lastActiveDate",
+            "deviceId",
+            "isActive",
+            "userId",
+        ])
+            .execute();
+        return newSes.raw[0];
     }
     async getSession(deviceId) {
-        const ses = await this.dataSource.query(`
-            select s."ip",s."title",s."lastActiveDate",s."deviceId" from public."SecurityDevices" s
-            where s."deviceId" = $1;
-        `, [deviceId]);
-        return ses[0];
+        const ses = await this.secDevRepository
+            .createQueryBuilder("s")
+            .select(["s.ip", "s.title", "s.lastActiveDate", "s.deviceId"])
+            .where("s.deviceId = :id", { id: deviceId })
+            .execute();
+        console.log("ses", ses);
+        return ses;
     }
     async getAllSessions(userId) {
-        const ses = await this.dataSource.query(`
-            select s."ip",s."title",s."lastActiveDate",s."deviceId" from public."SecurityDevices" s
-            where s."userId" = $1 AND s."isActive" = 'true';
-        `, [userId]);
+        const ses = await this.secDevRepository
+            .createQueryBuilder("s")
+            .select(`"ip","title",s."lastActiveDate",s."deviceId"`)
+            .where("s.userId = :userId", { userId })
+            .andWhere("s.isActive = true")
+            .execute();
         return ses;
     }
     async checkUserSession(deviceId) {
-        const ses = await this.dataSource.query(`
-            select * from public."SecurityDevices" s
-            where s."deviceId" = $1;
-        `, [deviceId]);
-        return ses[0];
+        const ses = await this.secDevRepository
+            .createQueryBuilder("s")
+            .select()
+            .where("s.deviceId = :deviceId", { deviceId })
+            .getOne();
+        return ses;
     }
     async checkSession(dto) {
         const { userId, title, ip } = dto;
@@ -62,53 +77,59 @@ let SecurityDevicesSqlRepository = class SecurityDevicesSqlRepository {
         return null;
     }
     async checkActiveSession(deviceId) {
-        const device = await this.dataSource.query(`
-            select * from public."SecurityDevices" s
-            where s."deviceId" = $1;
-        `, [deviceId]);
-        if (!device[0] || !device[0].isActive)
+        const device = await this.secDevRepository
+            .createQueryBuilder("s")
+            .select()
+            .where("s.deviceId = :id", { id: deviceId })
+            .getOne();
+        if (!device || !device.isActive)
             return false;
         return true;
     }
     async deleteDeviceSession(deviceId) {
-        const deletedItem = await this.dataSource.query(`
-            delete from public."SecurityDevices" s
-            where s."deviceId" = $1
-        `, [deviceId]);
-        console.log("del", deletedItem);
-        if (deletedItem[1] === 1)
+        const deletedItem = await this.secDevRepository
+            .createQueryBuilder()
+            .delete()
+            .from(securityDevices_entity_1.SecurityDevices)
+            .where("deviceId = :id", { id: deviceId })
+            .execute();
+        if (deletedItem.affected === 1)
             return true;
         return false;
     }
     async deactivateSession(deviceId) {
-        const ses = await this.dataSource.query(`
-            update public."SecurityDevices" as s
-            set "isActive" = 'false'
-            where s."deviceId" = $1
-            returning *;
-        `, [deviceId]);
+        const ses = await this.secDevRepository
+            .createQueryBuilder()
+            .update(securityDevices_entity_1.SecurityDevices)
+            .set({ isActive: false })
+            .where("deviceId = :id", { id: deviceId })
+            .execute();
         return true;
     }
     async changeActiveDate(deviceId) {
-        const ses = await this.dataSource.query(`
-        update public."SecurityDevices" as s
-        set "lastActiveDate" = '${new Date().toISOString()}'
-        where s."deviceId" = $1
-        returning *;
-        `, [deviceId]);
+        const ses = await this.secDevRepository
+            .createQueryBuilder()
+            .update(securityDevices_entity_1.SecurityDevices)
+            .set({ lastActiveDate: new Date().toISOString() })
+            .where("device = :id", { id: deviceId })
+            .execute();
         return true;
     }
     async deleteAllsessionBesideCurrent(deviceId, userId) {
-        const result = await this.dataSource.query(`
-            delete from public."SecurityDevices" as s
-            where s."userId" = $1 AND s."deviceId" <> $2;
-        `, [userId, deviceId]);
+        const result = await this.secDevRepository
+            .createQueryBuilder()
+            .delete()
+            .from(securityDevices_entity_1.SecurityDevices)
+            .where("userId = :userId AND deviceId <> :deviceId", { userId, deviceId })
+            .execute();
         return true;
     }
     async deleteAllData() {
-        const deleted = await this.dataSource.query(`
-            delete from public."SecurityDevices";
-        `);
+        await this.secDevRepository
+            .createQueryBuilder()
+            .delete()
+            .from(securityDevices_entity_1.SecurityDevices)
+            .execute();
         return true;
     }
 };
@@ -116,6 +137,8 @@ exports.SecurityDevicesSqlRepository = SecurityDevicesSqlRepository;
 exports.SecurityDevicesSqlRepository = SecurityDevicesSqlRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(securityDevices_entity_1.SecurityDevices)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], SecurityDevicesSqlRepository);
 //# sourceMappingURL=securityDevicesSql.repository.js.map

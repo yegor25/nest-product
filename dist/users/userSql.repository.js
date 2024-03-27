@@ -20,65 +20,73 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const user_entity_1 = require("./entities/user.entity");
+const confirmationData_1 = require("./entities/confirmationData");
 let UserSqlRepository = class UserSqlRepository {
-    constructor(dataSource) {
-        this.dataSource = dataSource;
+    constructor(usersRepository) {
+        this.usersRepository = usersRepository;
     }
     async validate(loginOrEmail, pass) {
-        const user = await this.dataSource.query(`
-            select * from public."Users" u
-            where u."login" = $1 or u."email" = $1
-        `, [loginOrEmail]);
-        if (!user[0])
+        const user = await this.usersRepository
+            .createQueryBuilder("u")
+            .where("u.login = :loginOrEmail or u.email = :loginOrEmail", { loginOrEmail })
+            .getOne();
+        if (!user)
             return null;
-        const isMatchedPasswords = await bcrypt_1.default.compare(pass, user[0].passwordHash);
+        const isMatchedPasswords = await bcrypt_1.default.compare(pass, user.passwordHash);
         if (!isMatchedPasswords)
             return null;
-        return user[0];
+        return user;
     }
     async findById(id) {
-        const user = await this.dataSource.query(`
-            select * from public."Users" u
-            where u."id" = $1;
-        `, [id]);
-        if (!user[0])
+        const user = await this.usersRepository
+            .createQueryBuilder("u")
+            .where("u.id = :id", { id })
+            .getOne();
+        if (!user)
             return null;
-        return user[0];
+        return user;
     }
     async registerUser(dto) {
-        const user = await this.dataSource.query(`
-            insert into public."Users"
-            ("email","login","passwordSalt","passwordHash","isActiveAccount","createdAt")
-            values('${dto.email}','${dto.login}','${dto.passwordSalt}','${dto.hashPassword}','false','${new Date().toISOString()}')
-            returning "id","createdAt"
-        ;
-        `);
-        return user[0].id;
+        const user = await this.usersRepository
+            .createQueryBuilder("u")
+            .insert()
+            .into(user_entity_1.Users)
+            .values({
+            email: dto.email,
+            login: dto.login,
+            passwordSalt: dto.passwordSalt,
+            passwordHash: dto.hashPassword,
+            isActiveAccount: false,
+            createdAt: new Date().toISOString()
+        })
+            .returning(["id"])
+            .execute();
+        return user.raw[0].id;
     }
     async checkCodeConfirmation(code) {
-        const user = await this.dataSource.query(`
-                select c."userId",c."expirationDate",u."isActiveAccount"
-                from public."ConfirmationData" c
-                Left JOIN public."Users" u
-                ON c."userId" = u."id"
-                WHERE c."code" = $1;
-        `, [code]);
-        return user[0];
+        const user = await this.usersRepository
+            .createQueryBuilder("u")
+            .select(["u.isActiveAccount"])
+            .leftJoinAndSelect(confirmationData_1.ConfirmationData, "c")
+            .getOne();
+        if (!user)
+            return null;
+        return { userId: user.id, expirationDate: user.confirmationData.expirationDate, isActiveAccount: user.isActiveAccount };
     }
     async activateAccount(userId) {
-        const activeUser = await this.dataSource.query(`
-        update public."Users" as u
-        set "isActiveAccount" = 'true'
-        where u."id" = $1
-        returning *;
-        `, [userId]);
+        const activeUser = await this.usersRepository
+            .createQueryBuilder("u")
+            .update(user_entity_1.Users)
+            .set({ isActiveAccount: true })
+            .where("u.id = :id", { id: userId })
+            .execute();
         return activeUser[0];
     }
     async validateResendingUser(email) {
-        const user = await this.dataSource.query(`
-        select u."isActiveAccount",u."id" from public."Users" u
-        where u."email" = $1;
-        `, [email]);
+        const user = await this.usersRepository
+            .createQueryBuilder("u")
+            .select(["u.isActiveAccount,u.id"]);
         console.log("user", user);
         if (user[0] && !user[0].isActiveAccount)
             return user[0].id;
@@ -88,7 +96,7 @@ let UserSqlRepository = class UserSqlRepository {
 exports.UserSqlRepository = UserSqlRepository;
 exports.UserSqlRepository = UserSqlRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.Users)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UserSqlRepository);
 //# sourceMappingURL=userSql.repository.js.map

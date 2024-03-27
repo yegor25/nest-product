@@ -18,65 +18,79 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_schema_1 = require("../users/user.schema");
 const typeorm_2 = require("typeorm");
 const user_helper_1 = require("../users/user.helper");
+const user_entity_1 = require("../users/entities/user.entity");
 let SuperUserRepository = class SuperUserRepository {
-    constructor(dataSourse) {
+    constructor(dataSourse, userRepo) {
         this.dataSourse = dataSourse;
+        this.userRepo = userRepo;
     }
     async create(dto) {
-        const user = await this.dataSourse.query(`
-            insert into public."Users"
-            ("email","login","passwordSalt","passwordHash","isActiveAccount","createdAt")
-            values('${dto.email}','${dto.login}','${dto.passwordSalt}','${dto.hashPassword}','true','${new Date().toISOString()}')
-            returning "id","createdAt"
-        ;
-        `);
-        return { id: user[0].id, createdAt: user[0].createdAt };
+        const user = await this.userRepo
+            .createQueryBuilder()
+            .insert()
+            .into(user_entity_1.Users)
+            .values({
+            email: dto.email,
+            login: dto.login,
+            passwordHash: dto.hashPassword,
+            passwordSalt: dto.passwordSalt,
+            isActiveAccount: true,
+            createdAt: new Date().toISOString(),
+        })
+            .returning(["id", "createdAt"])
+            .execute();
+        const res = user.raw[0];
+        return { id: res.id, createdAt: res.createdAt };
     }
     async checkByEmail(email) {
-        const user = await this.dataSourse.query(`
-            SELECT * from public."Users" u
-            WHERE u."email" = '${email}';
-        `);
-        if (user[0])
+        const user = await this.userRepo
+            .createQueryBuilder()
+            .select()
+            .where("email = :email", { email })
+            .getOne();
+        if (user)
             return true;
         return false;
     }
     async checkByLogin(login) {
-        const user = await this.dataSourse.query(`
-            SELECT * from public."Users" u
-            WHERE u."login" = $1;
-        `, [login]);
-        if (user[0])
+        const user = await this.userRepo
+            .createQueryBuilder()
+            .select()
+            .where("login = :login", { login })
+            .getOne();
+        if (user)
             return true;
         return false;
     }
     async deleteAll() {
-        return this.dataSourse.query(`
-        Truncate public."Users" Cascade;
-        `);
+        await this.userRepo.createQueryBuilder().delete().from(user_entity_1.Users).execute();
+        return;
     }
     async findById(id) {
-        const user = await this.dataSourse.query(`
-            Select * from public."Users" u
-            WHERE u."id" = $1;
-        `, [id]);
-        return user[0];
+        const user = await this.userRepo.createQueryBuilder()
+            .select()
+            .where("id = :id", { id })
+            .getOne();
+        return user;
     }
     async deleteUser(id) {
-        const user = await this.dataSourse.query(`
-            Delete from public."Users" u
-            WHERE u."id" = $1;
-        `, [id]);
-        if (user[1] === 1)
+        const user = await this.userRepo.createQueryBuilder()
+            .delete()
+            .from(user_entity_1.Users)
+            .where("id = :id", { id })
+            .execute();
+        if (user.affected === 1)
             return true;
         return false;
     }
     async finddAll(params) {
         const parametres = user_helper_1.userHelper.usersParamsMapper(params);
         const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
-        const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : '';
-        const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : '';
-        const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.desc;
+        const loginTerm = params.searchLoginTerm ? params.searchLoginTerm : "";
+        const emailTerm = params.searchEmailTerm ? params.searchEmailTerm : "";
+        const sortDirection = params.sortDirection
+            ? params.sortDirection
+            : user_schema_1.SortDirection.desc;
         const queryTotalCountString = `
             select count(*)
             from public."Users" u
@@ -97,7 +111,7 @@ let SuperUserRepository = class SuperUserRepository {
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
             totalCount: +totalCount[0].count,
-            items: users
+            items: users,
         };
         return result;
     }
@@ -106,6 +120,8 @@ exports.SuperUserRepository = SuperUserRepository;
 exports.SuperUserRepository = SuperUserRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.Users)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], SuperUserRepository);
 //# sourceMappingURL=superUsers.repositoru.js.map

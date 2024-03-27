@@ -7,8 +7,8 @@ export declare class SuperUsersService {
     create(dto: CreateSuDtoType): Promise<ResponseUserDtoType>;
     checkEmail(email: string): Promise<boolean>;
     checkLogin(login: string): Promise<boolean>;
-    findById(id: string): Promise<any>;
+    findById(id: string): Promise<import("../users/entities/user.entity").Users | null>;
     deleteUser(id: string): Promise<boolean>;
-    deleteAll(): Promise<any>;
+    deleteAll(): Promise<void>;
     findAll(params: paramsUserPaginatorType): Promise<import("../users/user.schema").ResponseAllUserDto>;
 }

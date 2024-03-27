@@ -61,7 +61,9 @@ import { SuperUsersService } from './super-users/superUsers.service';
 import { SuValidatorEmail } from './super-users/validators/su.validate-email';
 import { SuValidatorLogin } from './super-users/validators/su.validate-login';
 import { CommentsSqlRepository } from './comments/commentsSql.repository';
-
+import {  Users } from './users/entities/user.entity';
+import { ConfirmationData } from './users/entities/confirmationData';
+import { SecurityDevices as SecDev } from './securityDevices/securityDevices.entity';
 
 @Module({
   imports: [
@@ -79,10 +81,12 @@ import { CommentsSqlRepository } from './comments/commentsSql.repository';
       ssl: true,
       username: "egorlesnicij86",
       password: "VBqk7GPv8LIh",
-      synchronize: false,
-      autoLoadEntities: false,
-      database: "neondb"
+      synchronize: true,
+      autoLoadEntities: true,
+      database: "neondb",
+      entities: [Users,ConfirmationData,SecDev]
     }),
+    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev]),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),
@@ -99,9 +103,8 @@ import { CommentsSqlRepository } from './comments/commentsSql.repository';
    
   ],
   
-  
   controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController],
-  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository, UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository],
+  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository,UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository],
 
 })
 export class AppModule implements NestModule{

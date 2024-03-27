@@ -70,6 +70,9 @@ const superUsers_service_1 = require("./super-users/superUsers.service");
 const su_validate_email_1 = require("./super-users/validators/su.validate-email");
 const su_validate_login_1 = require("./super-users/validators/su.validate-login");
 const commentsSql_repository_1 = require("./comments/commentsSql.repository");
+const user_entity_1 = require("./users/entities/user.entity");
+const confirmationData_1 = require("./users/entities/confirmationData");
+const securityDevices_entity_1 = require("./securityDevices/securityDevices.entity");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -93,10 +96,12 @@ exports.AppModule = AppModule = __decorate([
                 ssl: true,
                 username: "egorlesnicij86",
                 password: "VBqk7GPv8LIh",
-                synchronize: false,
-                autoLoadEntities: false,
-                database: "neondb"
+                synchronize: true,
+                autoLoadEntities: true,
+                database: "neondb",
+                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices]
             }),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices]),
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
