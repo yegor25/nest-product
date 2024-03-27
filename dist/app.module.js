@@ -87,7 +87,7 @@ exports.AppModule = AppModule = __decorate([
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 secret: constants_1.jwtConstants.secret,
-                signOptions: { expiresIn: "5m" }
+                signOptions: { expiresIn: "10s" }
             }),
             typeorm_1.TypeOrmModule.forRoot({
                 type: "postgres",

@@ -29,7 +29,7 @@ export class AuthService {
     }
     const data = {
       accessToken:  this.jwtService.sign(payload),
-      refreshToken: this.jwtService.sign({...payload, deviceId:deviceId}, {secret: jwtConstants.refreshSecret, expiresIn: "10m"})
+      refreshToken: this.jwtService.sign({...payload, deviceId:deviceId}, {secret: jwtConstants.refreshSecret, expiresIn: "20s"})
     }
     return data
   }
