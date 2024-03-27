@@ -61,8 +61,8 @@ export type PaginatorType = {
 };
 
 export enum SortDirection {
-  asc = 'asc',
-  desc = 'desc',
+  asc = 'ASC',
+  desc = 'DESC',
 }
 
 export class CreateUserDtoType  {

@@ -91,10 +91,11 @@ export class SuperUserRepository {
     //     `,
     //   [id]
     // );
-    const user = await this.userRepo.createQueryBuilder()
-    .select()
-    .where("id = :id",{id})
-    .getOne()
+    const user = await this.userRepo
+      .createQueryBuilder()
+      .select()
+      .where("id = :id", { id })
+      .getOne();
     return user;
   }
 
@@ -106,11 +107,12 @@ export class SuperUserRepository {
     //     `,
     //   [id]
     // );
-    const user = await this.userRepo.createQueryBuilder()
-    .delete()
-    .from(Users)
-    .where("id = :id",{id})
-    .execute()
+    const user = await this.userRepo
+      .createQueryBuilder()
+      .delete()
+      .from(Users)
+      .where("id = :id", { id })
+      .execute();
     if (user.affected === 1) return true;
     return false;
   }
@@ -136,15 +138,38 @@ export class SuperUserRepository {
             limit ${+parametres.pageSize} offset ${skipCount}
             ;
         `;
-    const totalCount = await this.dataSourse.query<{ count: string }[]>(
-      queryTotalCountString
-    );
-    const users = await this.dataSourse.query(queryUserString);
+    // const totalCount = await this.dataSourse.query<{ count: string }[]>(
+    //   queryTotalCountString
+    // );
+    // const users = await this.dataSourse.query(queryUserString);
+    const totalCount = await this.userRepo
+    .createQueryBuilder()
+    .where("login ilike :loginTerm OR email ilike :emailTerm", {
+        loginTerm: `%${loginTerm}%`,
+        emailTerm: `%${emailTerm}%`,
+      })
+      .getCount()
+    ;
+      console.log("total", totalCount)
+    const users = await this.userRepo
+      .createQueryBuilder("u")
+      .select(`"id","login","email",u."createdAt"`)
+      .where("login ilike :loginTerm OR email ilike :emailTerm", {
+        loginTerm: `%${loginTerm}%`,
+        emailTerm: `%${emailTerm}%`,
+      })
+      .orderBy(
+        `u.${parametres.sortBy}`,
+        `${sortDirection}`
+      )
+      .take(+parametres.pageSize)
+      .skip(skipCount)
+      .execute();
     const result: ResponseAllUserDto = {
-      pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+      pagesCount: Math.ceil(totalCount / +parametres.pageSize),
       page: +parametres.pageNumber,
       pageSize: +parametres.pageSize,
-      totalCount: +totalCount[0].count,
+      totalCount: totalCount,
       items: users,
     };
     return result;

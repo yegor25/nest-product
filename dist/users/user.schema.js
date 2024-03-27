@@ -72,8 +72,8 @@ exports.User = User = __decorate([
 ], User);
 var SortDirection;
 (function (SortDirection) {
-    SortDirection["asc"] = "asc";
-    SortDirection["desc"] = "desc";
+    SortDirection["asc"] = "ASC";
+    SortDirection["desc"] = "DESC";
 })(SortDirection || (exports.SortDirection = SortDirection = {}));
 class CreateUserDtoType {
 }
