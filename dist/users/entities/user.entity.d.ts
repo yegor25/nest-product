@@ -1,6 +1,7 @@
 import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
+import { Blog } from "../../blogs/blog.entity";
 export declare class Users {
     id: string;
     email: string;
@@ -12,4 +13,5 @@ export declare class Users {
     confirmationData: ConfirmationData;
     securityDevices: SecurityDevices[];
     tokens: Tokens[];
+    blogs: Blog[];
 }

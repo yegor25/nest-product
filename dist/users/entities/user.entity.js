@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const confirmationData_1 = require("./confirmationData");
 const securityDevices_entity_1 = require("../../securityDevices/securityDevices.entity");
 const token_entity_1 = require("../../tokens/token.entity");
+const blog_entity_1 = require("../../blogs/blog.entity");
 let Users = class Users {
 };
 exports.Users = Users;
@@ -58,6 +59,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => token_entity_1.Tokens, t => t.user),
     __metadata("design:type", Array)
 ], Users.prototype, "tokens", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => blog_entity_1.Blog, b => b.user),
+    __metadata("design:type", Array)
+], Users.prototype, "blogs", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)()
 ], Users);

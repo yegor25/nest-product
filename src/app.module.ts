@@ -65,6 +65,7 @@ import {  Users } from './users/entities/user.entity';
 import { ConfirmationData } from './users/entities/confirmationData';
 import { SecurityDevices as SecDev } from './securityDevices/securityDevices.entity';
 import {Tokens as Token} from "./tokens/token.entity"
+import {Blog as Blogs} from "./blogs/blog.entity"
 
 @Module({
   imports: [
@@ -85,9 +86,9 @@ import {Tokens as Token} from "./tokens/token.entity"
       synchronize: true,
       autoLoadEntities: true,
       database: "neondb",
-      entities: [Users,ConfirmationData,SecDev, Token]
+      entities: [Users,ConfirmationData,SecDev, Token, Blogs]
     }),
-    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token]),
+    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs]),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),

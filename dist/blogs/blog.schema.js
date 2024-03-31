@@ -69,8 +69,8 @@ __decorate([
 ], createdDtoBlogType.prototype, "websiteUrl", void 0);
 var SortDirection;
 (function (SortDirection) {
-    SortDirection["asc"] = "asc";
-    SortDirection["desc"] = "desc";
+    SortDirection["asc"] = "ASC";
+    SortDirection["desc"] = "DESC";
 })(SortDirection || (exports.SortDirection = SortDirection = {}));
 exports.BlogSchema = mongoose_1.SchemaFactory.createForClass(Blog);
 //# sourceMappingURL=blog.schema.js.map

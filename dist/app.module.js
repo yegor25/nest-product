@@ -74,6 +74,7 @@ const user_entity_1 = require("./users/entities/user.entity");
 const confirmationData_1 = require("./users/entities/confirmationData");
 const securityDevices_entity_1 = require("./securityDevices/securityDevices.entity");
 const token_entity_1 = require("./tokens/token.entity");
+const blog_entity_1 = require("./blogs/blog.entity");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -100,9 +101,9 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: true,
                 autoLoadEntities: true,
                 database: "neondb",
-                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens]
+                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog]
             }),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog]),
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },

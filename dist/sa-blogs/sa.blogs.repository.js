@@ -18,92 +18,100 @@ const typeorm_1 = require("@nestjs/typeorm");
 const blog_schema_1 = require("../blogs/blog.schema");
 const typeorm_2 = require("typeorm");
 const blog_helper_1 = require("../blogs/blog.helper");
+const blog_entity_1 = require("../blogs/blog.entity");
 let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
-    constructor(dataSource) {
+    constructor(dataSource, blogRepo) {
         this.dataSource = dataSource;
+        this.blogRepo = blogRepo;
     }
     async create(dto) {
         const { name, description, websiteUrl } = dto;
-        const newBlog = await this.dataSource.query(`
-            insert into public."Blogs"
-            ("name", "description","websiteUrl", "createdAt","isMembership")
-            values($1,$2,$3,'${new Date().toISOString()}','false')
-            returning *;
-        `, [name, description, websiteUrl]);
-        return newBlog[0];
+        const newBlog = await this.blogRepo
+            .createQueryBuilder()
+            .insert()
+            .into(blog_entity_1.Blog)
+            .values({
+            name,
+            description,
+            websiteUrl,
+            createdAt: new Date().toISOString(),
+            isMembership: false,
+        })
+            .returning(["*"])
+            .execute();
+        return newBlog.raw[0];
     }
     async findById(id) {
-        const blog = await this.dataSource.query(`
-            select b."id", b."name", b."description", b."websiteUrl", b."createdAt", b."isMembership" from public."Blogs" b
-            where b."id" = $1;
-        `, [id]);
-        if (!blog[0])
+        const blog = await this.blogRepo
+            .createQueryBuilder()
+            .select()
+            .where("id = :id", { id })
+            .getOne();
+        if (!blog)
             return null;
-        return blog[0];
+        return blog;
     }
     async findBlogs(params) {
         const parametres = blog_helper_1.blogHelper.blogParamsMapper(params);
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
         const term = params.searchNameTerm ? params.searchNameTerm : "";
-        console.log("term", term);
         const sortDirection = params.sortDirection
-            ? params.sortDirection
+            ? params.sortDirection.toUpperCase()
             : blog_schema_1.SortDirection.desc;
-        const blogQuery = `
-            select b."id", b."name", b."description", b."websiteUrl", b."createdAt", b."isMembership" from public."Blogs" b
-            where b."name"  ilike '%${term}%'
-            order by b."${parametres.sortBy}" ${sortDirection}
-            limit ${+parametres.pageSize} offset ${skipCount}
-            ;
-        `;
-        const totalCountQuery = `
-            select count(*)
-            from public."Blogs" b
-            where b."name"  ilike '%${term}%';
-        `;
-        const blogs = await this.dataSource.query(blogQuery);
-        const totalCount = await this.dataSource.query(totalCountQuery);
+        const blogs = await this.blogRepo
+            .createQueryBuilder("b")
+            .where("name ilike :term", { term: `%${term}%` })
+            .orderBy(`b.${parametres.sortBy}`, `${sortDirection}`)
+            .take(+parametres.pageSize)
+            .skip(skipCount)
+            .execute();
+        const totalCount = await this.blogRepo
+            .createQueryBuilder()
+            .createQueryBuilder()
+            .where("name ilike :term", { term: `%${term}%` })
+            .getCount();
         const res = {
-            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
-            totalCount: +totalCount[0].count,
+            totalCount: totalCount,
             items: blogs,
         };
         return res;
     }
     async changeBlog(id, dto) {
         const { name, websiteUrl, description } = dto;
-        const changing = await this.dataSource.query(`
-        update public."Blogs" u
-        set "name" = $2, "websiteUrl" = $3, "description" = $4
-        where u."id" = $1
-        returning *
-        ;
-        `, [id, name, websiteUrl, description]);
-        if (changing[0].length)
+        const changing = await this.blogRepo
+            .createQueryBuilder()
+            .update(blog_entity_1.Blog)
+            .set({ name, websiteUrl, description })
+            .where("id = :id", { id })
+            .execute();
+        if (changing.affected === 1)
             return true;
         return false;
     }
     async deleteBlogById(blogId) {
-        const deleted = await this.dataSource.query(`
-            Delete from public."Blogs" b
-            where b."id" = $1
-        `, [blogId]);
-        if (deleted[1] === 1)
+        const deleted = await this.blogRepo
+            .createQueryBuilder()
+            .delete()
+            .from(blog_entity_1.Blog)
+            .where("id = :id", { id: blogId })
+            .execute();
+        if (deleted.affected === 1)
             return true;
         return false;
     }
     async deleteAll() {
-        return this.dataSource.query(`
-    Truncate public."Blogs" Cascade;
-        `);
+        return this.blogRepo.createQueryBuilder().delete().from(blog_entity_1.Blog).execute();
     }
 };
 exports.SuperAdminBlogsRepository = SuperAdminBlogsRepository;
 exports.SuperAdminBlogsRepository = SuperAdminBlogsRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(blog_entity_1.Blog)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], SuperAdminBlogsRepository);
 //# sourceMappingURL=sa.blogs.repository.js.map

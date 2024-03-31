@@ -2,6 +2,7 @@ import { Column, Entity, Generated, JoinColumn, OneToMany, OneToOne, PrimaryColu
 import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
+import { Blog } from "../../blogs/blog.entity";
 
 
 @Entity()
@@ -35,6 +36,9 @@ export class Users {
 
     @OneToMany(() => Tokens, t => t.user)
     tokens: Tokens[]
+
+    @OneToMany(() => Blog, b => b.user)
+    blogs: Blog[]
 }
 
 
