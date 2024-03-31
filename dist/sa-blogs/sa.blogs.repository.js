@@ -37,8 +37,9 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
             createdAt: new Date().toISOString(),
             isMembership: false,
         })
-            .returning([`b."id",name,description,b."websiteUrl",b."createdAt",b."isMembership"`])
+            .returning(`id,name,description,"websiteUrl","isMembership"`)
             .execute();
+        console.log("new blog", newBlog);
         return newBlog.raw[0];
     }
     async findById(id) {
