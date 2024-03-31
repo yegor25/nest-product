@@ -63,13 +63,7 @@ export class SuperAdminBlogsRepository {
   async findBlogs(
     params: paramsBlogPaginatorType
   ): Promise<responseDtoSqlBlogType> {
-    const parametres = blogHelper.blogParamsMapper(params);
-    const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
-    const term = params.searchNameTerm ? params.searchNameTerm : "";
-    const sortDirection = params.sortDirection
-      ? params.sortDirection.toUpperCase()
-      : SortDirection.desc;
-    // const blogQuery = `
+     // const blogQuery = `
     //         select b."id", b."name", b."description", b."websiteUrl", b."createdAt", b."isMembership" from public."Blogs" b
     //         where b."name"  ilike '%${term}%'
     //         order by b."${parametres.sortBy}" ${sortDirection}
@@ -82,25 +76,34 @@ export class SuperAdminBlogsRepository {
     //         where b."name"  ilike '%${term}%';
     //     `;
     // const blogs = await this.dataSource.query<blogSqlDbType[]>(blogQuery);
+    // await this.dataSource.query<{ count: string }[]>(totalCountQuery);
+    const parametres = blogHelper.blogParamsMapper(params);
+    const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+    const term = params.searchNameTerm ? params.searchNameTerm : "";
+    const sortDirection = params.sortDirection
+      ? params.sortDirection.toUpperCase()
+      : SortDirection.desc;
+   
     const blogs = await this.blogRepo
       .createQueryBuilder("b")
-      .where("name ilike :term", { term: `%${term}%` })
+      .select(`b."id",name,b."websiteUrl",description,b."createdAt",b."isMembership"`)
+      .where("b.name ilike :term", { term: `%${term}%` })
       .orderBy(`b.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
       .skip(skipCount)
       .execute();
     const totalCount = await this.blogRepo
-      .createQueryBuilder()
-      .createQueryBuilder()
-      .where("name ilike :term", { term: `%${term}%` })
+      .createQueryBuilder("b")
+      .where("b.name ilike :term", { term: `%${term}%` })
       .getCount();
-    // await this.dataSource.query<{ count: string }[]>(totalCountQuery);
+    
     const res: responseDtoSqlBlogType = {
       pagesCount: Math.ceil(totalCount/ +parametres.pageSize),
       page: +parametres.pageNumber,
       pageSize: +parametres.pageSize,
       totalCount: totalCount,
       items: blogs,
+     
     };
     return res;
   }

@@ -60,15 +60,15 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
             : blog_schema_1.SortDirection.desc;
         const blogs = await this.blogRepo
             .createQueryBuilder("b")
-            .where("name ilike :term", { term: `%${term}%` })
+            .select(`b."id",name,b."websiteUrl",description,b."createdAt",b."isMembership"`)
+            .where("b.name ilike :term", { term: `%${term}%` })
             .orderBy(`b.${parametres.sortBy}`, `${sortDirection}`)
             .take(+parametres.pageSize)
             .skip(skipCount)
             .execute();
         const totalCount = await this.blogRepo
-            .createQueryBuilder()
-            .createQueryBuilder()
-            .where("name ilike :term", { term: `%${term}%` })
+            .createQueryBuilder("b")
+            .where("b.name ilike :term", { term: `%${term}%` })
             .getCount();
         const res = {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
