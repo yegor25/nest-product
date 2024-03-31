@@ -1,13 +1,19 @@
 import { Users } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-
-
-
+import {
+  Column,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export class Blog {
-@PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryColumn({ type: "uuid" })
+  @Generated("uuid")
+  id: string;
 
   @Column()
   name: string;
@@ -24,11 +30,11 @@ export class Blog {
   websiteUrl: string;
 
   @Column({
-    default: false
+    default: false,
   })
   isMembership: boolean;
 
-  @ManyToOne(() => Users, u => u.blogs)
+  @ManyToOne(() => Users, (u) => u.blogs)
   @JoinColumn()
-  user: Users
+  user: Users;
 }
