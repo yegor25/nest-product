@@ -86,7 +86,7 @@ export class SuperAdminBlogsRepository {
    
     const blogs = await this.blogRepo
       .createQueryBuilder("b")
-      .select(`b."id",name,b."websiteUrl",description,b."createdAt",b."isMembership"`)
+      .select(`b."id",name,description,b."websiteUrl",b."createdAt",b."isMembership"`)
       .where("b.name ilike :term", { term: `%${term}%` })
       .orderBy(`b.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
