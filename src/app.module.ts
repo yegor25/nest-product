@@ -72,7 +72,7 @@ import {Blog as Blogs} from "./blogs/blog.entity"
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: "10s"}
+      signOptions: {expiresIn: "5m"}
     }),
     
     // MongooseModule.forRoot('mongodb://localhost/nest'),
