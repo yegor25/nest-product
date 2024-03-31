@@ -40,7 +40,7 @@ export class SuperAdminBlogsRepository {
         createdAt: new Date().toISOString(),
         isMembership: false,
       })
-      .returning(`id,name,description,"websiteUrl","isMembership"`)
+      .returning(`id,name,description,"websiteUrl","isMembership","createdAt"`)
       .execute();
       console.log("new blog", newBlog)
     return newBlog.raw[0];
