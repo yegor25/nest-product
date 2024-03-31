@@ -27,7 +27,7 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
     async create(dto) {
         const { name, description, websiteUrl } = dto;
         const newBlog = await this.blogRepo
-            .createQueryBuilder()
+            .createQueryBuilder("b")
             .insert()
             .into(blog_entity_1.Blog)
             .values({
@@ -37,7 +37,7 @@ let SuperAdminBlogsRepository = class SuperAdminBlogsRepository {
             createdAt: new Date().toISOString(),
             isMembership: false,
         })
-            .returning(["*"])
+            .returning([`b."id",name,description,b."websiteUrl",b."createdAt",b."isMembership"`])
             .execute();
         return newBlog.raw[0];
     }

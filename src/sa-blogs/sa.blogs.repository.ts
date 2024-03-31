@@ -30,7 +30,7 @@ export class SuperAdminBlogsRepository {
     //   [name, description, websiteUrl]
     // );
     const newBlog = await this.blogRepo
-      .createQueryBuilder()
+      .createQueryBuilder("b")
       .insert()
       .into(Blog)
       .values({
@@ -40,7 +40,7 @@ export class SuperAdminBlogsRepository {
         createdAt: new Date().toISOString(),
         isMembership: false,
       })
-      .returning(["*"])
+      .returning([`b."id",name,description,b."websiteUrl",b."createdAt",b."isMembership"`])
       .execute();
     return newBlog.raw[0];
   }
