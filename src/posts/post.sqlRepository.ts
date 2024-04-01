@@ -129,7 +129,7 @@ export class PostSqlRepository {
     const posts: Post[] = await this.postRepo
       .createQueryBuilder("p")
       .select()
-      .where("blogId = :blogId", { blogId })
+      .where(`p.blogId = :blogId`, { blogId })
       .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
       .skip(skipCount)
@@ -144,9 +144,9 @@ export class PostSqlRepository {
     //   blogId,
     // ]);
     const totalCount = await this.postRepo
-      .createQueryBuilder()
+      .createQueryBuilder("p")
       .select()
-      .where("blogId = :blogId", { blogId })
+      .where("p.blogId = :blogId", { blogId })
       .getCount();
     return {
       items: posts.map((el) => ({
@@ -395,16 +395,16 @@ export class PostSqlRepository {
     const posts: Post[] = await this.postRepo
       .createQueryBuilder("p")
       .select()
-      .where("blogId = :blogId", { blogId })
-      .orderBy(`${parametres.sortBy}`, `${sortDirection as SortDirection}`)
+      .where("p.blogId = :blogId", { blogId })
+      .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
       .skip(skipCount)
       .execute();
 
     const totalCount = await this.postRepo
-      .createQueryBuilder()
+      .createQueryBuilder("p")
       .select()
-      .where("blogId = :blogId", { blogId })
+      .where("p.blogId = :blogId", { blogId })
       .getCount();
     return {
       pagesCount: Math.ceil(totalCount / +parametres.pageSize),
