@@ -148,8 +148,8 @@ let PostSqlRepository = class PostSqlRepository {
             : user_schema_1.SortDirection.desc;
         const posts = await this.postRepo
             .createQueryBuilder("p")
-            .select()
-            .orderBy(`b.${parametres.sortBy}`, `${sortDirection}`)
+            .select(`p.*`)
+            .orderBy(`p.${parametres.sortBy}`, `${sortDirection}`)
             .take(+parametres.pageSize)
             .skip(skipCount)
             .execute();

@@ -313,8 +313,8 @@ export class PostSqlRepository {
     // `);
     const posts: Post[] = await this.postRepo
       .createQueryBuilder("p")
-      .select()
-      .orderBy(`b.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
+      .select(`p.*`)
+      .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
       .skip(skipCount)
       .execute();
