@@ -394,7 +394,7 @@ export class PostSqlRepository {
     // );
     const posts: Post[] = await this.postRepo
       .createQueryBuilder("p")
-      .select()
+      .select(`p.*`)
       .where("p.blogId = :blogId", { blogId })
       .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
