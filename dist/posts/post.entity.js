@@ -9,52 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Blog = void 0;
-const post_entity_1 = require("../posts/post.entity");
-const user_entity_1 = require("../users/entities/user.entity");
+exports.Post = void 0;
+const blog_entity_1 = require("../blogs/blog.entity");
 const typeorm_1 = require("typeorm");
-let Blog = class Blog {
+let Post = class Post {
 };
-exports.Blog = Blog;
+exports.Post = Post;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ type: "uuid" }),
+    (0, typeorm_1.PrimaryColumn)(),
     (0, typeorm_1.Generated)("uuid"),
     __metadata("design:type", String)
-], Blog.prototype, "id", void 0);
+], Post.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Blog.prototype, "name", void 0);
+], Post.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Blog.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.Column)({
-        default: new Date().toISOString(),
-    }),
-    __metadata("design:type", String)
-], Blog.prototype, "createdAt", void 0);
+], Post.prototype, "shortDescription", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Blog.prototype, "websiteUrl", void 0);
+], Post.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
-        default: false,
-    }),
-    __metadata("design:type", Boolean)
-], Blog.prototype, "isMembership", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Post.prototype, "blogName", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, (u) => u.blogs),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Post.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Post.prototype, "blogId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, b => b.posts),
     (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", user_entity_1.Users)
-], Blog.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => post_entity_1.Post, p => p.blog),
-    __metadata("design:type", Array)
-], Blog.prototype, "posts", void 0);
-exports.Blog = Blog = __decorate([
+    __metadata("design:type", blog_entity_1.Blog)
+], Post.prototype, "blog", void 0);
+exports.Post = Post = __decorate([
     (0, typeorm_1.Entity)()
-], Blog);
-//# sourceMappingURL=blog.entity.js.map
+], Post);
+//# sourceMappingURL=post.entity.js.map

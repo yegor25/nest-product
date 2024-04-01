@@ -19,140 +19,124 @@ const typeorm_2 = require("typeorm");
 const postHelper_1 = require("./postHelper");
 const user_schema_1 = require("../users/user.schema");
 const like_schema_1 = require("../postLikes/like.schema");
+const post_entity_1 = require("./post.entity");
 let PostSqlRepository = class PostSqlRepository {
-    constructor(dataSource) {
+    constructor(dataSource, postRepo) {
         this.dataSource = dataSource;
+        this.postRepo = postRepo;
     }
     async createForBlog(dto, blogId, blogName) {
         const { title, shortDescription, content } = dto;
-        const newPost = await this.dataSource.query(`
-            insert into public."Posts"
-            ("title","shortDescription","content","blogId","blogName","createdAt")
-            values($1,$2,$3,$4,$5,'${new Date().toISOString()}')
-            returning * ;
-        `, [title, shortDescription, content, blogId, blogName]);
-        console.log("new", newPost);
-        return newPost[0];
+        const newPost = await this.postRepo
+            .createQueryBuilder()
+            .insert()
+            .into(post_entity_1.Post)
+            .values({
+            title,
+            shortDescription,
+            content,
+            blogId,
+            blogName,
+            createdAt: new Date().toISOString(),
+        })
+            .returning("*")
+            .execute();
+        return newPost.raw[0];
     }
     async create(dto, blogName) {
         const { title, content, shortDescription, blogId } = dto;
-        const newPost = await this.dataSource.query(`
-            insert into public."Posts"
-            ("title","shortDescription","content","blogId","blogName","createdAt")
-            values($1,$2,$3,$4,$5,'${new Date().toISOString()}')
-            returning * ;
-        `, [title, shortDescription, content, blogId, blogName]);
-        return newPost;
+        const newPost = await this.postRepo
+            .createQueryBuilder()
+            .insert()
+            .into(post_entity_1.Post)
+            .values({
+            title,
+            shortDescription,
+            content,
+            blogId,
+            blogName,
+            createdAt: new Date().toISOString(),
+        })
+            .returning("*")
+            .execute();
+        return newPost.raw[0];
     }
     async findPostsForBlog(params, blogId, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const sortDirection = params.sortDirection
-            ? params.sortDirection
+            ? params.sortDirection.toUpperCase()
             : user_schema_1.SortDirection.desc;
         const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
-        const query = `
-        select p.* ,
-        (
-            select count(*) as "likesCount"
-            from public."PostLikes" l
-            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-        ),
-        (
-            select count(*) as "dislikesCount"
-            from public."PostLikes" l
-            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
-        ),
-       (
-        select l."status" 
-        from public."PostLikes" l
-        where l."postId" = p."id" and l."userId"::text = $2
-       ) as "myStatus",
-        array(
-        select row_to_json(row) from (
-        select l."addedAt", l."userId", l."login"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-        order by l."addedAt" desc
-        limit 3 offset 0
-        )  as row ) as "newestLikes"
-        from public."Posts" p
-        where p."blogId" = $1;
-        order by p."${parametres.sortBy}" ${sortDirection}
-        limit ${+parametres.pageSize} offset ${skipCount}
-        `;
-        const totalCountQuery = `
-       select count(*)
-       from public."Posts" p
-       where p."blogId" = $1 
-    `;
-        const totalCount = await this.dataSource.query(totalCountQuery, [blogId]);
-        const posts = await this.dataSource.query(query, [
-            blogId,
-        ]);
+        const posts = await this.postRepo
+            .createQueryBuilder("p")
+            .select()
+            .where("blogId = :blogId", { blogId })
+            .orderBy(`p.${parametres.sortBy}`, `${sortDirection}`)
+            .take(+parametres.pageSize)
+            .skip(skipCount)
+            .execute();
+        const totalCount = await this.postRepo
+            .createQueryBuilder()
+            .select()
+            .where("blogId = :blogId", { blogId })
+            .getCount();
         return {
-            items: posts,
+            items: posts.map((el) => ({
+                ...el,
+                extendedLikesInfo: {
+                    likesCount: 0,
+                    dislikesCount: 0,
+                    myStatus: like_schema_1.LikeStatus.None,
+                    newestLikes: [],
+                },
+            })),
             totalCount,
-            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: +parametres.pageSize,
         };
     }
     async findById(postId, userId) {
         const myId = userId ? userId : "";
-        const post = await this.dataSource.query(`
-    select * ,
-       
-        (
-            select count(*) as "likesCount"
-            from public."PostLikes" l
-            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-        ),
-        (
-            select count(*) as "dislikesCount"
-            from public."PostLikes" l
-            where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
-        ),
-       (
-        select l."status" 
-        from public."PostLikes" l
-        where l."postId" = $1 and l."userId"::text = $2
-       ) as "myStatus",
-       
-        array(
-        select row_to_json(row) from (
-        select l."addedAt", l."userId", l."login"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-        order by l."addedAt" desc
-        limit 3 offset 0
-        )  as row ) as "newestLikes"
-        from public."Posts" p
-        where p."id" = $1
-        ; 
-    `, [postId, myId]);
-        if (post[0])
-            return post[0];
+        const post = await this.postRepo
+            .createQueryBuilder()
+            .select()
+            .where("id = :id", { id: postId })
+            .getOne();
+        if (post)
+            return {
+                ...post,
+                likesCount: "0",
+                dislikesCount: "0",
+                myStatus: like_schema_1.LikeStatus.None,
+                newestLikes: [],
+            };
         return null;
     }
     async changeByBlogId(blogId, postId, dto) {
         const { shortDescription, title, content } = dto;
-        const changing = await this.dataSource.query(`
-        update public."Posts" p
-        set "shortDescription" = $1, "title" = $2, "content" = $3
-        where p."id" = $4 and p."blogId" = $5
-        returning *
-        ; 
-    `, [shortDescription, title, content, postId, blogId]);
-        if (changing[0].length)
+        const changing = await this.postRepo
+            .createQueryBuilder()
+            .update(post_entity_1.Post)
+            .set({
+            shortDescription,
+            title,
+            content,
+        })
+            .where("id = :id AND blogId = :blogId", { id: postId, blogId })
+            .execute();
+        if (changing.affected === 1)
             return true;
         return false;
     }
     async deleteByBlogId(postId, blogId) {
-        const deleted = await this.dataSource.query(`
-    Delete from public."Posts" p
-    where p."id" = $1 and p."blogId" = $2
-    `, [postId, blogId]);
-        if (deleted[1] === 1)
+        const deleted = await this.postRepo
+            .createQueryBuilder()
+            .delete()
+            .from(post_entity_1.Post)
+            .where("id = :id AND blogId = :blogId", { id: postId, blogId })
+            .execute();
+        if (deleted.affected === 1)
             return true;
         return false;
     }
@@ -160,109 +144,64 @@ let PostSqlRepository = class PostSqlRepository {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
         const sortDirection = params.sortDirection
-            ? params.sortDirection
+            ? params.sortDirection.toUpperCase()
             : user_schema_1.SortDirection.desc;
-        const query = `
-    select p.* ,
-
-    (
-        select count(*) as "likesCount"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-    ),
-    (
-        select count(*) as "dislikesCount"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
-    ),
-   (
-    select l."status" 
-    from public."PostLikes" l
-    where l."userId"::text = $1  and l."postId" = p."id"
-   ) as "myStatus",
-   
-    array(
-    select row_to_json(row) from (
-    select l."addedAt", l."userId", l."login"
-    from public."PostLikes" l
-    where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-    order by l."addedAt" desc
-    limit 3 offset 0
-    )  as row ) as "newestLikes"
-    from public."Posts" p
-    order by p."${parametres.sortBy}" ${sortDirection}
-    limit ${+parametres.pageSize} offset ${skipCount}
-    `;
-        const posts = await this.dataSource.query(query, [
-            userId,
-        ]);
-        const totalCount = await this.dataSource.query(`
-        select count(*)
-        from public."Posts";
-    `);
-        console.log("totta", totalCount);
+        const posts = await this.postRepo
+            .createQueryBuilder("p")
+            .select()
+            .orderBy(`b.${parametres.sortBy}`, `${sortDirection}`)
+            .take(+parametres.pageSize)
+            .skip(skipCount)
+            .execute();
+        const totalCount = await this.postRepo
+            .createQueryBuilder()
+            .select()
+            .getCount();
         return {
-            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: parametres.pageSize,
-            totalCount: +totalCount[0].count,
-            items: posts,
+            totalCount: totalCount,
+            items: posts.map((el) => ({
+                ...el,
+                likesCount: "0",
+                dislikesCount: "0",
+                myStatus: like_schema_1.LikeStatus.None,
+                newestLikes: [],
+            })),
         };
     }
     async findPostsForBlogId(params, blogId, userId) {
         const parametres = postHelper_1.postHelper.postParamsMapper(params);
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
         const sortDirection = params.sortDirection
-            ? params.sortDirection
+            ? params.sortDirection.toUpperCase()
             : user_schema_1.SortDirection.desc;
-        const query = `
-    select p.*,
-
-    (
-        select count(*) as "likesCount"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-    ),
-    (
-        select count(*) as "dislikesCount"
-        from public."PostLikes" l
-        where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Dislike}'
-    ),
-   (
-    select l."status" 
-    from public."PostLikes" l
-    where l."userId"::text = $1  and l."postId" = p."id"
-   ) as "myStatus",
-   
-    array(
-    select row_to_json(row) from (
-    select l."addedAt", l."userId", l."login"
-    from public."PostLikes" l
-    where p."id" = l."postId" and l."status" = '${like_schema_1.LikeStatus.Like}'
-    order by l."addedAt" desc
-    limit 3 offset 0
-    )  as row ) as "newestLikes"
-    from public."Posts" p
-    where p."blogId" = $2
-    order by p."${parametres.sortBy}" ${sortDirection}
-    limit ${+parametres.pageSize} offset ${skipCount}
-    `;
-        const posts = await this.dataSource.query(query, [
-            userId,
-            blogId,
-        ]);
-        const totalCount = await this.dataSource.query(`
-        select count(*)
-        from public."Posts" p
-        where p."blogId" = $1
-    `, [blogId]);
-        console.log("totta", totalCount);
+        const posts = await this.postRepo
+            .createQueryBuilder("p")
+            .select()
+            .where("blogId = :blogId", { blogId })
+            .orderBy(`${parametres.sortBy}`, `${sortDirection}`)
+            .take(+parametres.pageSize)
+            .skip(skipCount)
+            .execute();
+        const totalCount = await this.postRepo
+            .createQueryBuilder()
+            .select()
+            .where("blogId = :blogId", { blogId })
+            .getCount();
         return {
-            pagesCount: Math.ceil(+totalCount[0].count / +parametres.pageSize),
+            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
             pageSize: parametres.pageSize,
-            totalCount: +totalCount[0].count,
-            items: posts,
+            totalCount: totalCount,
+            items: posts.map((el) => ({
+                ...el,
+                likesCount: "0",
+                dislikesCount: "0",
+                myStatus: like_schema_1.LikeStatus.None,
+                newestLikes: [],
+            })),
         };
     }
 };
@@ -270,6 +209,8 @@ exports.PostSqlRepository = PostSqlRepository;
 exports.PostSqlRepository = PostSqlRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(post_entity_1.Post)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], PostSqlRepository);
 //# sourceMappingURL=post.sqlRepository.js.map

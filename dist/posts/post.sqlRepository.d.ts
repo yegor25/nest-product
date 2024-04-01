@@ -1,8 +1,10 @@
-import { DataSource } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { allPostSqlViewType, createdPosForBlogtDtoType, createdPostDtoType, paramsPostPaginatorType, postSqlDbType, postSqlQueryType, updatedPostDtoType, viewAllPostsType } from "./post.schema";
+import { Post } from "./post.entity";
 export declare class PostSqlRepository {
     protected dataSource: DataSource;
-    constructor(dataSource: DataSource);
+    protected postRepo: Repository<Post>;
+    constructor(dataSource: DataSource, postRepo: Repository<Post>);
     createForBlog(dto: createdPosForBlogtDtoType, blogId: string, blogName: string): Promise<postSqlDbType>;
     create(dto: createdPostDtoType, blogName: string): Promise<postSqlDbType>;
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType>;

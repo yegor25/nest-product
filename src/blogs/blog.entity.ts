@@ -1,10 +1,12 @@
-import { Users } from "src/users/entities/user.entity";
+import { Post } from "../posts/post.entity";
+import { Users } from "../users/entities/user.entity";
 import {
   Column,
   Entity,
   Generated,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -37,4 +39,7 @@ export class Blog {
   @ManyToOne(() => Users, (u) => u.blogs)
   @JoinColumn()
   user: Users;
+
+  @OneToMany(() => Post, p => p.blog)
+  posts: Post[]
 }
