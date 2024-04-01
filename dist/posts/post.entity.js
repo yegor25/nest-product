@@ -45,7 +45,7 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "blogId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, b => b.posts),
+    (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, b => b.posts, { onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", blog_entity_1.Blog)
 ], Post.prototype, "blog", void 0);

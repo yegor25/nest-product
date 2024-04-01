@@ -46,7 +46,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Blog.prototype, "isMembership", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, (u) => u.blogs),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, (u) => u.blogs, { onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", user_entity_1.Users)
 ], Blog.prototype, "user", void 0);

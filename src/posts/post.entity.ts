@@ -26,7 +26,7 @@ export class Post {
     @Column()
     blogId: string
 
-    @ManyToOne(() => Blog, b => b.posts)
+    @ManyToOne(() => Blog, b => b.posts, {onDelete:"CASCADE"})
     @JoinColumn()
     blog: Blog
 }
