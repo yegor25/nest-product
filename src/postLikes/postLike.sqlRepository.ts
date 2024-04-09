@@ -61,6 +61,7 @@ export class PostLikeSqlRepository {
       .select()
       .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
       .getOne();
+     
     if (reaction) return true;
     return false;
   }
@@ -81,7 +82,7 @@ export class PostLikeSqlRepository {
     return this.plRepo.createQueryBuilder("p")
     .update(PostLikes)
     .set({status: likeStatus, addedAt: new Date().toISOString()})
-    .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
+    .where("postId = :postId AND p.userId = :userId", { postId, userId })
     .execute()
   }
 }
