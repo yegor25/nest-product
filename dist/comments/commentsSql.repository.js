@@ -132,14 +132,13 @@ let CommentsSqlRepository = class CommentsSqlRepository {
     `)
             .where("c.postId = :postId", { postId })
             .orderBy(`c.${parametres.sortBy}`, `${sortDirection}`)
-            .take(+parametres.pageSize)
-            .skip(skipCount)
+            .offset(skipCount)
+            .limit(+parametres.pageSize)
             .execute();
         const totalCount = await this.commentRepo
             .createQueryBuilder("c")
             .where("c.postId = :postId", { postId })
             .getCount();
-        console.log("commentss", comments);
         return {
             pagesCount: Math.ceil(totalCount / +parametres.pageSize),
             page: +parametres.pageNumber,
