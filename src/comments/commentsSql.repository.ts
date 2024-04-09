@@ -330,4 +330,7 @@ export class CommentsSqlRepository {
       })
       .execute();
   }
+  async deleteAll(){
+    return this.commentRepo.createQueryBuilder().delete().from(Comments).execute
+  }
 }

@@ -16,17 +16,20 @@ const post_repository_1 = require("../posts/post.repository");
 const superUsers_service_1 = require("../super-users/superUsers.service");
 const user_repository_1 = require("../users/user.repository");
 const sa_blogs_service_1 = require("../sa-blogs/sa.blogs.service");
+const commentsSql_repository_1 = require("../comments/commentsSql.repository");
 let TestingService = class TestingService {
-    constructor(userRepository, blogRepository, postRepository, suService, saBlogsService) {
+    constructor(userRepository, blogRepository, postRepository, suService, saBlogsService, commentRepo) {
         this.userRepository = userRepository;
         this.blogRepository = blogRepository;
         this.postRepository = postRepository;
         this.suService = suService;
         this.saBlogsService = saBlogsService;
+        this.commentRepo = commentRepo;
     }
     async deleteAllData() {
         await this.suService.deleteAll();
         await this.saBlogsService.deleteAll();
+        await this.commentRepo.deleteAll();
         return;
     }
 };
@@ -37,6 +40,7 @@ exports.TestingService = TestingService = __decorate([
         blogs_repository_1.BlogRepository,
         post_repository_1.PostRepository,
         superUsers_service_1.SuperUsersService,
-        sa_blogs_service_1.SuperAdminBlogService])
+        sa_blogs_service_1.SuperAdminBlogService,
+        commentsSql_repository_1.CommentsSqlRepository])
 ], TestingService);
 //# sourceMappingURL=testing.service.js.map

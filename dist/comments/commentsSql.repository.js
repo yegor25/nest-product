@@ -187,6 +187,9 @@ let CommentsSqlRepository = class CommentsSqlRepository {
         })
             .execute();
     }
+    async deleteAll() {
+        return this.commentRepo.createQueryBuilder().delete().from(comment_entity_1.Comments).execute;
+    }
 };
 exports.CommentsSqlRepository = CommentsSqlRepository;
 exports.CommentsSqlRepository = CommentsSqlRepository = __decorate([

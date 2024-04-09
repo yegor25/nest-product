@@ -16,4 +16,5 @@ export declare class CommentsSqlRepository {
     changeExistLikeStatus(likesStatus: LikeStatus, userId: string, commentId: string): Promise<boolean>;
     checkExistReaction(userId: string, commentId: string): Promise<boolean>;
     changeLikeStatus(userId: string, commentId: string, status: LikeStatus): Promise<import("typeorm").InsertResult>;
+    deleteAll(): Promise<() => Promise<import("typeorm").DeleteResult>>;
 }
