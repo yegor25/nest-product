@@ -53,11 +53,13 @@ let PostLikeSqlRepository = class PostLikeSqlRepository {
         return false;
     }
     async changeExistReaction(userId, postId, likeStatus) {
-        return this.plRepo.createQueryBuilder("p")
+        const newReaction = await this.plRepo.createQueryBuilder()
             .update(postLike_entity_1.PostLikes)
             .set({ status: likeStatus, addedAt: new Date().toISOString() })
-            .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
+            .where("postId = :postId AND userId = :userId", { postId, userId })
             .execute();
+        console.log("newwe", newReaction);
+        return newReaction;
     }
 };
 exports.PostLikeSqlRepository = PostLikeSqlRepository;
