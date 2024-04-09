@@ -244,7 +244,7 @@ export class CommentsSqlRepository {
     .orderBy(`c.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
     .take(+parametres.pageSize)
     .skip(skipCount)
-    .getRawMany()
+    .execute()
     
     const totalCount = await this.commentRepo
       .createQueryBuilder("c")

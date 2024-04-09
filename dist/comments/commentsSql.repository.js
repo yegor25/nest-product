@@ -134,7 +134,7 @@ let CommentsSqlRepository = class CommentsSqlRepository {
             .orderBy(`c.${parametres.sortBy}`, `${sortDirection}`)
             .take(+parametres.pageSize)
             .skip(skipCount)
-            .getRawMany();
+            .execute();
         const totalCount = await this.commentRepo
             .createQueryBuilder("c")
             .where("c.postId = :postId", { postId })
