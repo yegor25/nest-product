@@ -274,10 +274,10 @@ export class CommentsSqlRepository {
     //   [likesStatus, userId, commentId]
     // );
     const modified = await this.clRepo
-      .createQueryBuilder("c")
+      .createQueryBuilder()
       .update(CommentLikes)
       .set({ status: likesStatus })
-      .where("c.userId = :userId AND c.commentId = :commentId", {
+      .where("userId = :userId AND commentId = :commentId", {
         userId,
         commentId,
       })
