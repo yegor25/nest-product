@@ -297,9 +297,9 @@ export class CommentsSqlRepository {
     //   [userId, commentId]
     // );
     const reaction = await this.clRepo
-      .createQueryBuilder()
+      .createQueryBuilder("c")
       .select()
-      .where("userId = :userId AND commentId = :commentId", {
+      .where("c.userId = :userId AND c.commentId = :commentId", {
         userId,
         commentId,
       })
