@@ -4,6 +4,7 @@ import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
 import { Blog } from "../../blogs/blog.entity";
 import { Comments } from "../../comments/comment.entity";
+import { PostLikes } from "../../postLikes/postLike.entity";
 
 
 @Entity()
@@ -43,6 +44,9 @@ export class Users {
 
     @OneToMany(() => Comments, c => c.user)
     comments: Comments[]
+
+    @OneToMany(() => PostLikes, pl => pl.user)
+    postLikes: PostLikes[]
 }
 
 

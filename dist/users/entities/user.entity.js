@@ -16,6 +16,7 @@ const securityDevices_entity_1 = require("../../securityDevices/securityDevices.
 const token_entity_1 = require("../../tokens/token.entity");
 const blog_entity_1 = require("../../blogs/blog.entity");
 const comment_entity_1 = require("../../comments/comment.entity");
+const postLike_entity_1 = require("../../postLikes/postLike.entity");
 let Users = class Users {
 };
 exports.Users = Users;
@@ -68,6 +69,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.user),
     __metadata("design:type", Array)
 ], Users.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => postLike_entity_1.PostLikes, pl => pl.user),
+    __metadata("design:type", Array)
+], Users.prototype, "postLikes", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)()
 ], Users);

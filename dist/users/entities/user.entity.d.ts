@@ -3,6 +3,7 @@ import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
 import { Blog } from "../../blogs/blog.entity";
 import { Comments } from "../../comments/comment.entity";
+import { PostLikes } from "../../postLikes/postLike.entity";
 export declare class Users {
     id: string;
     email: string;
@@ -16,4 +17,5 @@ export declare class Users {
     tokens: Tokens[];
     blogs: Blog[];
     comments: Comments[];
+    postLikes: PostLikes[];
 }
