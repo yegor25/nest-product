@@ -149,10 +149,10 @@ let CommentsSqlRepository = class CommentsSqlRepository {
     }
     async changeExistLikeStatus(likesStatus, userId, commentId) {
         const modified = await this.clRepo
-            .createQueryBuilder()
+            .createQueryBuilder("c")
             .update(commentLike_entity_1.CommentLikes)
             .set({ status: likesStatus })
-            .where("userId = :userId AND commentId = :commentId", {
+            .where("c.userId = :userId AND c.commentId = :commentId", {
             userId,
             commentId,
         })
