@@ -42,7 +42,7 @@ export class Users {
     @OneToMany(() => Blog, b => b.user)
     blogs: Blog[]
 
-    @OneToMany(() => Comments, c => c.user)
+    @OneToMany(() => Comments, c => c.user, {onDelete: "RESTRICT"})
     comments: Comments[]
 
     @OneToMany(() => PostLikes, pl => pl.user)

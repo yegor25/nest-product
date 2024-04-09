@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], Comments.prototype, "postId", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ onUpdate: "CASCADE" }),
     __metadata("design:type", String)
 ], Comments.prototype, "userId", void 0);
 __decorate([
@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:type", post_entity_1.Post)
 ], Comments.prototype, "post", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, (u) => u.comments),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, (u) => u.comments, { onDelete: "CASCADE", onUpdate: "CASCADE" }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", user_entity_1.Users)
 ], Comments.prototype, "user", void 0);

@@ -28,7 +28,7 @@ export class Comments {
   @Column()
   postId: string;
 
-  @Column()
+  @Column({onUpdate: "CASCADE"})
   userId: string;
 
   @OneToMany(() => CommentLikes, (cl) => cl.comment)
@@ -38,7 +38,7 @@ export class Comments {
   @JoinColumn()
   post: Post;
 
-  @ManyToOne(() => Users, (u) => u.comments)
+  @ManyToOne(() => Users, (u) => u.comments, {onDelete: "CASCADE",onUpdate: "CASCADE"})
   @JoinColumn()
   user: Users;
 }
