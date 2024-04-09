@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Users.prototype, "blogs", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.user, { onDelete: "RESTRICT" }),
+    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.user),
     __metadata("design:type", Array)
 ], Users.prototype, "comments", void 0);
 __decorate([
