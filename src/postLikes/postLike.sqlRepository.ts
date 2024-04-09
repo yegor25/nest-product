@@ -82,7 +82,7 @@ export class PostLikeSqlRepository {
     return this.plRepo.createQueryBuilder("p")
     .update(PostLikes)
     .set({status: likeStatus, addedAt: new Date().toISOString()})
-    .where("postId = :postId AND p.userId = :userId", { postId, userId })
+    .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
     .execute()
   }
 }

@@ -56,7 +56,7 @@ let PostLikeSqlRepository = class PostLikeSqlRepository {
         return this.plRepo.createQueryBuilder("p")
             .update(postLike_entity_1.PostLikes)
             .set({ status: likeStatus, addedAt: new Date().toISOString() })
-            .where("postId = :postId AND p.userId = :userId", { postId, userId })
+            .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
             .execute();
     }
 };
