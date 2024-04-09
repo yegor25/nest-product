@@ -15,6 +15,7 @@ const confirmationData_1 = require("./confirmationData");
 const securityDevices_entity_1 = require("../../securityDevices/securityDevices.entity");
 const token_entity_1 = require("../../tokens/token.entity");
 const blog_entity_1 = require("../../blogs/blog.entity");
+const comment_entity_1 = require("../../comments/comment.entity");
 let Users = class Users {
 };
 exports.Users = Users;
@@ -63,6 +64,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => blog_entity_1.Blog, b => b.user),
     __metadata("design:type", Array)
 ], Users.prototype, "blogs", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.user),
+    __metadata("design:type", Array)
+], Users.prototype, "comments", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)()
 ], Users);

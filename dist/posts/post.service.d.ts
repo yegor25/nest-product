@@ -19,7 +19,7 @@ export declare class PostService {
     findPostById(id: string, userId?: string): Promise<postDtoResponseType | null>;
     findPosts(params: paramsPostPaginatorType, userId?: string): Promise<viewAllPostsType>;
     findPostsForBlog(params: paramsPostPaginatorType, blogId: string, userId?: string): Promise<viewAllPostsType | null>;
-    changeLikeStatus(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<any>;
+    changeLikeStatus(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<import("typeorm").InsertResult | import("typeorm").UpdateResult>;
     changeByBlogId(blogId: string, postId: string, dto: updatedPostDtoType): Promise<boolean>;
     deleteByBlogId(postId: string, blogId: string): Promise<boolean>;
     deleteAll(): Promise<any>;

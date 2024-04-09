@@ -33,5 +33,5 @@ export declare class PostController {
             userId: string;
             login: string;
         };
-    }): Promise<any>;
+    }): Promise<import("typeorm").InsertResult | import("typeorm").UpdateResult>;
 }

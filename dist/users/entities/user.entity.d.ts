@@ -2,6 +2,7 @@ import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
 import { Blog } from "../../blogs/blog.entity";
+import { Comments } from "../../comments/comment.entity";
 export declare class Users {
     id: string;
     email: string;
@@ -14,4 +15,5 @@ export declare class Users {
     securityDevices: SecurityDevices[];
     tokens: Tokens[];
     blogs: Blog[];
+    comments: Comments[];
 }

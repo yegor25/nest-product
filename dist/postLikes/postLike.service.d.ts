@@ -31,9 +31,9 @@ export declare class PostLikeService {
     protected postLikeSqlRepository: PostLikeSqlRepository;
     constructor(postLikeRepository: PostLikeRepository, postLikeSqlRepository: PostLikeSqlRepository);
     checkReaction(userId: string, postId: string): Promise<boolean>;
-    changeExistReaction(userId: string, postId: string, likeStatus: LikeStatus): Promise<any>;
-    addNewReaction(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<void>;
-    getByPostId(postId: string): Promise<any>;
+    changeExistReaction(userId: string, postId: string, likeStatus: LikeStatus): Promise<import("typeorm").UpdateResult>;
+    addNewReaction(userId: string, postId: string, likeStatus: LikeStatus, login: string): Promise<import("typeorm").InsertResult>;
+    getByPostId(postId: string): Promise<import("./postLike.entity").PostLikes | null>;
     getAll(): Promise<(import("mongoose").Document<unknown, {}, import("./like.schema").LikesPost> & import("./like.schema").LikesPost & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>)[]>;

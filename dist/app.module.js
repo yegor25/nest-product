@@ -76,6 +76,9 @@ const securityDevices_entity_1 = require("./securityDevices/securityDevices.enti
 const token_entity_1 = require("./tokens/token.entity");
 const blog_entity_1 = require("./blogs/blog.entity");
 const post_entity_1 = require("./posts/post.entity");
+const comment_entity_1 = require("./comments/comment.entity");
+const commentLike_entity_1 = require("./commentsLikes/commentLike.entity");
+const postLike_entity_1 = require("./postLikes/postLike.entity");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -99,12 +102,12 @@ exports.AppModule = AppModule = __decorate([
                 ssl: true,
                 username: "egorlesnicij86",
                 password: "VBqk7GPv8LIh",
-                synchronize: true,
+                synchronize: false,
                 autoLoadEntities: true,
                 database: "neondb",
-                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post]
+                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes]
             }),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes]),
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },

@@ -16,45 +16,56 @@ exports.PostLikeSqlRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const postLike_entity_1 = require("./postLike.entity");
 let PostLikeSqlRepository = class PostLikeSqlRepository {
-    constructor(dataSource) {
+    constructor(dataSource, plRepo) {
         this.dataSource = dataSource;
+        this.plRepo = plRepo;
     }
     async create(userId, postId, likeStatus, login) {
-        const newReaction = await this.dataSource.query(`
-            insert into public."PostLikes"
-            ("userId","postId","login","status","addedAt")
-            values($1,$2,$3,$4,'${new Date().toISOString()}');
-        `, [userId, postId, login, likeStatus]);
-        return;
+        return this.plRepo
+            .createQueryBuilder()
+            .insert()
+            .values({
+            userId,
+            postId,
+            login,
+            status: likeStatus,
+            addedAt: new Date().toISOString(),
+        })
+            .execute();
     }
     async getByPostId(postId) {
-        return this.dataSource.query(`
-        select * from public."PostLikes" p
-        where p."postId" = $1;
-    `, [postId]);
+        return this.plRepo
+            .createQueryBuilder()
+            .select()
+            .where("postId = :postId", { postId })
+            .getOne();
     }
     async checkReaction(userId, postId) {
-        const reaction = await this.dataSource.query(`
-        select * from public."PostLikes" p 
-        where p."userId" = $1 AND p."postId" = $2;
-    `, [userId, postId]);
-        if (reaction[0])
+        const reaction = await this.plRepo
+            .createQueryBuilder("p")
+            .select()
+            .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
+            .getOne();
+        if (reaction)
             return true;
         return false;
     }
     async changeExistReaction(userId, postId, likeStatus) {
-        return this.dataSource.query(`
-        update public."PostLikes" p
-        set "status" = $1, "addedAt" = '${new Date().toISOString()}'
-        where p."postId" = $2 AND p."userId" = $3;
-    `, [likeStatus, postId, userId]);
+        return this.plRepo.createQueryBuilder("p")
+            .update(postLike_entity_1.PostLikes)
+            .set({ status: likeStatus, addedAt: new Date().toISOString() })
+            .where("p.postId = :postId AND p.userId = :userId", { postId, userId })
+            .execute();
     }
 };
 exports.PostLikeSqlRepository = PostLikeSqlRepository;
 exports.PostLikeSqlRepository = PostLikeSqlRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectDataSource)()),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __param(1, (0, typeorm_1.InjectRepository)(postLike_entity_1.PostLikes)),
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
+        typeorm_2.Repository])
 ], PostLikeSqlRepository);
 //# sourceMappingURL=postLike.sqlRepository.js.map

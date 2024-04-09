@@ -126,9 +126,40 @@ export class PostSqlRepository {
     //     order by p."${parametres.sortBy}" ${sortDirection}
     //     limit ${+parametres.pageSize} offset ${skipCount}
     //     `;
-    const posts: Post[] = await this.postRepo
+    const posts = await this.postRepo
       .createQueryBuilder("p")
-      .select()
+      .select("p.*")
+      .addSelect(
+        `(
+          select count(*) as "likesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        )`
+      )
+      .addSelect(
+        `(
+          select count(*) as "dislikesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        )`
+      )
+      .addSelect(`(
+        select l."status" as "myStatus"
+            from public."PostLikes" l
+             where l."postId" = p."id" and l."userId"::text = '${userId}'
+      )`)
+      .addSelect(
+        `(
+          array(
+                select row_to_json(row) from (
+                 select l."addedAt", l."userId", l."login"
+                 from public."PostLikes" l
+                 where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+                 order by l."addedAt" desc
+                 limit 3 offset 0
+                 )  as row ) as "newestLikes"
+        )`
+      )
       .where(`p.blogId = :blogId`, { blogId })
       .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
@@ -149,15 +180,7 @@ export class PostSqlRepository {
       .where("p.blogId = :blogId", { blogId })
       .getCount();
     return {
-      items: posts.map((el) => ({
-        ...el,
-        extendedLikesInfo: {
-          likesCount: 0,
-          dislikesCount: 0,
-          myStatus: LikeStatus.None,
-          newestLikes: [],
-        },
-      })),
+      items: posts,
       totalCount,
       pagesCount: Math.ceil(totalCount / +parametres.pageSize),
       page: +parametres.pageNumber,
@@ -204,18 +227,50 @@ export class PostSqlRepository {
     //   [postId, myId]
     // );
     const post = await this.postRepo
-      .createQueryBuilder()
-      .select()
-      .where("id = :id", { id: postId })
-      .getOne();
-    if (post)
-      return {
-        ...post,
-        likesCount: "0",
-        dislikesCount: "0",
-        myStatus: LikeStatus.None,
-        newestLikes: [],
-      };
+      .createQueryBuilder("p")
+      .select([
+        "p.id as id",
+        "p.title as title",
+        `p.shortDescription as "shortDescription"`,
+        `p.content as content`,
+        `p.blogName as "blogName"`,
+        `p.createdAt as "createdAt"`,
+        `p.blogId as "blogId"`
+      ])
+      .addSelect(
+        `(
+          select count(*) as "likesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        )`
+      )
+      .addSelect(
+        `(
+          select count(*) as "dislikesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        )`
+      )
+      .addSelect(`(
+        select l."status" as "myStatus"
+            from public."PostLikes" l
+             where l."postId" = p."id" and l."userId"::text = '${myId}'
+      )`)
+      .addSelect(
+        `(
+          array(
+                select row_to_json(row) from (
+                 select l."addedAt", l."userId", l."login"
+                 from public."PostLikes" l
+                 where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+                 order by l."addedAt" desc
+                 limit 3 offset 0
+                 )  as row ) 
+        ) as "newestLikes"`
+      )
+      .where("p.id = :id", { id: postId })
+      .getRawOne();
+    if (post) return post
     return null;
   }
   async changeByBlogId(
@@ -311,9 +366,48 @@ export class PostSqlRepository {
     //     select count(*)
     //     from public."Posts";
     // `);
-    const posts: Post[] = await this.postRepo
+    const posts = await this.postRepo
       .createQueryBuilder("p")
-      .select(`p.*`)
+      .select([
+        "p.id as id",
+        "p.title as title",
+        `p.shortDescription as "shortDescription"`,
+        `p.content as content`,
+        `p.blogName as "blogName"`,
+        `p.createdAt as "createdAt"`,
+        `p.blogId as "blogId"`
+      ])
+      .addSelect(
+        `(
+          select count(*) as "likesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        )`
+      )
+      .addSelect(
+        `(
+          select count(*) as "dislikesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        )`
+      )
+      .addSelect(`(
+        select l."status" as "myStatus"
+            from public."PostLikes" l
+             where l."postId" = p."id" and l."userId"::text = '${userId}'
+      )`)
+      .addSelect(
+        `(
+          array(
+                select row_to_json(row) from (
+                 select l."addedAt", l."userId", l."login"
+                 from public."PostLikes" l
+                 where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+                 order by l."addedAt" desc
+                 limit 3 offset 0
+                 )  as row ) 
+        ) as "newestLikes"`
+      )
       .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
       .skip(skipCount)
@@ -328,13 +422,7 @@ export class PostSqlRepository {
       page: +parametres.pageNumber,
       pageSize: parametres.pageSize,
       totalCount: totalCount,
-      items: posts.map((el) => ({
-        ...el,
-        likesCount: "0",
-        dislikesCount: "0",
-        myStatus: LikeStatus.None,
-        newestLikes: [],
-      })),
+      items: posts
     };
   }
   async findPostsForBlogId(
@@ -392,9 +480,48 @@ export class PostSqlRepository {
     // `,
     //   [blogId]
     // );
-    const posts: Post[] = await this.postRepo
+    const posts = await this.postRepo
       .createQueryBuilder("p")
-      .select(`p.*`)
+      .select([
+        "p.id as id",
+        "p.title as title",
+        `p.shortDescription as "shortDescription"`,
+        `p.content as content`,
+        `p.blogName as "blogName"`,
+        `p.createdAt as "createdAt"`,
+        `p.blogId as "blogId"`
+      ])
+      .addSelect(
+        `(
+          select count(*) as "likesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+        )`
+      )
+      .addSelect(
+        `(
+          select count(*) as "dislikesCount"
+            from public."PostLikes" l
+             where p."id" = l."postId" and l."status" = '${LikeStatus.Dislike}'
+        )`
+      )
+      .addSelect(`(
+        select l."status" as "myStatus"
+            from public."PostLikes" l
+             where l."postId" = p."id" and l."userId"::text = '${userId}'
+      )`)
+      .addSelect(
+        `(
+          array(
+                select row_to_json(row) from (
+                 select l."addedAt", l."userId", l."login"
+                 from public."PostLikes" l
+                 where p."id" = l."postId" and l."status" = '${LikeStatus.Like}'
+                 order by l."addedAt" desc
+                 limit 3 offset 0
+                 )  as row ) 
+        ) as "newestLikes"`
+      )
       .where("p.blogId = :blogId", { blogId })
       .orderBy(`p.${parametres.sortBy}`, `${sortDirection as SortDirection}`)
       .take(+parametres.pageSize)
@@ -411,13 +538,7 @@ export class PostSqlRepository {
       page: +parametres.pageNumber,
       pageSize: parametres.pageSize,
       totalCount: totalCount,
-      items: posts.map((el) => ({
-        ...el,
-        likesCount: "0",
-        dislikesCount: "0",
-        myStatus: LikeStatus.None,
-        newestLikes: [],
-      })),
+      items: posts
     };
   }
 }

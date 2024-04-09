@@ -10,8 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Post = void 0;
+const comment_entity_1 = require("../comments/comment.entity");
 const blog_entity_1 = require("../blogs/blog.entity");
 const typeorm_1 = require("typeorm");
+const postLike_entity_1 = require("../postLikes/postLike.entity");
 let Post = class Post {
 };
 exports.Post = Post;
@@ -45,11 +47,19 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "blogId", void 0);
 __decorate([
+    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.post),
+    __metadata("design:type", Array)
+], Post.prototype, "comments", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, b => b.posts, { onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", blog_entity_1.Blog)
 ], Post.prototype, "blog", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => postLike_entity_1.PostLikes, pl => pl.post),
+    __metadata("design:type", Array)
+], Post.prototype, "postLikes", void 0);
 exports.Post = Post = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: "posts" })
 ], Post);
 //# sourceMappingURL=post.entity.js.map

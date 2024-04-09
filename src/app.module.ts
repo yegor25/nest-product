@@ -67,6 +67,9 @@ import { SecurityDevices as SecDev } from './securityDevices/securityDevices.ent
 import {Tokens as Token} from "./tokens/token.entity"
 import {Blog as Blogs} from "./blogs/blog.entity"
 import {Post as Posts} from "./posts/post.entity"
+import {Comments as Comment} from "./comments/comment.entity"
+import { CommentLikes } from './commentsLikes/commentLike.entity';
+import { PostLikes } from './postLikes/postLike.entity';
 
 @Module({
   imports: [
@@ -84,12 +87,12 @@ import {Post as Posts} from "./posts/post.entity"
       ssl: true,
       username: "egorlesnicij86",
       password: "VBqk7GPv8LIh",
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
       database: "neondb",
-      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts]
+      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes]
     }),
-    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts]),
+    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes]),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),

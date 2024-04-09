@@ -3,6 +3,7 @@ import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
 import { Blog } from "../../blogs/blog.entity";
+import { Comments } from "../../comments/comment.entity";
 
 
 @Entity()
@@ -39,6 +40,9 @@ export class Users {
 
     @OneToMany(() => Blog, b => b.user)
     blogs: Blog[]
+
+    @OneToMany(() => Comments, c => c.user)
+    comments: Comments[]
 }
 
 
