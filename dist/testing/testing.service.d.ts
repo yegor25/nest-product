@@ -4,6 +4,7 @@ import { SuperUsersService } from "../super-users/superUsers.service";
 import { UserRepository } from "../users/user.repository";
 import { SuperAdminBlogService } from "../sa-blogs/sa.blogs.service";
 import { CommentsSqlRepository } from "../comments/commentsSql.repository";
+import { QuizRepository } from "src/quiz/repositories/quiz.repository";
 export declare class TestingService {
     protected userRepository: UserRepository;
     protected blogRepository: BlogRepository;
@@ -11,6 +12,7 @@ export declare class TestingService {
     protected suService: SuperUsersService;
     protected saBlogsService: SuperAdminBlogService;
     protected commentRepo: CommentsSqlRepository;
-    constructor(userRepository: UserRepository, blogRepository: BlogRepository, postRepository: PostRepository, suService: SuperUsersService, saBlogsService: SuperAdminBlogService, commentRepo: CommentsSqlRepository);
+    protected quizRepo: QuizRepository;
+    constructor(userRepository: UserRepository, blogRepository: BlogRepository, postRepository: PostRepository, suService: SuperUsersService, saBlogsService: SuperAdminBlogService, commentRepo: CommentsSqlRepository, quizRepo: QuizRepository);
     deleteAllData(): Promise<void>;
 }

@@ -14,4 +14,5 @@ export declare class QuizRepository {
         totalCount: number;
         items: Questions[];
     }>;
+    deleteAll(): Promise<void>;
 }

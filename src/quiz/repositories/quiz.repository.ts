@@ -81,4 +81,8 @@ export class QuizRepository {
     
 
   }
+  async deleteAll (){
+    await this.questionRepo.createQueryBuilder().delete().from(Questions).execute()
+    return
+  }
 }

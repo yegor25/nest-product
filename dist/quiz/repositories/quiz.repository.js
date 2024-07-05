@@ -85,6 +85,10 @@ let QuizRepository = class QuizRepository {
             items: questions
         };
     }
+    async deleteAll() {
+        await this.questionRepo.createQueryBuilder().delete().from(quiz_entity_1.Questions).execute();
+        return;
+    }
 };
 exports.QuizRepository = QuizRepository;
 exports.QuizRepository = QuizRepository = __decorate([
