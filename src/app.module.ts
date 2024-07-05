@@ -70,6 +70,10 @@ import {Post as Posts} from "./posts/post.entity"
 import {Comments as Comment} from "./comments/comment.entity"
 import { CommentLikes } from './commentsLikes/commentLike.entity';
 import { PostLikes } from './postLikes/postLike.entity';
+import { Questions } from './quiz/quiz.entity';
+import { SuperAdminQuizController } from './quiz/quiz.controller';
+import { QuizService } from './quiz/quiz.service';
+import { QuizRepository } from './quiz/repositories/quiz.repository';
 
 @Module({
   imports: [
@@ -90,9 +94,9 @@ import { PostLikes } from './postLikes/postLike.entity';
       synchronize: false,
       autoLoadEntities: true,
       database: "neondb",
-      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes]
+      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions]
     }),
-    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes]),
+    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions]),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),
@@ -109,8 +113,8 @@ import { PostLikes } from './postLikes/postLike.entity';
    
   ],
   
-  controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController],
-  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository,UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository],
+  controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController, SuperAdminQuizController],
+  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository,UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository, QuizService, QuizRepository],
 
 })
 export class AppModule implements NestModule{

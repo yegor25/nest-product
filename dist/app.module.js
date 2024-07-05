@@ -79,6 +79,10 @@ const post_entity_1 = require("./posts/post.entity");
 const comment_entity_1 = require("./comments/comment.entity");
 const commentLike_entity_1 = require("./commentsLikes/commentLike.entity");
 const postLike_entity_1 = require("./postLikes/postLike.entity");
+const quiz_entity_1 = require("./quiz/quiz.entity");
+const quiz_controller_1 = require("./quiz/quiz.controller");
+const quiz_service_1 = require("./quiz/quiz.service");
+const quiz_repository_1 = require("./quiz/repositories/quiz.repository");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(check_guess_middleware_1.CheckGuess).forRoutes('posts', 'blogs', 'comments'),
@@ -105,9 +109,9 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: false,
                 autoLoadEntities: true,
                 database: "neondb",
-                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes]
+                entities: [user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes, quiz_entity_1.Questions]
             }),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.Users, confirmationData_1.ConfirmationData, securityDevices_entity_1.SecurityDevices, token_entity_1.Tokens, blog_entity_1.Blog, post_entity_1.Post, comment_entity_1.Comments, commentLike_entity_1.CommentLikes, postLike_entity_1.PostLikes, quiz_entity_1.Questions]),
             mongoose_1.MongooseModule.forRoot('mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
@@ -120,8 +124,8 @@ exports.AppModule = AppModule = __decorate([
                 { name: requestUserInfo_schema_1.UserRequestInfo.name, schema: requestUserInfo_schema_1.UserRequestInfoSchema }
             ]),
         ],
-        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, user_controller_1.UserController, blogs_controller_1.BlogController, post_controller_1.PostController, comments_controller_1.CommentController, sa_blogs_controller_1.SuperAdminBlogsController, securityDevices_controller_1.SecurityDevicesController, superUsers_controller_1.SuperUserController, user_controller_1.UserController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService, testing_service_1.TestingService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, post_validate_1.PostValidator, blogs_repository_1.BlogRepository, blog_service_1.BlogService, post_service_1.PostService, post_service_1.PostService, post_sqlRepository_1.PostSqlRepository, post_repository_1.PostRepository, blog_service_1.BlogService, postLike_service_1.PostLikeService, comments_repository_1.CommentsRepository, comments_service_1.CommentService, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, postLike_sqlRepository_1.PostLikeSqlRepository, requestUserInfoService_1.RequestUserInfoService, requestUserInfo_repository_1.RequestUserInfoRepository, sa_blogs_service_1.SuperAdminBlogService, sa_blogs_repository_1.SuperAdminBlogsRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, securityDevicesSql_repository_1.SecurityDevicesSqlRepository, superUsers_service_1.SuperUsersService, superUsers_repositoru_1.SuperUserRepository, su_validate_email_1.SuValidatorEmail, su_validate_login_1.SuValidatorLogin, token_service_1.TokenService, tokenSql_repository_1.TokenSqlRepository, token_repository_1.TokenRepository, user_service_1.UserService, user_repository_1.UserRepository, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, auth_service_1.AuthService, commentsSql_repository_1.CommentsSqlRepository],
+        controllers: [app_controller_1.AppController, testing_controller_1.TestingController, user_controller_1.UserController, blogs_controller_1.BlogController, post_controller_1.PostController, comments_controller_1.CommentController, sa_blogs_controller_1.SuperAdminBlogsController, securityDevices_controller_1.SecurityDevicesController, superUsers_controller_1.SuperUserController, user_controller_1.UserController, auth_controller_1.AuthController, quiz_controller_1.SuperAdminQuizController],
+        providers: [app_service_1.AppService, testing_service_1.TestingService, local_srategy_1.LocalStrategy, auth_basic_strategy_1.BasicStrategy, jwt_strategy_1.JwtStrategy, post_validate_1.PostValidator, blogs_repository_1.BlogRepository, blog_service_1.BlogService, post_service_1.PostService, post_service_1.PostService, post_sqlRepository_1.PostSqlRepository, post_repository_1.PostRepository, blog_service_1.BlogService, postLike_service_1.PostLikeService, comments_repository_1.CommentsRepository, comments_service_1.CommentService, postLike_repository_1.PostLikeRepository, postLike_service_1.PostLikeService, postLike_sqlRepository_1.PostLikeSqlRepository, requestUserInfoService_1.RequestUserInfoService, requestUserInfo_repository_1.RequestUserInfoRepository, sa_blogs_service_1.SuperAdminBlogService, sa_blogs_repository_1.SuperAdminBlogsRepository, securityDevices_repository_1.SecurityDevicesRepository, securityDevices_service_1.SecurityDevicesService, securityDevicesSql_repository_1.SecurityDevicesSqlRepository, superUsers_service_1.SuperUsersService, superUsers_repositoru_1.SuperUserRepository, su_validate_email_1.SuValidatorEmail, su_validate_login_1.SuValidatorLogin, token_service_1.TokenService, tokenSql_repository_1.TokenSqlRepository, token_repository_1.TokenRepository, user_service_1.UserService, user_repository_1.UserRepository, userSql_repository_1.UserSqlRepository, dataConfirmation_repository_1.DataConfirmationRepository, auth_service_1.AuthService, commentsSql_repository_1.CommentsSqlRepository, quiz_service_1.QuizService, quiz_repository_1.QuizRepository],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
