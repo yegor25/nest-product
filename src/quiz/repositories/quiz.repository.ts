@@ -63,14 +63,13 @@ export class QuizRepository {
     const sortBy = params.sortBy ? params.sortBy : "createdAt"
 
     const questions = await this.questionRepo.createQueryBuilder("q")
-
-    .select()
-    .where(`q.body ilike :term`, {term})
+    .where(`q.body ilike :term`, {term: `%${term}%`})
     .orderBy(`q.${sortBy}`,`${sortDirection as SortDirection}`)
     .take(pageSize)
     .skip(skipCount)
     .getMany()
     
+    console.log("1uu",questions)
     const totalCount = await this.questionRepo.createQueryBuilder("q")
     .where(`q.body ilike :term`, {term})
     .getCount()
