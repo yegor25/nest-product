@@ -64,7 +64,7 @@ export class QuizRepository {
 
     const questions = await this.questionRepo.createQueryBuilder("q")
     .where(`q.body ilike :term`, {term: `%${term}%`})
-    .orderBy(`q.${sortBy}`,`${sortDirection as SortDirection}`)
+    .orderBy(`q.${sortBy}`,`${sortDirection.toString().toUpperCase() as SortDirection}`)
     .take(pageSize)
     .skip(skipCount)
     .getMany()
@@ -74,7 +74,6 @@ export class QuizRepository {
     .where(`q.body ilike :term`, {term: `%${term}%`})
     .getCount()
     
-    console.log("total",totalCount)
     return {
         pagesCount: Math.ceil(totalCount/ pageSize),
         page: pageNumber,
