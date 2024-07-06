@@ -11,9 +11,15 @@ export declare class SuperAdminQuizController {
         items: import("./quiz.entity").Questions[];
     }>;
     create(body: CreatedQuestions): Promise<any>;
-    update(id: string, body: CreatedQuestions): Promise<void>;
-    updatePublish(id: string, body: {
+    update(param: {
+        id: string;
+    }, body: CreatedQuestions): Promise<void>;
+    updatePublish(param: {
+        id: string;
+    }, body: {
         published: boolean;
     }): Promise<void>;
-    deleteQuestion(id: string): Promise<void>;
+    deleteQuestion(param: {
+        id: string;
+    }): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { QuizService } from "./quiz.service";
 import { BasicAuthGuard } from "../auth/guards/basic-auth.guard";
 import { CreatedQuestions, paramsQuestionsPaginatorType } from "./quiz.entity";
@@ -24,8 +24,8 @@ export class SuperAdminQuizController {
     @UseGuards(BasicAuthGuard)
     @Put("quiz/questions/:id")
     @HttpCode(204)
-    async update(@Param() id: string, @Body() body: CreatedQuestions){
-        const mod = await this.quizService.updateQuestion(id,body)
+    async update(@Param() param: {id: string} , @Body() body: CreatedQuestions){
+        const mod = await this.quizService.updateQuestion(param.id,body)
         if(!mod){
             throw new NotFoundException()
         }
@@ -35,8 +35,11 @@ export class SuperAdminQuizController {
     @UseGuards(BasicAuthGuard)
     @Put("quiz/questions/:id/publish")
     @HttpCode(204)
-    async updatePublish(@Param() id: string, @Body() body: {published: boolean}){
-        const mod = await this.quizService.updatePublis(id, body.published)
+    async updatePublish(@Param() param: {id: string} , @Body() body: {published: boolean}){
+        if(typeof body.published ! == "boolean"){
+            throw new BadRequestException()
+        }
+        const mod = await this.quizService.updatePublis(param.id, body.published)
         if(!mod){
             throw new NotFoundException()
         }
@@ -46,8 +49,8 @@ export class SuperAdminQuizController {
     @UseGuards(BasicAuthGuard)
     @Delete("quiz/questions/:id")
     @HttpCode(204)
-    async deleteQuestion(@Param() id: string){
-        const del = await this.quizService.deleteQuestion(id)
+    async deleteQuestion(@Param() param: {id:string} ){
+        const del = await this.quizService.deleteQuestion(param.id)
         if(!del){
             throw new NotFoundException()
         }

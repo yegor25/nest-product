@@ -32,6 +32,7 @@ let QuizRepository = class QuizRepository {
         return newQuestion.raw[0];
     }
     async delete(id) {
+        console.log("id", id);
         const deleted = await this.questionRepo.createQueryBuilder()
             .delete()
             .from(quiz_entity_1.Questions)

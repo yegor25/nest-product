@@ -27,22 +27,25 @@ let SuperAdminQuizController = class SuperAdminQuizController {
     async create(body) {
         return this.quizService.create(body);
     }
-    async update(id, body) {
-        const mod = await this.quizService.updateQuestion(id, body);
+    async update(param, body) {
+        const mod = await this.quizService.updateQuestion(param.id, body);
         if (!mod) {
             throw new common_1.NotFoundException();
         }
         return;
     }
-    async updatePublish(id, body) {
-        const mod = await this.quizService.updatePublis(id, body.published);
+    async updatePublish(param, body) {
+        if (typeof body.published == "boolean") {
+            throw new common_1.BadRequestException();
+        }
+        const mod = await this.quizService.updatePublis(param.id, body.published);
         if (!mod) {
             throw new common_1.NotFoundException();
         }
         return;
     }
-    async deleteQuestion(id) {
-        const del = await this.quizService.deleteQuestion(id);
+    async deleteQuestion(param) {
+        const del = await this.quizService.deleteQuestion(param.id);
         if (!del) {
             throw new common_1.NotFoundException();
         }
@@ -73,7 +76,7 @@ __decorate([
     __param(0, (0, common_1.Param)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, quiz_entity_1.CreatedQuestions]),
+    __metadata("design:paramtypes", [Object, quiz_entity_1.CreatedQuestions]),
     __metadata("design:returntype", Promise)
 ], SuperAdminQuizController.prototype, "update", null);
 __decorate([
@@ -83,7 +86,7 @@ __decorate([
     __param(0, (0, common_1.Param)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SuperAdminQuizController.prototype, "updatePublish", null);
 __decorate([
@@ -92,7 +95,7 @@ __decorate([
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SuperAdminQuizController.prototype, "deleteQuestion", null);
 exports.SuperAdminQuizController = SuperAdminQuizController = __decorate([
