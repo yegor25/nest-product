@@ -55,8 +55,8 @@ export class QuizRepository {
   }
 
   async findAllQuestions(params: paramsQuestionsPaginatorType){
-    const pageNumber = params.pageNumber ? + +params.pageNumber : 1
-    const pageSize = params.pageSize ? + params.pageSize : 10
+    const pageNumber = params.pageNumber ? +params.pageNumber : 1
+    const pageSize = params.pageSize ? +params.pageSize : 10
 
     const skipCount = (pageNumber - 1) * pageSize;
     const sortDirection = params.sortDirection ? params.sortDirection : SortDirection.desc
@@ -70,15 +70,15 @@ export class QuizRepository {
     .skip(skipCount)
     .getMany()
     
-    // const totalCount = await this.questionRepo.createQueryBuilder("q")
-    // .where(`q.body ilike :term`, {term: `%${term}%`})
-    // .getCount()
+    const totalCount = await this.questionRepo.createQueryBuilder("q")
+    .where(`q.body ilike :term`, {term: `%${term}%`})
+    .getCount()
 
     return {
-        pagesCount: Math.ceil(3/ pageSize),
+        pagesCount: Math.ceil(totalCount/ pageSize),
         page: pageNumber,
         pageSize: pageSize,
-        totalCount: 3,
+        totalCount: totalCount,
         items: questions
     }
 

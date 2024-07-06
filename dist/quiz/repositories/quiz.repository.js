@@ -64,7 +64,7 @@ let QuizRepository = class QuizRepository {
         return false;
     }
     async findAllQuestions(params) {
-        const pageNumber = params.pageNumber ? + +params.pageNumber : 1;
+        const pageNumber = params.pageNumber ? +params.pageNumber : 1;
         const pageSize = params.pageSize ? +params.pageSize : 10;
         const skipCount = (pageNumber - 1) * pageSize;
         const sortDirection = params.sortDirection ? params.sortDirection : user_schema_1.SortDirection.desc;
@@ -76,11 +76,14 @@ let QuizRepository = class QuizRepository {
             .take(pageSize)
             .skip(skipCount)
             .getMany();
+        const totalCount = await this.questionRepo.createQueryBuilder("q")
+            .where(`q.body ilike :term`, { term: `%${term}%` })
+            .getCount();
         return {
-            pagesCount: Math.ceil(3 / pageSize),
+            pagesCount: Math.ceil(totalCount / pageSize),
             page: pageNumber,
             pageSize: pageSize,
-            totalCount: 3,
+            totalCount: totalCount,
             items: questions
         };
     }
