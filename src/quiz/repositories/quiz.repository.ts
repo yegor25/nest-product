@@ -23,7 +23,6 @@ export class QuizRepository {
   }
 
   async delete(id: string):Promise<boolean>{
-    console.log("id",id)
     const deleted  = await this.questionRepo.createQueryBuilder()
     .delete()
     .from(Questions)
