@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { CreatedQuestions, Questions, paramsQuestionsPaginatorType } from "../quiz.entity";
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { SortDirection } from "src/users/user.schema";
+import { SortDirection } from "../../users/user.schema";
 
 @Injectable()
 export class QuizRepository {

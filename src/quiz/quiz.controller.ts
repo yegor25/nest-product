@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, NotFoundException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { QuizService } from "./quiz.service";
-import { BasicAuthGuard } from "src/auth/guards/basic-auth.guard";
+import { BasicAuthGuard } from "../auth/guards/basic-auth.guard";
 import { CreatedQuestions, paramsQuestionsPaginatorType } from "./quiz.entity";
 
 @Controller("sa")
