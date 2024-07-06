@@ -71,6 +71,7 @@ export class QuizRepository {
     .getMany()
     
     const totalCount = await this.questionRepo.createQueryBuilder("q")
+    .select()
     .where(`q.body ilike :term`, {term: `%${term}%`})
     .getCount()
 
