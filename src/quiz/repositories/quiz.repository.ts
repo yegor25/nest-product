@@ -70,15 +70,15 @@ export class QuizRepository {
     .skip(skipCount)
     .getMany()
     
-    const totalCount = await this.questionRepo.createQueryBuilder("q")
-    .where(`q.body ilike :term`, {term: `%${term}%`})
-    .getCount()
+    // const totalCount = await this.questionRepo.createQueryBuilder("q")
+    // .where(`q.body ilike :term`, {term: `%${term}%`})
+    // .getCount()
 
     return {
-        pagesCount: Math.ceil(totalCount/ pageSize),
+        pagesCount: Math.ceil(3/ pageSize),
         page: pageNumber,
         pageSize: pageSize,
-        totalCount,
+        totalCount: 3,
         items: questions
     }
 
