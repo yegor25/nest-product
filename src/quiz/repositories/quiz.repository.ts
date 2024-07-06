@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
 import { CreatedQuestions, Questions, paramsQuestionsPaginatorType } from "../quiz.entity";
-import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
+import {   InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { SortDirection } from "../../users/user.schema";
 
@@ -74,7 +73,8 @@ export class QuizRepository {
     .select()
     .where(`q.body ilike :term`, {term: `%${term}%`})
     .getCount()
-
+    
+    console.log("total",totalCount)
     return {
         pagesCount: Math.ceil(totalCount/ pageSize),
         page: pageNumber,

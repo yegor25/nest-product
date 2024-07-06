@@ -80,6 +80,7 @@ let QuizRepository = class QuizRepository {
             .select()
             .where(`q.body ilike :term`, { term: `%${term}%` })
             .getCount();
+        console.log("total", totalCount);
         return {
             pagesCount: Math.ceil(totalCount / pageSize),
             page: pageNumber,
