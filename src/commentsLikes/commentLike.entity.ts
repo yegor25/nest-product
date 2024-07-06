@@ -21,6 +21,6 @@ export class CommentLikes {
     commentId: string
 
     @ManyToOne(() => Comments, c => c.likes, {onDelete: "CASCADE", onUpdate: "CASCADE"})
-    @JoinColumn()
+    @JoinColumn({name: "commentId"})
     comment: Comments
 }

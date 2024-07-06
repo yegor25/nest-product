@@ -16,7 +16,8 @@ let Questions = class Questions {
 };
 exports.Questions = Questions;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.Generated)("uuid"),
     __metadata("design:type", String)
 ], Questions.prototype, "id", void 0);
 __decorate([
@@ -40,7 +41,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Questions.prototype, "updatedAt", void 0);
 exports.Questions = Questions = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: "Questions" })
 ], Questions);
 var PublishedStatus;
 (function (PublishedStatus) {

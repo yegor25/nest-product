@@ -16,7 +16,11 @@ let ConfirmationData = class ConfirmationData {
 };
 exports.ConfirmationData = ConfirmationData;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], ConfirmationData.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ConfirmationData.prototype, "userId", void 0);
 __decorate([
@@ -29,7 +33,7 @@ __decorate([
 ], ConfirmationData.prototype, "expirationDate", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.Users, u => u.confirmationData, { onDelete: "CASCADE" }),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", user_entity_1.Users)
 ], ConfirmationData.prototype, "user", void 0);
 exports.ConfirmationData = ConfirmationData = __decorate([

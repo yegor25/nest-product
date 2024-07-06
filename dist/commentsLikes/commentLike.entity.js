@@ -39,7 +39,7 @@ __decorate([
 ], CommentLikes.prototype, "commentId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => comment_entity_1.Comments, c => c.likes, { onDelete: "CASCADE", onUpdate: "CASCADE" }),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: "commentId" }),
     __metadata("design:type", comment_entity_1.Comments)
 ], CommentLikes.prototype, "comment", void 0);
 exports.CommentLikes = CommentLikes = __decorate([

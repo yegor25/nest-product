@@ -18,6 +18,6 @@ export class Tokens {
     userId: string
 
     @ManyToOne(() => Users, u => u.tokens, {onDelete: "CASCADE"})
-    @JoinColumn()
+    @JoinColumn({name: "userId"})
     user: Users
 }

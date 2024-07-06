@@ -30,7 +30,7 @@ export class Users {
     @Column({default: false})
     isActiveAccount: boolean;
 
-    @OneToOne(() => ConfirmationData, c => c.user, {onDelete: "RESTRICT"})
+    @OneToOne(() => ConfirmationData, c => c.user)
     confirmationData: ConfirmationData
 
     @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "RESTRICT"})

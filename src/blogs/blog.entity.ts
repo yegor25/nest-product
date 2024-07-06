@@ -37,7 +37,7 @@ export class Blog {
   isMembership: boolean;
 
   @ManyToOne(() => Users, (u) => u.blogs, {onDelete: "CASCADE"})
-  @JoinColumn()
+  @JoinColumn({name :"userId"})
   user: Users;
 
   @OneToMany(() => Post, p => p.blog)

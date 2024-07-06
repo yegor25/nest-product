@@ -1,12 +1,13 @@
 import { IsArray, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, SortDirection, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryColumn, PrimaryGeneratedColumn, SortDirection, UpdateDateColumn } from "typeorm";
 
 
 
 
-@Entity()
+@Entity({name: "Questions"})
 export class Questions {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
+    @Generated("uuid")
     id: string
 
     @Column()

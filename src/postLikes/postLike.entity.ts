@@ -24,11 +24,11 @@ export class PostLikes {
     @Column()
     postId: string
 
-    @ManyToOne(() => Users, u => u)
-    @JoinColumn()
+    @ManyToOne(() => Users, u => u.postLikes)
+    @JoinColumn({name:"userId"})
     user: Users
 
     @ManyToOne(() => Post, p => p.postLikes)
-    @JoinColumn()
+    @JoinColumn({name:"postId"})
     post: Post
 }

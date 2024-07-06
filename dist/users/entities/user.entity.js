@@ -50,7 +50,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Users.prototype, "isActiveAccount", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => confirmationData_1.ConfirmationData, c => c.user, { onDelete: "RESTRICT" }),
+    (0, typeorm_1.OneToOne)(() => confirmationData_1.ConfirmationData, c => c.user),
     __metadata("design:type", confirmationData_1.ConfirmationData)
 ], Users.prototype, "confirmationData", void 0);
 __decorate([

@@ -42,13 +42,13 @@ __decorate([
     __metadata("design:type", String)
 ], PostLikes.prototype, "postId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.postLikes),
+    (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", user_entity_1.Users)
 ], PostLikes.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => post_entity_1.Post, p => p.postLikes),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: "postId" }),
     __metadata("design:type", post_entity_1.Post)
 ], PostLikes.prototype, "post", void 0);
 exports.PostLikes = PostLikes = __decorate([

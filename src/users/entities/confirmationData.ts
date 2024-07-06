@@ -3,10 +3,10 @@ import { Users } from "./user.entity"
 
 @Entity()
 export class ConfirmationData {
-    // @PrimaryGeneratedColumn("uuid")
-    // id: string
+    @PrimaryGeneratedColumn("uuid")
+    id: string
 
-    @PrimaryColumn()
+    @Column()
     userId: string
 
     @Column()
@@ -18,6 +18,6 @@ export class ConfirmationData {
    
 
     @OneToOne( () => Users, u => u.confirmationData, {onDelete: "CASCADE"})
-    @JoinColumn()
+    @JoinColumn({name:"userId"})
     user: Users
 }

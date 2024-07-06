@@ -35,10 +35,10 @@ export class Comments {
   likes: CommentLikes[];
 
   @ManyToOne(() => Post, (p) => p.comments)
-  @JoinColumn()
+  @JoinColumn({name:"postId"})
   post: Post;
 
   @ManyToOne(() => Users, (u) => u.comments, {onDelete: "CASCADE",onUpdate: "CASCADE"})
-  @JoinColumn()
+  @JoinColumn({name: "userId"})
   user: Users;
 }

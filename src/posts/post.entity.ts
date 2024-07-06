@@ -32,7 +32,7 @@ export class Post {
     comments: Comments[]
 
     @ManyToOne(() => Blog, b => b.posts, {onDelete:"CASCADE"})
-    @JoinColumn()
+    @JoinColumn({name: "blogId"})
     blog: Blog
 
     @OneToMany(() => PostLikes, pl => pl.post)
