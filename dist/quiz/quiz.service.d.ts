@@ -12,6 +12,6 @@ export declare class QuizService {
         items: import("./quiz.entity").Questions[];
     }>;
     updatePublis(id: string, publish: boolean): Promise<boolean>;
-    updateQuestion(id: string, dto: CreatedQuestions): Promise<any>;
+    updateQuestion(id: string, dto: CreatedQuestions): Promise<boolean>;
     deleteQuestion(id: string): Promise<boolean>;
 }

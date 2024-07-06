@@ -22,7 +22,7 @@ export class QuizService {
     }
 
     async updateQuestion(id: string, dto: CreatedQuestions){
-        return this.quizRepo.create(dto)
+        return this.quizRepo.update(dto.body,dto.correctAnswers,id)
     }
     async deleteQuestion(id: string){
         return this.quizRepo.delete(id)

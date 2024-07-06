@@ -26,7 +26,7 @@ let QuizService = class QuizService {
         return this.quizRepo.updatePublish(id, publish);
     }
     async updateQuestion(id, dto) {
-        return this.quizRepo.create(dto);
+        return this.quizRepo.update(dto.body, dto.correctAnswers, id);
     }
     async deleteQuestion(id) {
         return this.quizRepo.delete(id);

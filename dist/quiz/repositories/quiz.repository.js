@@ -48,6 +48,7 @@ let QuizRepository = class QuizRepository {
             .set({ body, correctAnswers })
             .where("id = :id", { id })
             .execute();
+        console.log("2", changing);
         if (changing.affected === 1)
             return true;
         return false;

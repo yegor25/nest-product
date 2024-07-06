@@ -29,6 +29,7 @@ let SuperAdminQuizController = class SuperAdminQuizController {
     }
     async update(param, body) {
         const mod = await this.quizService.updateQuestion(param.id, body);
+        console.log("mod", mod);
         if (!mod) {
             throw new common_1.NotFoundException();
         }

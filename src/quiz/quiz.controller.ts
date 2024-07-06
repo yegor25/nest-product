@@ -26,6 +26,7 @@ export class SuperAdminQuizController {
     @HttpCode(204)
     async update(@Param() param: {id: string} , @Body() body: CreatedQuestions){
         const mod = await this.quizService.updateQuestion(param.id,body)
+        console.log("mod",mod)
         if(!mod){
             throw new NotFoundException()
         }
