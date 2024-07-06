@@ -36,8 +36,8 @@ export class SuperAdminQuizController {
     @Put("quiz/questions/:id/publish")
     @HttpCode(204)
     async updatePublish(@Param() param: {id: string} , @Body() body: {published: boolean}){
-        if(typeof body.published ! == "boolean"){
-            throw new BadRequestException()
+        if(typeof body.published !== "boolean"){
+            throw new BadRequestException([{message: "invalid", field: "published"}])
         }
         const mod = await this.quizService.updatePublis(param.id, body.published)
         if(!mod){

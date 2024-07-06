@@ -35,8 +35,8 @@ let SuperAdminQuizController = class SuperAdminQuizController {
         return;
     }
     async updatePublish(param, body) {
-        if (typeof body.published == "boolean") {
-            throw new common_1.BadRequestException();
+        if (typeof body.published !== "boolean") {
+            throw new common_1.BadRequestException([{ message: "invalid", field: "published" }]);
         }
         const mod = await this.quizService.updatePublis(param.id, body.published);
         if (!mod) {
