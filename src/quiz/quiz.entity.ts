@@ -14,7 +14,7 @@ export class Questions {
     @Column()
     body: string
 
-    @Column({type: "json",array: true})
+    @Column({type: "json"})
     correctAnswers: Array<string>
 
     @Column({default: false})

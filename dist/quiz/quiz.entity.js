@@ -26,7 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], Questions.prototype, "body", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "json", array: true }),
+    (0, typeorm_1.Column)({ type: "json" }),
     __metadata("design:type", Array)
 ], Questions.prototype, "correctAnswers", void 0);
 __decorate([
