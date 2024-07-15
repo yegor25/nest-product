@@ -34,7 +34,7 @@ export class Users {
     @OneToOne(() => ConfirmationData, c => c.user)
     confirmationData: ConfirmationData
 
-    @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "CASCADE"})
+    @OneToMany(() => SecurityDevices, s => s.user)
     securityDevices: SecurityDevices[]
 
     @OneToMany(() => Tokens, t => t.user)

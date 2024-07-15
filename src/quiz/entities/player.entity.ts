@@ -15,13 +15,13 @@ export class Player {
     @Column({type: "uuid"})
     userId: string
 
-    @ManyToOne(() => Users, u => u.players)
+    @ManyToOne(() => Users, u => u.players, {onDelete: "CASCADE"})
     user: Users
 
     @OneToMany(() => Answers, a => a.player)
     answers: Answers[]
 
-    @OneToMany(() => Game, g => g)
+    @OneToMany(() => Game, g => g )
     // @JoinColumn({})
     game: Game
     

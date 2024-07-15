@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], Player.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.players),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.players, { onDelete: "CASCADE" }),
     __metadata("design:type", user_entity_1.Users)
 ], Player.prototype, "user", void 0);
 __decorate([

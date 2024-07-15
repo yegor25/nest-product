@@ -33,11 +33,11 @@ export class Game {
   @Column({ nullable: true, default: null })
   finishGameDate: string;
 
-  @ManyToOne(() => Player, (p) => p.game)
+  @ManyToOne(() => Player, (p) => p.game, {onDelete: "CASCADE"})
 //   @JoinColumn({name: "firstPlayerProgressId", referencedColumnName: "id"})
   firstPlayerProgress: Player;
 
-  @ManyToOne(() => Player, (p) => p.game, {nullable: true})
+  @ManyToOne(() => Player, (p) => p.game, {nullable: true, onDelete: "CASCADE"})
   secondPlayerProgress: Player;
 
   @ManyToOne(() => GameQuestion, gm => gm.game)

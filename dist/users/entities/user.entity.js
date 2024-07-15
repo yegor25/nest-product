@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", confirmationData_1.ConfirmationData)
 ], Users.prototype, "confirmationData", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => securityDevices_entity_1.SecurityDevices, s => s.user, { onDelete: "CASCADE" }),
+    (0, typeorm_1.OneToMany)(() => securityDevices_entity_1.SecurityDevices, s => s.user),
     __metadata("design:type", Array)
 ], Users.prototype, "securityDevices", void 0);
 __decorate([

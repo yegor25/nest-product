@@ -44,7 +44,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], SecurityDevices.prototype, "isActive", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.securityDevices),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.securityDevices, { onDelete: "CASCADE" }),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", user_entity_1.Users)
 ], SecurityDevices.prototype, "user", void 0);

@@ -51,11 +51,11 @@ __decorate([
     __metadata("design:type", String)
 ], Game.prototype, "finishGameDate", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, (p) => p.game),
+    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, (p) => p.game, { onDelete: "CASCADE" }),
     __metadata("design:type", player_entity_1.Player)
 ], Game.prototype, "firstPlayerProgress", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, (p) => p.game, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, (p) => p.game, { nullable: true, onDelete: "CASCADE" }),
     __metadata("design:type", player_entity_1.Player)
 ], Game.prototype, "secondPlayerProgress", void 0);
 __decorate([
