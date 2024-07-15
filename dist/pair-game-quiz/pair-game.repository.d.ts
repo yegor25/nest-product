@@ -14,4 +14,5 @@ export declare class PairGameRepository {
     }>;
     checkFreeGame(): Promise<boolean>;
     findGameByIdForNewGame(id: string): Promise<Game | null>;
+    checkYourPair(pairId: string): Promise<Game | null>;
 }

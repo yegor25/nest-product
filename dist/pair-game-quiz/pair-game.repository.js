@@ -81,6 +81,13 @@ let PairGameRepository = class PairGameRepository {
         });
         return game;
     }
+    async checkYourPair(pairId) {
+        const game = await this.gameRepository.findOne({
+            relations: { firstPlayerProgress: true, secondPlayerProgress: true },
+            where: { id: pairId }
+        });
+        return game;
+    }
 };
 exports.PairGameRepository = PairGameRepository;
 exports.PairGameRepository = PairGameRepository = __decorate([

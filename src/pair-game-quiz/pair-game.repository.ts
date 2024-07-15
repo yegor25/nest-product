@@ -83,4 +83,11 @@ export class PairGameRepository {
        return game
 
     }
+    async checkYourPair( pairId: string){
+        const game = await this.gameRepository.findOne({
+            relations: {firstPlayerProgress: true, secondPlayerProgress: true},
+            where: {id: pairId}
+        })
+        return game
+    }
 }
