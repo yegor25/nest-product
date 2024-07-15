@@ -13,7 +13,7 @@ import {
 
 @Entity()
 export class Blog {
-  @PrimaryColumn({ type: "uuid" })
+  @PrimaryColumn({type: "uuid"})
   @Generated("uuid")
   id: string;
 
@@ -36,10 +36,12 @@ export class Blog {
   })
   isMembership: boolean;
 
-  @ManyToOne(() => Users, (u) => u.blogs, {onDelete: "CASCADE"})
+  @OneToMany(() => Post, p => p.blog)
+  posts: Post[]
+
+  @ManyToOne(() => Users, (u) => u.blogs)
   @JoinColumn({name :"userId"})
   user: Users;
 
-  @OneToMany(() => Post, p => p.blog)
-  posts: Post[]
+ 
 }

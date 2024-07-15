@@ -1,5 +1,6 @@
 import { IsArray, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
-import { Column, CreateDateColumn, Entity, Generated, PrimaryColumn, PrimaryGeneratedColumn, SortDirection, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, SortDirection, UpdateDateColumn } from "typeorm";
+import { GameQuestion } from "./entities/gamePlayer.entity";
 
 
 
@@ -13,7 +14,7 @@ export class Questions {
     @Column()
     body: string
 
-    @Column({type: "json"})
+    @Column({type: "json",array: true})
     correctAnswers: Array<string>
 
     @Column({default: false})
@@ -24,6 +25,10 @@ export class Questions {
 
     @UpdateDateColumn()
     updatedAt: Date
+
+   @ManyToOne(() => GameQuestion,gm => gm.question)
+   gameQuestion: GameQuestion
+
 }
 
 

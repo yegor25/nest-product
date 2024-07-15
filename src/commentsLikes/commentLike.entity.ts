@@ -4,7 +4,7 @@ import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToOne, PrimaryColu
 
 @Entity()
 export class CommentLikes {
-    @PrimaryColumn()
+    @PrimaryColumn({type: "uuid"})
     @Generated("uuid")
     id: string
 
@@ -23,4 +23,7 @@ export class CommentLikes {
     @ManyToOne(() => Comments, c => c.likes, {onDelete: "CASCADE", onUpdate: "CASCADE"})
     @JoinColumn({name: "commentId"})
     comment: Comments
+
+   
+    
 }

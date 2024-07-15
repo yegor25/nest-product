@@ -17,7 +17,7 @@ let CommentLikes = class CommentLikes {
 };
 exports.CommentLikes = CommentLikes;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryColumn)({ type: "uuid" }),
     (0, typeorm_1.Generated)("uuid"),
     __metadata("design:type", String)
 ], CommentLikes.prototype, "id", void 0);

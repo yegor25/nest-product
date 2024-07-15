@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreatedQuestions = exports.PublishedStatus = exports.Questions = void 0;
 const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
+const gamePlayer_entity_1 = require("./entities/gamePlayer.entity");
 let Questions = class Questions {
 };
 exports.Questions = Questions;
@@ -25,7 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], Questions.prototype, "body", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "json" }),
+    (0, typeorm_1.Column)({ type: "json", array: true }),
     __metadata("design:type", Array)
 ], Questions.prototype, "correctAnswers", void 0);
 __decorate([
@@ -40,6 +41,10 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Questions.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => gamePlayer_entity_1.GameQuestion, gm => gm.question),
+    __metadata("design:type", gamePlayer_entity_1.GameQuestion)
+], Questions.prototype, "gameQuestion", void 0);
 exports.Questions = Questions = __decorate([
     (0, typeorm_1.Entity)({ name: "Questions" })
 ], Questions);

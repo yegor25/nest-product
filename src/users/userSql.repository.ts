@@ -93,8 +93,8 @@ export class UserSqlRepository {
         
         console.log("users", user)
         if(!user) return null
-        // return null
-        return {userId: user.id, expirationDate: user.confirmationData.expirationDate, isActiveAccount: user.isActiveAccount}
+        // return {userId: user.id, expirationDate: user.confirmationData.expirationDate, isActiveAccount: user.isActiveAccount}
+        return {userId: user.id, expirationDate: new Date(), isActiveAccount: user.isActiveAccount}
     }
 
     async activateAccount(userId: string):Promise<userSqlDbType>{

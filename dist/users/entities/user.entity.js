@@ -17,6 +17,7 @@ const token_entity_1 = require("../../tokens/token.entity");
 const blog_entity_1 = require("../../blogs/blog.entity");
 const comment_entity_1 = require("../../comments/comment.entity");
 const postLike_entity_1 = require("../../postLikes/postLike.entity");
+const player_entity_1 = require("../../quiz/entities/player.entity");
 let Users = class Users {
 };
 exports.Users = Users;
@@ -54,7 +55,7 @@ __decorate([
     __metadata("design:type", confirmationData_1.ConfirmationData)
 ], Users.prototype, "confirmationData", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => securityDevices_entity_1.SecurityDevices, s => s.user, { onDelete: "RESTRICT" }),
+    (0, typeorm_1.OneToMany)(() => securityDevices_entity_1.SecurityDevices, s => s.user, { onDelete: "CASCADE" }),
     __metadata("design:type", Array)
 ], Users.prototype, "securityDevices", void 0);
 __decorate([
@@ -73,6 +74,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => postLike_entity_1.PostLikes, pl => pl.user),
     __metadata("design:type", Array)
 ], Users.prototype, "postLikes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => player_entity_1.Player, p => p.user),
+    __metadata("design:type", Array)
+], Users.prototype, "players", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)()
 ], Users);

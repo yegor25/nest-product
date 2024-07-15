@@ -15,7 +15,7 @@ import { CommentLikes } from "../commentsLikes/commentLike.entity";
 
 @Entity()
 export class Comments {
-  @PrimaryColumn()
+  @PrimaryColumn({type: "uuid"})
   @Generated("uuid")
   id: string;
 

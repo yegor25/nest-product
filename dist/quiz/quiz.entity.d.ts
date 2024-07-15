@@ -1,4 +1,5 @@
 import { SortDirection } from "typeorm";
+import { GameQuestion } from "./entities/gamePlayer.entity";
 export declare class Questions {
     id: string;
     body: string;
@@ -6,6 +7,7 @@ export declare class Questions {
     published: boolean;
     createdAt: Date;
     updatedAt: Date;
+    gameQuestion: GameQuestion;
 }
 export declare enum PublishedStatus {
     all = "all",

@@ -1,10 +1,11 @@
-import { Column, Entity, Generated, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Generated, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { ConfirmationData } from "./confirmationData";
 import { SecurityDevices } from "../../securityDevices/securityDevices.entity";
 import { Tokens } from "../../tokens/token.entity";
 import { Blog } from "../../blogs/blog.entity";
 import { Comments } from "../../comments/comment.entity";
 import { PostLikes } from "../../postLikes/postLike.entity";
+import { Player } from "src/quiz/entities/player.entity";
 
 
 @Entity()
@@ -33,7 +34,7 @@ export class Users {
     @OneToOne(() => ConfirmationData, c => c.user)
     confirmationData: ConfirmationData
 
-    @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "RESTRICT"})
+    @OneToMany(() => SecurityDevices, s => s.user,{onDelete: "CASCADE"})
     securityDevices: SecurityDevices[]
 
     @OneToMany(() => Tokens, t => t.user)
@@ -47,6 +48,13 @@ export class Users {
 
     @OneToMany(() => PostLikes, pl => pl.user)
     postLikes: PostLikes[]
+
+    @OneToMany(() => Player, p => p.user)
+    players: Player[]
+
+    
+
+    
 }
 
 

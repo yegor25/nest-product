@@ -18,7 +18,7 @@ let Comments = class Comments {
 };
 exports.Comments = Comments;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryColumn)({ type: "uuid" }),
     (0, typeorm_1.Generated)("uuid"),
     __metadata("design:type", String)
 ], Comments.prototype, "id", void 0);

@@ -7,6 +7,6 @@ export declare class Blog {
     createdAt: string;
     websiteUrl: string;
     isMembership: boolean;
-    user: Users;
     posts: Post[];
+    user: Users;
 }

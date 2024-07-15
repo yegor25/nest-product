@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], Tokens.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.tokens, { onDelete: "CASCADE" }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.Users, u => u.tokens),
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", user_entity_1.Users)
 ], Tokens.prototype, "user", void 0);

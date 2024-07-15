@@ -18,7 +18,7 @@ let Post = class Post {
 };
 exports.Post = Post;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryColumn)({ type: "uuid" }),
     (0, typeorm_1.Generated)("uuid"),
     __metadata("design:type", String)
 ], Post.prototype, "id", void 0);
@@ -47,16 +47,15 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "blogId", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, c => c.post),
+    (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, (b) => b.posts),
+    __metadata("design:type", Array)
+], Post.prototype, "blog", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => comment_entity_1.Comments, (c) => c.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => blog_entity_1.Blog, b => b.posts, { onDelete: "CASCADE" }),
-    (0, typeorm_1.JoinColumn)({ name: "blogId" }),
-    __metadata("design:type", blog_entity_1.Blog)
-], Post.prototype, "blog", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => postLike_entity_1.PostLikes, pl => pl.post),
+    (0, typeorm_1.OneToMany)(() => postLike_entity_1.PostLikes, (pl) => pl.post),
     __metadata("design:type", Array)
 ], Post.prototype, "postLikes", void 0);
 exports.Post = Post = __decorate([

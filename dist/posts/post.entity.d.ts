@@ -9,7 +9,7 @@ export declare class Post {
     blogName: string;
     createdAt: string;
     blogId: string;
+    blog: Blog[];
     comments: Comments[];
-    blog: Blog;
     postLikes: PostLikes[];
 }

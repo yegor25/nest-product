@@ -74,6 +74,13 @@ import { Questions } from './quiz/quiz.entity';
 import { SuperAdminQuizController } from './quiz/quiz.controller';
 import { QuizService } from './quiz/quiz.service';
 import { QuizRepository } from './quiz/repositories/quiz.repository';
+import { Player } from './quiz/entities/player.entity';
+import { Answers } from './quiz/entities/answer.entity';
+import { Game } from './quiz/entities/game.entity';
+import { PairGameQuizController } from './pair-game-quiz/pair-game.controller';
+import { PairGameService } from './pair-game-quiz/pair-game.service';
+import { PairGameRepository } from './pair-game-quiz/pair-game.repository';
+import { GameQuestion } from './quiz/entities/gamePlayer.entity';
 
 @Module({
   imports: [
@@ -91,12 +98,12 @@ import { QuizRepository } from './quiz/repositories/quiz.repository';
       ssl: true,
       username: "egorlesnicij86",
       password: "VBqk7GPv8LIh",
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
       database: "neondb",
-      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions]
+      entities: [Users,ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions, Player, Answers,Game, GameQuestion]
     }),
-    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions]),
+    TypeOrmModule.forFeature([Users, ConfirmationData,SecDev, Token, Blogs, Posts,Comment, CommentLikes, PostLikes, Questions,Player, Answers,Game, GameQuestion]),
     MongooseModule.forRoot(
       'mongodb+srv://lesnichij94:admin2411@cluster0.9f1tjb3.mongodb.net/nest?retryWrites=true&w=majority',
     ),
@@ -113,14 +120,14 @@ import { QuizRepository } from './quiz/repositories/quiz.repository';
    
   ],
   
-  controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController, SuperAdminQuizController],
-  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository,UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository, QuizService, QuizRepository],
+  controllers: [AppController, TestingController,  UserController,BlogController,PostController,CommentController,SuperAdminBlogsController,SecurityDevicesController,SuperUserController,UserController,AuthController, SuperAdminQuizController,PairGameQuizController],
+  providers: [AppService,  TestingService,  LocalStrategy, BasicStrategy,JwtStrategy,PostValidator,BlogRepository, BlogService, PostService,PostService, PostSqlRepository, PostRepository,BlogService, PostLikeService,CommentsRepository, CommentService,PostLikeRepository, PostLikeService, PostLikeSqlRepository,RequestUserInfoService,RequestUserInfoRepository,SuperAdminBlogService,SuperAdminBlogsRepository,SecurityDevicesRepository, SecurityDevicesService, SecurityDevicesSqlRepository,SuperUsersService, SuperUserRepository, SuValidatorEmail,SuValidatorLogin,TokenService, TokenSqlRepository, TokenRepository,UserService, UserRepository,UserSqlRepository, DataConfirmationRepository,AuthService, CommentsSqlRepository, QuizService, QuizRepository,PairGameService,PairGameRepository],
 
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckGuess).forRoutes('posts','blogs','comments'),
-    consumer.apply(CheckRefreshToken).forRoutes('auth/logout','auth/refresh-token','security'),
-    consumer.apply(RateLimiting).forRoutes('auth/registration-confirmation','auth/registration-email-resending','auth/login','auth/registration')
+    consumer.apply(CheckRefreshToken).forRoutes('auth/logout','auth/refresh-token','security')
+    // consumer.apply(RateLimiting).forRoutes('auth/registration-confirmation','auth/registration-email-resending','auth/login','auth/registration')
   }
 }
