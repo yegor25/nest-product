@@ -35,7 +35,7 @@ export class QuizRepository {
     const changing = await this.questionRepo
     .createQueryBuilder()
     .update(Questions)
-    .set({ body,correctAnswers, updatedAt: new Date()})
+    .set({ body,correctAnswers, updatedAt: new Date().toISOString()})
     .where("id = :id", { id })
     .execute();
     console.log("2",changing)
