@@ -4,7 +4,7 @@ import { SuperUsersService } from "../super-users/superUsers.service";
 import { UserRepository } from "../users/user.repository";
 import { SuperAdminBlogService } from "../sa-blogs/sa.blogs.service";
 import { CommentsSqlRepository } from "../comments/commentsSql.repository";
-import { QuizRepository } from "src/quiz/repositories/quiz.repository";
+import { QuizRepository } from "../quiz/repositories/quiz.repository";
 export declare class TestingService {
     protected userRepository: UserRepository;
     protected blogRepository: BlogRepository;
