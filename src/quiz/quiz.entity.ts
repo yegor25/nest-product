@@ -23,8 +23,8 @@ export class Questions {
     @CreateDateColumn()
     createdAt: Date
 
-    @UpdateDateColumn()
-    updatedAt: Date
+    @Column({nullable: true, type: "timestamp",default: null})
+    updatedAt: Date | null
 
    @ManyToOne(() => GameQuestion,gm => gm.question)
    gameQuestion: GameQuestion

@@ -6,7 +6,7 @@ export declare class Questions {
     correctAnswers: Array<string>;
     published: boolean;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt: Date | null;
     gameQuestion: GameQuestion;
 }
 export declare enum PublishedStatus {

@@ -38,8 +38,8 @@ __decorate([
     __metadata("design:type", Date)
 ], Questions.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
+    (0, typeorm_1.Column)({ nullable: true, type: "timestamp", default: null }),
+    __metadata("design:type", Object)
 ], Questions.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => gamePlayer_entity_1.GameQuestion, gm => gm.question),
