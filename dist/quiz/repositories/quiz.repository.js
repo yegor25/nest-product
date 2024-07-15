@@ -56,7 +56,7 @@ let QuizRepository = class QuizRepository {
     async updatePublish(id, publish) {
         const mod = await this.questionRepo.createQueryBuilder()
             .update(quiz_entity_1.Questions)
-            .set({ published: publish })
+            .set({ published: publish, updatedAt: new Date() })
             .where("id = :id", { id })
             .execute();
         if (mod.affected === 1)
