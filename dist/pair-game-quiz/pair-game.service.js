@@ -21,8 +21,8 @@ let PairGameService = class PairGameService {
     }
     async createGame(userId) {
         const existUserInGame = await this.pairGameRepo.checkExistGameForUser();
-        const ourUser = existUserInGame.find((u) => ((u.firstPlayerProgress && u.firstPlayerProgress.userId === userId) || (u.secondPlayerProgress && u.secondPlayerProgress.userId === userId)));
-        console.log("exist", existUserInGame);
+        const ourUser = existUserInGame.find((u) => (u.firstPlayerProgress && u.firstPlayerProgress.userId === userId) ||
+            (u.secondPlayerProgress && u.secondPlayerProgress.userId === userId));
         if (ourUser) {
             return null;
         }
@@ -30,20 +30,23 @@ let PairGameService = class PairGameService {
         if (freeGame) {
             const newPlayer = await this.createNewPlayer(userId);
             const newGame = await this.pairGameRepo.addSecondPlayerToGame(userId, newPlayer);
-            console.log("new", newGame);
             if (newGame.modCount === 1) {
-                const { id, firstPlayerProgressId, secondPlayerProgressId, status, pairCreatedDate, startGameDate, finishGameDate, firstPlayerProgress, secondPlayerProgress } = newGame.player;
-                const firsUser = await this.userRepo.findById(firstPlayerProgress.player.userId);
-                const secondUser = await this.userRepo.findById(secondPlayerProgress.player.userId);
+                console.log("newedxwecx", newGame.player);
+                const game = await this.pairGameRepo.findGameByIdForNewGame(newGame.player.id);
+                console.log("result", game);
+                if (!game)
+                    return null;
+                const firsUser = await this.userRepo.findById(game.firstPlayerProgress.userId);
+                const secondUser = await this.userRepo.findById(game.secondPlayerProgress.userId);
                 return {
-                    id,
+                    id: game?.id,
                     firstPlayerProgress: {
                         answers: [],
                         player: {
                             id: firsUser.id,
                             login: firsUser.login
                         },
-                        score: firstPlayerProgress.score
+                        score: game.firstPlayerProgress.score
                     },
                     secondPlayerProgress: {
                         answers: [],
@@ -51,12 +54,12 @@ let PairGameService = class PairGameService {
                             id: secondUser.id,
                             login: secondUser.login
                         },
-                        score: secondPlayerProgress.score
+                        score: game.secondPlayerProgress.score
                     },
-                    status: status,
-                    pairCreatedDate,
-                    startGameDate,
-                    finishGameDate,
+                    status: game.status,
+                    pairCreatedDate: game.pairCreatedDate,
+                    startGameDate: game.startGameDate,
+                    finishGameDate: game.finishGameDate,
                     questions: []
                 };
             }
@@ -68,7 +71,6 @@ let PairGameService = class PairGameService {
             const firstUser = await this.userRepo.findById(userId);
             if (!firstUser)
                 return null;
-            console.log("log");
             return pair_game_helper_1.pairGameHelper.mapperGameForView(newPairs, firstUser, null, newPlayer, null, null);
         }
     }
@@ -79,6 +81,7 @@ let PairGameService = class PairGameService {
 exports.PairGameService = PairGameService;
 exports.PairGameService = PairGameService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [pair_game_repository_1.PairGameRepository, userSql_repository_1.UserSqlRepository])
+    __metadata("design:paramtypes", [pair_game_repository_1.PairGameRepository,
+        userSql_repository_1.UserSqlRepository])
 ], PairGameService);
 //# sourceMappingURL=pair-game.service.js.map

@@ -6,39 +6,45 @@ import { pairGameHelper } from "./pair-game.helper";
 
 @Injectable()
 export class PairGameService {
-  constructor(protected pairGameRepo: PairGameRepository, protected userRepo: UserSqlRepository) {}
+  constructor(
+    protected pairGameRepo: PairGameRepository,
+    protected userRepo: UserSqlRepository
+  ) {}
 
   async createGame(userId: string): Promise<gameViewType | null | boolean> {
     const existUserInGame = await this.pairGameRepo.checkExistGameForUser();
-          const ourUser = existUserInGame.find(
+    const ourUser = existUserInGame.find(
       (u) =>
-        ((u.firstPlayerProgress && u.firstPlayerProgress.userId === userId )|| (u.secondPlayerProgress && u.secondPlayerProgress.userId === userId))
+        (u.firstPlayerProgress && u.firstPlayerProgress.userId === userId) ||
+        (u.secondPlayerProgress && u.secondPlayerProgress.userId === userId)
     );
-    console.log("exist",existUserInGame)
     if (ourUser) {
       return null;
     }
-    const freeGame = await this.pairGameRepo.checkFreeGame()
-    if(freeGame){
+    const freeGame = await this.pairGameRepo.checkFreeGame();
+    if (freeGame) {
       const newPlayer = await this.createNewPlayer(userId);
       const newGame = await this.pairGameRepo.addSecondPlayerToGame(
         userId,
         newPlayer
       );
-      console.log("new",newGame)
       if (newGame.modCount === 1) {
-        const {id,firstPlayerProgressId,secondPlayerProgressId, status, pairCreatedDate, startGameDate, finishGameDate,firstPlayerProgress,secondPlayerProgress } = newGame.player
-        const firsUser = await this.userRepo.findById(firstPlayerProgress.player.userId)
-        const secondUser = await this.userRepo.findById(secondPlayerProgress.player.userId)
+        console.log("newedxwecx", newGame.player)
+        
+        const game = await this.pairGameRepo.findGameByIdForNewGame(newGame.player.id)
+        console.log("result",game)
+        if(!game) return null
+        const firsUser = await this.userRepo.findById(game!.firstPlayerProgress.userId)
+       const secondUser = await this.userRepo.findById(game!.secondPlayerProgress.userId)
       return {
-        id,
+        id: game?.id,
         firstPlayerProgress: {
             answers: [],
             player: {
                 id: firsUser!.id,
                 login: firsUser!.login
             },
-            score: firstPlayerProgress.score
+            score: game.firstPlayerProgress.score
         },
         secondPlayerProgress: {
             answers: [],
@@ -46,29 +52,42 @@ export class PairGameService {
                 id: secondUser!.id,
                 login: secondUser!.login
             },
-            score: secondPlayerProgress.score
+            score: game.secondPlayerProgress.score
         },
-        status: status,
-        pairCreatedDate,
-        startGameDate,
-        finishGameDate,
+        status: game.status,
+        pairCreatedDate: game.pairCreatedDate,
+        startGameDate: game.startGameDate,
+        finishGameDate: game.finishGameDate,
         questions: []
       };
     }
     return null
-    }
-   
-     else {
+    } else {
       const newPlayer = await this.createNewPlayer(userId);
       const newPairs = await this.pairGameRepo.createNewPairs(
         userId,
         newPlayer
       );
-      const firstUser = await this.userRepo.findById(userId)
-     if(!firstUser) return null
-     console.log("log")
-      return pairGameHelper.mapperGameForView(newPairs,firstUser,null, newPlayer,null, null)
+      const firstUser = await this.userRepo.findById(userId);
+      if (!firstUser) return null;
+      return pairGameHelper.mapperGameForView(
+        newPairs,
+        firstUser,
+        null,
+        newPlayer,
+        null,
+        null
+      );
     }
+    // if(freeGame){
+    //   const newPlayer = await this.createNewPlayer(userId);
+    //   const newGame = await this.pairGameRepo.addSecondPlayerToGame(
+    //     userId,
+    //     newPlayer
+    //   );
+    //   console.log("new",newGame)
+    
+    // }
   }
 
   async createNewPlayer(userId: string) {

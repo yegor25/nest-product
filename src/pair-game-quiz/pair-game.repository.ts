@@ -68,8 +68,19 @@ export class PairGameRepository {
     }
     async checkFreeGame(){
         const game = await this.gameRepository.findOne({where: {status: GameStatus.PendingSecondPlayer}})
-        console.log("game",game)
         if(game) return true
         return false
+    }
+    async findGameByIdForNewGame(id: string){
+       const game = await this.gameRepository.findOne({
+        relations: {
+            firstPlayerProgress: true,
+            secondPlayerProgress: true
+        },
+        where: {id},
+        
+       })
+       return game
+
     }
 }

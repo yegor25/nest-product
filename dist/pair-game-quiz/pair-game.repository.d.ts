@@ -13,4 +13,5 @@ export declare class PairGameRepository {
         modCount: number | undefined;
     }>;
     checkFreeGame(): Promise<boolean>;
+    findGameByIdForNewGame(id: string): Promise<Game | null>;
 }
