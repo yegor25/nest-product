@@ -24,11 +24,12 @@ export class PairGameRepository {
                 secondPlayerProgress: true
             },
             where: {
-                status:(GameStatus.Active)
+                status:(GameStatus.Active, GameStatus.PendingSecondPlayer)
             }
         })
         return game
     }
+    
 
     async createNewPairs(userId: string, player: Player){
         const newGame = await this.gameRepository.createQueryBuilder()
@@ -64,5 +65,11 @@ export class PairGameRepository {
         .returning("*")
         .execute()
         return {player: secondPlayer.raw[0], modCount: secondPlayer.affected}
+    }
+    async checkFreeGame(){
+        const game = await this.gameRepository.findOne({where: {status: GameStatus.PendingSecondPlayer}})
+        console.log("game",game)
+        if(game) return true
+        return false
     }
 }

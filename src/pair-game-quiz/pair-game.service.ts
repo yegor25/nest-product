@@ -14,16 +14,19 @@ export class PairGameService {
       (u) =>
         ((u.firstPlayerProgress && u.firstPlayerProgress.userId === userId )|| (u.secondPlayerProgress && u.secondPlayerProgress.userId === userId))
     );
-    console.log(7777, ourUser)
+    console.log("exist",existUserInGame)
     if (ourUser) {
       return null;
     }
-    const newPlayer = await this.createNewPlayer(userId);
-    const newGame = await this.pairGameRepo.addSecondPlayerToGame(
-      userId,
-      newPlayer
-    );
-    if (newGame.modCount === 1) {
+    const freeGame = await this.pairGameRepo.checkFreeGame()
+    if(freeGame){
+      const newPlayer = await this.createNewPlayer(userId);
+      const newGame = await this.pairGameRepo.addSecondPlayerToGame(
+        userId,
+        newPlayer
+      );
+      console.log("new",newGame)
+      if (newGame.modCount === 1) {
         const {id,firstPlayerProgressId,secondPlayerProgressId, status, pairCreatedDate, startGameDate, finishGameDate,firstPlayerProgress,secondPlayerProgress } = newGame.player
         const firsUser = await this.userRepo.findById(firstPlayerProgress.player.userId)
         const secondUser = await this.userRepo.findById(secondPlayerProgress.player.userId)
@@ -51,13 +54,19 @@ export class PairGameService {
         finishGameDate,
         questions: []
       };
-    } else {
+    }
+    return null
+    }
+   
+     else {
+      const newPlayer = await this.createNewPlayer(userId);
       const newPairs = await this.pairGameRepo.createNewPairs(
         userId,
         newPlayer
       );
       const firstUser = await this.userRepo.findById(userId)
      if(!firstUser) return null
+     console.log("log")
       return pairGameHelper.mapperGameForView(newPairs,firstUser,null, newPlayer,null, null)
     }
   }

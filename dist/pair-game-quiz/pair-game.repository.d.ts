@@ -12,4 +12,5 @@ export declare class PairGameRepository {
         player: any;
         modCount: number | undefined;
     }>;
+    checkFreeGame(): Promise<boolean>;
 }

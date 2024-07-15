@@ -30,7 +30,7 @@ let PairGameRepository = class PairGameRepository {
                 secondPlayerProgress: true
             },
             where: {
-                status: (game_entity_1.GameStatus.Active)
+                status: (game_entity_1.GameStatus.Active, game_entity_1.GameStatus.PendingSecondPlayer)
             }
         });
         return game;
@@ -64,6 +64,13 @@ let PairGameRepository = class PairGameRepository {
             .returning("*")
             .execute();
         return { player: secondPlayer.raw[0], modCount: secondPlayer.affected };
+    }
+    async checkFreeGame() {
+        const game = await this.gameRepository.findOne({ where: { status: game_entity_1.GameStatus.PendingSecondPlayer } });
+        console.log("game", game);
+        if (game)
+            return true;
+        return false;
     }
 };
 exports.PairGameRepository = PairGameRepository;
