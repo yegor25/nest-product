@@ -1,6 +1,6 @@
 import { userSqlDbType } from "../users/user.schema";
 import { answersViewType, createdGameDbType, gameViewType, questionsViewType } from "../quiz/entities/game.entity";
-import { Player } from "src/quiz/entities/player.entity";
+import { Player } from "../quiz/entities/player.entity";
 
 
 export const pairGameHelper = {

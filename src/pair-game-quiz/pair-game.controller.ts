@@ -1,6 +1,6 @@
 import { Controller, ForbiddenException, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth-guard";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth-guard";
 import { PairGameService } from "./pair-game.service";
 
 
